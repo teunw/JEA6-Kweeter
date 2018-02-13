@@ -21,7 +21,7 @@ import {HttpClientModule} from '@angular/common/http';
     BrowserAnimationsModule,
     MatListModule
   ],
-  providers: [HttpClientModule, ProfileService],
+  providers: [HttpClientModule, ProfileService, MatListModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
