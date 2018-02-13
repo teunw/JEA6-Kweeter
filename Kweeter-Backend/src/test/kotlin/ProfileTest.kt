@@ -1,6 +1,6 @@
 import nl.teun.kweeter.domain.Profile
+import org.junit.Assert
 import org.junit.Test
-import org.wildfly.common.Assert
 
 class ProfileTest {
 

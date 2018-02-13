@@ -1,10 +1,15 @@
-install:
-  - cd "./Kweeter-Backend"
-  - gradle build -x test
-  - cd "./../Kweeter-Frontend"
-  - npm install
+#install:
+#  - cd "./Kweeter-Frontend"
+#  - npm install
 script:
-  - cd "./../Kweeter-Backend"
+  - cd "./Kweeter-Backend"
   - gradle test
-  - cd "./../Kweeter-Frontend"
-  - npm test
+#  - cd "./../Kweeter-Frontend"
+#  - npm test
+#sudo: required
+#dist: trusty
+#addons:
+#    chrome: stable
+#before_script:
+#    - "sudo chown root /opt/google/chrome/chrome-sandbox"
+#    - "sudo chmod 4755 /opt/google/chrome/chrome-sandbox"
