@@ -6,3 +6,10 @@ script:
   - gradle test
   - cd "./../Kweeter-Frontend"
   - npm test
+sudo: required
+dist: trusty
+addons:
+    chrome: stable
+before_script:
+    - "sudo chown root /opt/google/chrome/chrome-sandbox"
+    - "sudo chmod 4755 /opt/google/chrome/chrome-sandbox"
