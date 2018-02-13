@@ -61,6 +61,7 @@ dependencies {
 //    compile.exclude group: 'dom4j', name: 'dom4j'
 
     testCompile "junit:junit:4.12"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
     testCompile "org.jboss.arquillian:arquillian-bom:1.1.12.Final"
     testCompile "org.jboss.arquillian.junit:arquillian-junit-container:1.1.12.Final"
 

@@ -1,6 +1,4 @@
 install:
-  - cd "./Kweeter-Backend"
-  - gradle build -x test
   - cd "./../Kweeter-Frontend"
   - npm install
 script:
