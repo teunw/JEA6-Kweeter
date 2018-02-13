@@ -1,5 +1,5 @@
 install:
-  - cd "./../Kweeter-Frontend"
+  - cd "./Kweeter-Frontend"
   - npm install
 script:
   - cd "./../Kweeter-Backend"
