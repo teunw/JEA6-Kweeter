@@ -3,11 +3,12 @@ package nl.teun.kweeter.domain;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @NamedQuery(name = "Profile.all", query = "SELECT p FROM Profile p")
 @NamedQuery(name = "Profile.findbyid", query = "SELECT p FROM Profile p WHERE p.id = :p_id")
-public class Profile {
+public class Profile implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -78,11 +79,11 @@ public class Profile {
         this.contactLink = contactLink;
     }
 
-    public void HashPassword(String pass) {
+    public void setPassword(String pass) {
         this.bCryptHash = BCrypt.hashpw(pass, BCrypt.gensalt());
     }
 
-    public boolean CheckPassword(String pass) {
+    public boolean checkPassword(String pass) {
         return BCrypt.checkpw(pass, this.bCryptHash);
     }
 }

@@ -1,10 +1,11 @@
 package nl.teun.kweeter.controllers
 
 import nl.teun.kweeter.domain.Profile
+import nl.teun.kweeter.domain.ProfileAuth
+import nl.teun.kweeter.services.ProfileAuthService
 import nl.teun.kweeter.services.ProfileService
 import java.util.*
 import javax.inject.Inject
-import javax.validation.constraints.NotEmpty
 import javax.ws.rs.*
 import javax.ws.rs.core.Response
 
@@ -13,6 +14,29 @@ class ProfileController {
 
     @Inject
     private lateinit var profileService: ProfileService
+
+    @Inject
+    private lateinit var profileAuthService: ProfileAuthService
+
+    @POST
+    @Path("/auth")
+    fun postAuth(@QueryParam("id") userId: Long, @QueryParam("password") password: String): Response? {
+        if (password.isBlank()) {
+            return Response.serverError().entity("Password is empty").build()
+        }
+        val profile = this.profileService.findById(userId)
+        val result = profile.checkPassword(password)
+
+        if (!result) {
+            return Response.serverError().entity("Invalid password").build()
+        }
+        val auth = ProfileAuth()
+        auth.generateNewToken()
+        auth.profile = profile
+
+        this.profileAuthService.create(auth)
+        return Response.ok(auth).build()
+    }
 
     @GET
     @Path("/")
@@ -71,18 +95,21 @@ class ProfileController {
     fun createProfile(
             @QueryParam("email") email: String,
             @QueryParam("username") username: String,
-            @QueryParam("displayName") displayName: String
+            @QueryParam("displayName") displayName: String,
+            @QueryParam("password") password: String
     ): Response? {
-        if (email.isBlank() || username.isBlank() || displayName.isBlank()) {
+        if (email.isBlank() || username.isBlank() || displayName.isBlank() || password.isBlank()) {
             return Response
                     .serverError()
                     .entity("One of the parameters is empty")
                     .entity(email)
                     .entity(username)
                     .entity(displayName)
+                    .entity(password)
                     .build()
         }
         val profile = Profile()
+        profile.setPassword(password)
         profile.email = email
         profile.username = username
         profile.displayName = displayName

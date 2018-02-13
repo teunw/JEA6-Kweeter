@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response
 @PreMatching
 class CorsFilter : ContainerRequestFilter, ContainerResponseFilter {
 
-    val allowedOrigins: Set<String> = HashSet()
+    val allowedOrigins: MutableList<String> = mutableListOf()
 
     @Throws(IOException::class)
     override fun filter(requestContext: ContainerRequestContext) {

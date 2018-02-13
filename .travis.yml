@@ -1,0 +1,10 @@
+install:
+  - cd "Kweeter-Backend"
+  - gradle build -x test
+  - cd "./../Kweeter-Frontend"
+  - npm install
+script:
+  - cd "Kweeter-Backend"
+  - ./gradlew test
+  - cd "./../Kweeter-Frontend"
+  - npm test

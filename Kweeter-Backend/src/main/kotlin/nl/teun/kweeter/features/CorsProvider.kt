@@ -1,4 +1,4 @@
-import org.jboss.resteasy.plugins.interceptors.CorsFilter
+import nl.teun.kweeter.filters.CorsFilter
 import javax.ws.rs.core.Feature
 import javax.ws.rs.core.FeatureContext
 import javax.ws.rs.ext.Provider
@@ -8,8 +8,8 @@ open class CorsProvider : Feature {
 
     @Override
     override fun configure(context: FeatureContext): Boolean {
-        val corsFilter = CorsFilter()
-        corsFilter.getAllowedOrigins().add("*")
+        var corsFilter = CorsFilter()
+        corsFilter.allowedOrigins.add("*")
         context.register(corsFilter)
         return true
     }
