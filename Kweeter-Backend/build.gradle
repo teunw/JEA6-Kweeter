@@ -15,6 +15,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "org.sonarqube" version "2.5"
+}
+
 configurations {
     install
 }
@@ -56,6 +60,11 @@ dependencies {
     compile group: "javax", name: "javaee-web-api", version: "8.0"
     // https://mvnrepository.com/artifact/org.mindrot/jbcrypt
     compile group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'
+
+    compile "org.hibernate:hibernate-core:5.1.0.Final"
+    compile "org.hibernate:hibernate-validator:5.2.4.Final"
+    compile "org.hibernate:hibernate-entitymanager:5.1.0.Final"
+    compile "org.hibernate:hibernate-ehcache:5.1.0.Final"
 
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager
 //    compile group: "org.hibernate", name: "hibernate-core", version: "5.2.12.Final"
