@@ -5,8 +5,10 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@NamedQuery(name = "ProfileAuth.token", query = "SELECT pa FROM ProfileAuth pa WHERE pa.token = :token")
-@NamedQuery(name = "ProfileAuth.id", query = "SELECT pa FROM ProfileAuth pa WHERE pa.id = :id")
+@NamedQueries({
+        @NamedQuery(name = "ProfileAuth.token", query = "SELECT pa FROM ProfileAuth pa WHERE pa.token = :token"),
+        @NamedQuery(name = "ProfileAuth.id", query = "SELECT pa FROM ProfileAuth pa WHERE pa.id = :id")
+})
 public class ProfileAuth implements Serializable {
 
     @Id
@@ -19,7 +21,8 @@ public class ProfileAuth implements Serializable {
     @Column
     private UUID token;
 
-    public ProfileAuth() {}
+    public ProfileAuth() {
+    }
 
     public void generateNewToken() {
         this.token = UUID.randomUUID();

@@ -6,8 +6,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@NamedQuery(name = "Profile.all", query = "SELECT p FROM Profile p")
-@NamedQuery(name = "Profile.findbyid", query = "SELECT p FROM Profile p WHERE p.id = :p_id")
+@NamedQueries({
+        @NamedQuery(name = "Profile.all", query = "SELECT p FROM Profile p"),
+        @NamedQuery(name = "Profile.findbyid", query = "SELECT p FROM Profile p WHERE p.id = :p_id")
+})
+
 public class Profile implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
