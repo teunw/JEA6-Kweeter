@@ -75,7 +75,8 @@ class KweetController {
         val kweet = Kweet()
         kweet.author = this.profileService.findById(profileIdAsLong)
         kweet.textContent = textContent
-        kweet.publicId = UUID.randomUUID()
+        kweet.setPublicId(UUID.randomUUID())
+        kweet.date = Date()
         this.kweetService.createKweet(kweet)
 
         return Response.ok(kweet).build()

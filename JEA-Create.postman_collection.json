@@ -1,0 +1,279 @@
+{
+	"info": {
+		"name": "JEA-Create",
+		"_postman_id": "b2d5fbe4-12c3-7152-8f7d-7e032aacf2a8",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create user teun.willems@live.nl",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/Kweeter-Backend/api/profiles/create?email=teun.willems@live.nl&username=teunw&displayName=Teun Willems&password=test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Kweeter-Backend",
+						"api",
+						"profiles",
+						"create"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "teun.willems@live.nl",
+							"equals": true
+						},
+						{
+							"key": "username",
+							"value": "teunw",
+							"equals": true
+						},
+						{
+							"key": "displayName",
+							"value": "Teun Willems",
+							"equals": true
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All User",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/Kweeter-Backend/api/profiles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Kweeter-Backend",
+						"api",
+						"profiles"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create second user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/Kweeter-Backend/api/profiles/create?email=second@usern.com&username=seconduser&displayName=Second user&password=test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Kweeter-Backend",
+						"api",
+						"profiles",
+						"create"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "second@usern.com",
+							"equals": true
+						},
+						{
+							"key": "username",
+							"value": "seconduser",
+							"equals": true
+						},
+						{
+							"key": "displayName",
+							"value": "Second user",
+							"equals": true
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get second user",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/Kweeter-Backend/api/profiles/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Kweeter-Backend",
+						"api",
+						"profiles",
+						"2"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create first kweet",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/Kweeter-Backend/api/kweets/create?profileId=1&textContent=This is the first kweet",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Kweeter-Backend",
+						"api",
+						"kweets",
+						"create"
+					],
+					"query": [
+						{
+							"key": "profileId",
+							"value": "1",
+							"equals": true
+						},
+						{
+							"key": "textContent",
+							"value": "This is the first kweet",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create second kweet",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/Kweeter-Backend/api/kweets/create?profileId=2&textContent=This is the second kweet",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Kweeter-Backend",
+						"api",
+						"kweets",
+						"create"
+					],
+					"query": [
+						{
+							"key": "profileId",
+							"value": "2",
+							"equals": true
+						},
+						{
+							"key": "textContent",
+							"value": "This is the second kweet",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get kweets",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/Kweeter-Backend/api/kweets",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Kweeter-Backend",
+						"api",
+						"kweets"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

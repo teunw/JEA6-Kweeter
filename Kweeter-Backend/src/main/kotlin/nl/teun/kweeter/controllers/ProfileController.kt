@@ -2,6 +2,7 @@ package nl.teun.kweeter.controllers
 
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.services.ProfileService
+import nl.teun.kweeter.services.ValidatorService
 import java.util.*
 import javax.inject.Inject
 import javax.ws.rs.*
@@ -12,6 +13,9 @@ class ProfileController {
 
     @Inject
     private lateinit var profileService: ProfileService
+
+    @Inject
+    private lateinit var validatorService: ValidatorService
 
     @GET
     @Path("/{userId}")
@@ -94,6 +98,11 @@ class ProfileController {
                     .entity(password)
                     .build()
         }
+        if (!this.validatorService.isUsernameValid(username)) {
+            val usernameRegex = this.validatorService.usernameRegex.pattern
+            return Response.serverError().entity("Username is invalid, regex: $usernameRegex").build()
+        }
+
         val profile = Profile()
         profile.setPassword(password)
         profile.email = email

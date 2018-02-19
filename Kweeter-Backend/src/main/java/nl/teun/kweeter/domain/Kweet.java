@@ -8,12 +8,12 @@ import java.util.UUID;
 
 @Entity
 @Table
-@NamedQuery(name = "kweet.all", query = "SELECT k FROM Kweet k")
-@NamedQuery(name = "kweet.findbyid", query = "SELECT k FROM Kweet k WHERE k.id = :k_id")
+@NamedQuery(name = "Kweet.all", query = "SELECT k FROM Kweet k")
+@NamedQuery(name = "Kweet.findbyid", query = "SELECT k FROM Kweet k WHERE k.id = :k_id")
 public class Kweet implements Serializable {
 
     @Column(unique = true, nullable = false, updatable = false)
-    private UUID publicId;
+    private String publicId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,12 +37,12 @@ public class Kweet implements Serializable {
     @ManyToMany
     private List<Rekweet> rekweets;
 
-    public UUID getPublicId() {
+    public String getPublicId() {
         return publicId;
     }
 
     public void setPublicId(UUID publicId) {
-        this.publicId = publicId;
+        this.publicId = publicId.toString();
     }
 
     public Long getInternalId() {
