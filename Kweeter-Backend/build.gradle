@@ -78,7 +78,7 @@ dependencies {
     testRuntime "org.jboss.logging:jboss-logging:3.1.4.GA"
     testRuntime "org.jboss.resteasy:resteasy-client:3.1.1.Final"
 
-//    install "org.wildfly:wildfly-dist:${wildflyVersion}@zip"
+    install "org.wildfly:wildfly-dist:${wildflyVersion}@zip"
 }
 
 test {
