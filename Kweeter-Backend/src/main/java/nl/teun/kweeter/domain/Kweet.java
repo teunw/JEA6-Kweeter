@@ -4,17 +4,20 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table
+@NamedQuery(name = "Kweet.all", query = "SELECT k FROM Kweet k")
+@NamedQuery(name = "Kweet.findbyid", query = "SELECT k FROM Kweet k WHERE k.id = :k_id")
 public class Kweet implements Serializable {
 
-    @Column(unique = true, nullable = false, insertable = true, updatable = false)
-    private Long publicId = 0L;
+    @Column(unique = true, nullable = false, updatable = false)
+    private String publicId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long internalId = 0L;
+    private Long id = 0L;
 
     @Column(nullable = false)
     private String textContent = "";
@@ -34,20 +37,20 @@ public class Kweet implements Serializable {
     @ManyToMany
     private List<Rekweet> rekweets;
 
-    public Long getPublicId() {
+    public String getPublicId() {
         return publicId;
     }
 
-    public void setPublicId(Long publicId) {
-        this.publicId = publicId;
+    public void setPublicId(UUID publicId) {
+        this.publicId = publicId.toString();
     }
 
     public Long getInternalId() {
-        return internalId;
+        return id;
     }
 
     public void setInternalId(Long internalId) {
-        this.internalId = internalId;
+        this.id = internalId;
     }
 
     public String getTextContent() {

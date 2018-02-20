@@ -50,6 +50,8 @@ repositories {
 
 dependencies {
     providedCompile "javax:javaee-api:8.0"
+    // Delete dom4j in \JEA6-Kweeter\Kweeter-Backend\build\libs\exploded\Kweeter-Backend.war\WEB-INF\lib
+    providedCompile "dom4j:dom4j:1.6.1"
 
     compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     compile("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")

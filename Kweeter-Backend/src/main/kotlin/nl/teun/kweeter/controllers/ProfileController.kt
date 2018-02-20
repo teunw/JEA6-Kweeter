@@ -1,9 +1,8 @@
 package nl.teun.kweeter.controllers
 
 import nl.teun.kweeter.domain.Profile
-import nl.teun.kweeter.domain.ProfileAuth
-import nl.teun.kweeter.services.ProfileAuthService
 import nl.teun.kweeter.services.ProfileService
+import nl.teun.kweeter.services.ValidatorService
 import java.util.*
 import javax.inject.Inject
 import javax.ws.rs.*
@@ -16,26 +15,17 @@ class ProfileController {
     private lateinit var profileService: ProfileService
 
     @Inject
-    private lateinit var profileAuthService: ProfileAuthService
+    private lateinit var validatorService: ValidatorService
 
-    @POST
-    @Path("/auth")
-    fun postAuth(@QueryParam("id") userId: Long, @QueryParam("password") password: String): Response? {
-        if (password.isBlank()) {
-            return Response.serverError().entity("Password is empty").build()
+    @GET
+    @Path("/{userId}")
+    fun getProfile(@PathParam("userId") userId: String): Response? {
+        if (userId.isBlank()) {
+            return Response.serverError().entity("userId is empty").build()
         }
-        val profile = this.profileService.findById(userId)
-        val result = profile.checkPassword(password)
-
-        if (!result) {
-            return Response.serverError().entity("Invalid password").build()
-        }
-        val auth = ProfileAuth()
-        auth.generateNewToken()
-        auth.profile = profile
-
-        this.profileAuthService.create(auth)
-        return Response.ok(auth).build()
+        val intToNumber = userId.toLongOrNull() ?: return Response.serverError().entity("userId is not parsable to long").build()
+        val profile = profileService.findById(intToNumber)
+        return Response.ok(Arrays.asList(profile)).build()
     }
 
     @GET
@@ -44,15 +34,15 @@ class ProfileController {
         if (userId.isBlank()) {
             return Response.ok(profileService.findAll()).build()
         }
-        val intToNumber = userId.toLongOrNull() ?: throw Exception("Could not parse int parameters")
+        val intToNumber = userId.toLongOrNull() ?: return Response.serverError().entity("userId is not parsable to long").build()
         val profile = profileService.findById(intToNumber)
         return Response.ok(Arrays.asList(profile)).build()
     }
 
     @PUT
-    @Path("/")
+    @Path("/{profileId}")
     fun updateProfile(
-            @QueryParam("id") id: Long,
+            @PathParam("profileId") id: Long,
             @DefaultValue("") @QueryParam("email") email: String,
             @DefaultValue("") @QueryParam("username") username: String,
             @DefaultValue("") @QueryParam("displayName") displayName: String
@@ -90,7 +80,7 @@ class ProfileController {
     }
 
     @POST
-    @Path("/")
+    @Path("/create")
     @Produces
     fun createProfile(
             @QueryParam("email") email: String,
@@ -108,6 +98,11 @@ class ProfileController {
                     .entity(password)
                     .build()
         }
+        if (!this.validatorService.isUsernameValid(username)) {
+            val usernameRegex = this.validatorService.usernameRegex.pattern
+            return Response.serverError().entity("Username is invalid, regex: $usernameRegex").build()
+        }
+
         val profile = Profile()
         profile.setPassword(password)
         profile.email = email
