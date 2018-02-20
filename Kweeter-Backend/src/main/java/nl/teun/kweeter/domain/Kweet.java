@@ -2,14 +2,13 @@ package nl.teun.kweeter.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table
 @NamedQuery(name = "Kweet.all", query = "SELECT k FROM Kweet k")
 @NamedQuery(name = "Kweet.findbyid", query = "SELECT k FROM Kweet k WHERE k.id = :k_id")
+@NamedQuery(name = "Kweet.findbyprofile", query = "SELECT k FROM Kweet k WHERE k.author.id = :p_id")
 public class Kweet implements Serializable {
 
     @Column(unique = true, nullable = false, updatable = false)
@@ -28,14 +27,21 @@ public class Kweet implements Serializable {
     @Column(nullable = false)
     private Date date;
 
-    @ManyToMany
-    private List<Kweet> responses;
+    @OneToMany
+    private Collection<KweetResponse> responses;
 
     @ManyToMany
-    private List<Profile> likedBy;
+    private Collection<Profile> likedBy;
 
     @ManyToMany
-    private List<Rekweet> rekweets;
+    private Collection<Rekweet> rekweets;
+
+    public Kweet() {
+        this.date = new Date();
+        this.responses = new ArrayList<>();
+        this.likedBy = new ArrayList<>();
+        this.rekweets = new ArrayList<>();
+    }
 
     public String getPublicId() {
         return publicId;
@@ -77,15 +83,15 @@ public class Kweet implements Serializable {
         this.date = date;
     }
 
-    public List<Kweet> getResponses() {
+    public Collection<KweetResponse> getResponses() {
         return responses;
     }
 
-    public void setResponses(List<Kweet> responses) {
+    public void setResponses(List<KweetResponse> responses) {
         this.responses = responses;
     }
 
-    public List<Profile> getLikedBy() {
+    public Collection<Profile> getLikedBy() {
         return likedBy;
     }
 
@@ -93,7 +99,7 @@ public class Kweet implements Serializable {
         this.likedBy = likedBy;
     }
 
-    public List<Rekweet> getRekweets() {
+    public Collection<Rekweet> getRekweets() {
         return rekweets;
     }
 
