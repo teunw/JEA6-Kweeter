@@ -1,0 +1,19 @@
+“title”: “View followers”,“body”: “As a user I want to be able to follow other users”
+“title”: “Follow users”,“body”: “As a user I want to be able to follow other users”
+“title”: “Rekweets”,“body”: “AS a user I want to be able to rekweet”
+“title”: “Modify user roles”,“body”: “As an admin I want to be able to remove and add permissions for different users.”
+“title”: “Overview users”,“body”: “As a moderator I want to view the different users on my platform”
+“title”: “Moderate messages”,“body”: “As a moderator I want to able to delete messages”
+“title”: “Moderator roles”,“body”: “As a moderator I want other users to be able to help me, I should be able to make them moderator”
+“title”: “Registration”,“body”: “As a user I want to be able to register myself for an account”
+“title”: “Admin multiple users”,“body”: “As a admin I want to be able to moderate multiple users’ accounts”
+“title”: “Personalization”,“body”: “As a user I want to be able to personalize my profile page so other users”
+“title”: “Login”,“body”: “As a user I want to able to login in my account”
+“title”: “Logout”,“body”: “As a user I want to able to logout so that other users can’t use my account on that PC”
+“title”: “Trends”,“body”: “As a user I want to be able to view kweets within a certain subject”
+“title”: “@Mentions”,“body”: “As a user I want to be able to @Mention other people in my kweets.”
+“title”: “Post kweets”,“body”: “As a user I want to able to show other users what I’ve been up to in the form of a kweet.”
+“title”: “Searchfunctionality”,“body”: “As a user I want to able to search for users and kweets”
+“title”: “I want to be able to heart kweets”,“body”: “As a user I want to mark my favorite kweets so I can view them later.”
+“title”: “Profile details need be viewed”,“body”: “As a user I want to be able to view the information of other users. This includes bio, location, optional website and a 160 character description. I also want to see which other users follow someone, and who someone is following.”
+“title”: “Username needs to modified”,“body”: “As user I want to be able to modify my username in case I’m not happy with my current username”
