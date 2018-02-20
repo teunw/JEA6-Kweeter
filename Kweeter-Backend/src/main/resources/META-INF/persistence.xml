@@ -3,7 +3,7 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              version="2.0">
 
-    <persistence-unit name="pu-sqlite-jpa-kweeter">
+    <persistence-unit name="pu-sqlite-kweeter">
         <properties>
 
             <property name="hibernate.dialect" value="nl.teun.kweeter.SQLiteDialect"/>
@@ -14,7 +14,7 @@
             <property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:kweeter.db"/>
             <property name="current_session_context_class" value="thread" />
-
+            <property name="hibernate.enable_lazy_load_no_trans" value="true" />
         </properties>
 
     </persistence-unit>

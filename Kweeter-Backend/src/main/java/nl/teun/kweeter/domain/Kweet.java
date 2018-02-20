@@ -28,13 +28,13 @@ public class Kweet implements Serializable {
     private Date date;
 
     @OneToMany
-    private Collection<KweetResponse> responses;
+    private List<KweetResponse> responses;
 
     @ManyToMany
-    private Collection<Profile> likedBy;
+    private List<Profile> likedBy;
 
     @ManyToMany
-    private Collection<Rekweet> rekweets;
+    private List<Rekweet> rekweets;
 
     public Kweet() {
         this.date = new Date();

@@ -56,7 +56,6 @@ dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     compile("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
     // https://mvnrepository.com/artifact/postgresql/postgresql
-    compile "org.postgresql:postgresql:42.2.1"
     compile group: "javax", name: "javaee-web-api", version: "8.0"
     // https://mvnrepository.com/artifact/org.mindrot/jbcrypt
     compile group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'

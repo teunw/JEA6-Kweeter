@@ -6,7 +6,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table
 public class KweetResponse extends Kweet {
 
     @ManyToOne

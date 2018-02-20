@@ -4,6 +4,5 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false,
-  backendRoot: 'http://localhost:8080/Kweeter-Backend/api'
+  production: false
 };
