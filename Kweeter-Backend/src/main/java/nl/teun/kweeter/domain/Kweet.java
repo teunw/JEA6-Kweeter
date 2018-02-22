@@ -6,9 +6,12 @@ import java.util.*;
 
 @Entity
 @Table
-@NamedQuery(name = "Kweet.all", query = "SELECT k FROM Kweet k")
-@NamedQuery(name = "Kweet.findbyid", query = "SELECT k FROM Kweet k WHERE k.id = :k_id")
-@NamedQuery(name = "Kweet.findbyprofile", query = "SELECT k FROM Kweet k WHERE k.author.id = :p_id")
+@NamedQueries({
+        @NamedQuery(name = "Kweet.all", query = "SELECT k FROM Kweet k"),
+        @NamedQuery(name = "Kweet.findbyid", query = "SELECT k FROM Kweet k WHERE k.id = :k_id"),
+        @NamedQuery(name = "Kweet.findbyprofile", query = "SELECT k FROM Kweet k WHERE k.author.id = :p_id"),
+        @NamedQuery(name = "Kweet.findbypublicId", query = "SELECT k FROM Kweet k WHERE k.publicId = :k_publicId")
+})
 public class Kweet implements Serializable {
 
     @Column(unique = true, nullable = false, updatable = false)
@@ -55,55 +58,62 @@ public class Kweet implements Serializable {
         return id;
     }
 
-    public void setInternalId(Long internalId) {
+    public Kweet setInternalId(Long internalId) {
         this.id = internalId;
+        return this;
     }
 
     public String getTextContent() {
         return textContent;
     }
 
-    public void setTextContent(String textContent) {
+    public Kweet setTextContent(String textContent) {
         this.textContent = textContent;
+        return this;
     }
 
     public Profile getAuthor() {
         return author;
     }
 
-    public void setAuthor(Profile author) {
+    public Kweet setAuthor(Profile author) {
         this.author = author;
+        return this;
     }
 
     public Date getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public Kweet setDate(Date date) {
         this.date = date;
+        return this;
     }
 
     public Collection<KweetResponse> getResponses() {
         return responses;
     }
 
-    public void setResponses(List<KweetResponse> responses) {
+    public Kweet setResponses(List<KweetResponse> responses) {
         this.responses = responses;
+        return this;
     }
 
     public Collection<Profile> getLikedBy() {
         return likedBy;
     }
 
-    public void setLikedBy(List<Profile> likedBy) {
+    public Kweet setLikedBy(List<Profile> likedBy) {
         this.likedBy = likedBy;
+        return this;
     }
 
     public Collection<Rekweet> getRekweets() {
         return rekweets;
     }
 
-    public void setRekweets(List<Rekweet> rekweets) {
+    public Kweet setRekweets(List<Rekweet> rekweets) {
         this.rekweets = rekweets;
+        return this;
     }
 }

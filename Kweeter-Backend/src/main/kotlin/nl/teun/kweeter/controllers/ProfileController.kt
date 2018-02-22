@@ -2,6 +2,7 @@ package nl.teun.kweeter.controllers
 
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.services.ProfileService
+import nl.teun.kweeter.services.redis.RedisService
 import nl.teun.kweeter.services.ValidatorService
 import java.util.*
 import javax.inject.Inject
@@ -17,6 +18,9 @@ class ProfileController {
     @Inject
     private lateinit var validatorService: ValidatorService
 
+    @Inject
+    private lateinit var redisService : RedisService
+
     @GET
     @Path("/{userId}")
     fun getProfile(@PathParam("userId") userId: String): Response? {
@@ -25,6 +29,7 @@ class ProfileController {
         }
         val intToNumber = userId.toLongOrNull() ?: return Response.serverError().entity("userId is not parsable to long").build()
         val profile = profileService.findById(intToNumber)
+
         return Response.ok(Arrays.asList(profile)).build()
     }
 

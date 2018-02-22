@@ -8,6 +8,8 @@ interface ProfileService {
 
     fun findById(id : Long) : Profile
 
+    fun findByEmail(email : String) : Profile
+
     fun updateProfile(profile: Profile)
 
     fun createProfile(profile : Profile)

@@ -31,6 +31,18 @@ class ProfileServiceImpl : ProfileService {
         return returnList.first()
     }
 
+    override fun findByEmail(email: String): Profile {
+        val returnList = this.entityManager
+                .createNamedQuery("Profile.findbyemail")
+                .setParameter("p_email", email)
+                .resultList
+                .filterIsInstance<Profile>()
+        if (returnList.size != 1) {
+            throw Exception("Found invalid number of profiles (should be 1): (${returnList.size}), for id $email")
+        }
+        return returnList.first()
+    }
+
     override fun updateProfile(profile: Profile) {
         this.entityManager.merge(profile)
     }

@@ -11,8 +11,8 @@ interface KweetService {
 
     fun findByProfile(profile : Profile) : List<Kweet>
 
-    fun updateKweet(profile: Kweet)
+    fun updateKweet(kweet: Kweet)
 
-    fun createKweet(profile : Kweet)
+    fun createKweet(kweet: Kweet)
 
 }

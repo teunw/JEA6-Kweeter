@@ -2,6 +2,7 @@ package nl.teun.kweeter.services
 
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
+import java.util.*
 import javax.ejb.Stateless
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
@@ -40,11 +41,14 @@ class KweetServiceImpl : KweetService {
                 .filterIsInstance<Kweet>()
     }
 
-    override fun updateKweet(profile: Kweet) {
-        this.entityManager.merge(profile)
+    override fun updateKweet(kweet: Kweet) {
+        this.entityManager.merge(kweet)
     }
 
-    override fun createKweet(profile: Kweet) {
-        this.entityManager.persist(profile)
+    override fun createKweet(kweet: Kweet) {
+        if (kweet.publicId == null) {
+            kweet.setPublicId(UUID.randomUUID())
+        }
+        this.entityManager.persist(kweet)
     }
 }

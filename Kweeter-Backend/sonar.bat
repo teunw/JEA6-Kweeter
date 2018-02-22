@@ -1,0 +1,1 @@
+gradle sonarqube -Dsonar.host.url=https://sonarqube.teunwillems.nl -Dsonar.login=3ce899453a0af0b0b797d67add84cba49f8a5a65
