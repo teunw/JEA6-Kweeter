@@ -1,9 +1,9 @@
 package nl.teun.kweeter.controllers
 
 import nl.teun.kweeter.domain.Kweet
-import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.services.KweetService
 import nl.teun.kweeter.services.ProfileService
+import java.time.LocalDateTime
 import java.util.*
 import javax.inject.Inject
 import javax.ws.rs.*
@@ -21,8 +21,12 @@ class KweetController {
     @GET
     @Path("/")
     @Produces
-    fun getKweets(): List<Kweet> {
-        return kweetService.findAll()
+    fun getKweets(@QueryParam("results") results: Int, @QueryParam("page") page: Int): Response? {
+        if (results > 100) {
+            return Response.serverError().entity("For performance reasons > 100 results is not allowed").build()
+        }
+        val amountOfResults = if (results != 0) results else 50
+        return Response.ok(kweetService.findAll(amountOfResults, page * results)).build()
     }
 
     @GET
@@ -58,6 +62,19 @@ class KweetController {
         return Response.ok(kweet).build()
     }
 
+    @GET
+    @Path("/forprofile/{profileId}")
+    fun forProfile(@PathParam("profileId") profileId: String): Response {
+        if (profileId.isBlank()) {
+            return Response.serverError().entity("Profile with id: $profileId not found").build()
+        }
+        val longProfileId = profileId.toLongOrNull()
+                ?: return Response.serverError().entity("Profile ID not a long").build()
+        val profile = this.profileService.findById(longProfileId)
+        val kweets = this.kweetService.findByProfile(profile)
+        return Response.ok(kweets).build()
+    }
+
     @POST
     @Path("/create")
     fun createKweet(
@@ -76,7 +93,7 @@ class KweetController {
         kweet.author = this.profileService.findById(profileIdAsLong)
         kweet.textContent = textContent
         kweet.setPublicId(UUID.randomUUID())
-        kweet.date = Date()
+        kweet.setDate(LocalDateTime.now())
         this.kweetService.createKweet(kweet)
 
         return Response.ok(kweet).build()

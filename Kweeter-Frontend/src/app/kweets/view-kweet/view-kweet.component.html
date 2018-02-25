@@ -1,0 +1,12 @@
+<div class="card blue lighten-2">
+  <div class="card-content white-text">
+        <span class="card-title">
+          <a class="white-text" routerLink="/profiles/{{ kweet.author.id }}">
+            @{{ kweet.author.username }}</a></span>
+    <p>{{ kweet.textContent }}</p>
+  </div>
+  <div class="card-action">
+    <a href="javascript:void(0)" class="white-text">Like</a>
+    <a href="javascript:void(0)" class="white-text">Rekweet</a>
+  </div>
+</div>

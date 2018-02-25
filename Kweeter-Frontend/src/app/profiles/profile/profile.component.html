@@ -1,8 +1,39 @@
-<div *ngFor="let profile of profiles | async">
-  <div class="col s4">
-    {{ profile.displayName }}
+<div>
+  <app-load *ngIf="profile === undefined"></app-load>
+  <div class="col s4" *ngIf="profile !== undefined">
+    <div class="row">
+      <div class="col s12">
+        <div class="card blue darken-1">
+          <div class="card-content white-text">
+            <span class="card-title">{{ profile.displayName }}</span>
+            <p>
+              @{{ profile.username }}<br/>
+              {{ profile.bio }}
+            </p>
+          </div>
+          <div class="card-action">
+            <div *ngIf="profile.contactLink" class="row white-text">
+              <div class="col s2">
+                Website:
+              </div>
+              <div class="col s10">
+                <a href="{{ profile.contactLink }}">{{ profile.contactLink }}</a>
+              </div>
+            </div>
+            <div *ngIf="profile.email" class="row white-text">
+              <div class="col s2">
+                Email:
+              </div>
+              <div class="col s10">
+                <a class="white-text" href="{{ profile.email }}">{{ profile.email }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="col s8">
-
+    <app-view-kweets [kweets]="kweets"></app-view-kweets>
   </div>
 </div>

@@ -2,9 +2,7 @@ package nl.teun.kweeter.controllers
 
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.services.ProfileService
-import nl.teun.kweeter.services.redis.RedisService
 import nl.teun.kweeter.services.ValidatorService
-import java.util.*
 import javax.inject.Inject
 import javax.ws.rs.*
 import javax.ws.rs.core.Response
@@ -18,9 +16,6 @@ class ProfileController {
     @Inject
     private lateinit var validatorService: ValidatorService
 
-    @Inject
-    private lateinit var redisService : RedisService
-
     @GET
     @Path("/{userId}")
     fun getProfile(@PathParam("userId") userId: String): Response? {
@@ -30,18 +25,17 @@ class ProfileController {
         val intToNumber = userId.toLongOrNull() ?: return Response.serverError().entity("userId is not parsable to long").build()
         val profile = profileService.findById(intToNumber)
 
-        return Response.ok(Arrays.asList(profile)).build()
+        return Response.ok(profile).build()
     }
 
     @GET
     @Path("/")
-    fun getProfiles(@DefaultValue("") @QueryParam("id") userId: String): Response? {
-        if (userId.isBlank()) {
-            return Response.ok(profileService.findAll()).build()
+    fun getProfiles(@QueryParam("results") results: Int, @QueryParam("page") page: Int): Response? {
+        if (results > 100) {
+            return Response.serverError().entity("For performance reasons > 100 results is not allowed").build()
         }
-        val intToNumber = userId.toLongOrNull() ?: return Response.serverError().entity("userId is not parsable to long").build()
-        val profile = profileService.findById(intToNumber)
-        return Response.ok(Arrays.asList(profile)).build()
+        val amountOfResults = if (results == 0) results else 50
+        return Response.ok(profileService.findAll(amountOfResults, page)).build()
     }
 
     @PUT

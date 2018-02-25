@@ -8,10 +8,10 @@ import java.io.Serializable;
 @Entity
 @Table
 @NamedQueries({
-        @NamedQuery(name = "Profile.all", query = "SELECT p FROM Profile p "),
-        @NamedQuery(name = "Profile.findbyid", query = "SELECT p FROM Profile p WHERE p.id = :p_id"),
-        @NamedQuery(name = "Profile.findbyemail", query = "SELECT p FROM Profile p WHERE p.email = :p_email"),
-        @NamedQuery(name = "Profile.findbyusername", query = "SELECT p FROM Profile p WHERE p.username = :p_username")
+        @NamedQuery(name = "Profile.all", query = "SELECT p FROM Profile p ORDER BY p.id DESC"),
+        @NamedQuery(name = "Profile.findbyid", query = "SELECT p FROM Profile p WHERE p.id = :p_id ORDER BY p.id DESC"),
+        @NamedQuery(name = "Profile.findbyemail", query = "SELECT p FROM Profile p WHERE p.email = :p_email ORDER BY p.id"),
+        @NamedQuery(name = "Profile.findbyusername", query = "SELECT p FROM Profile p WHERE p.username = :p_username ORDER BY p.id")
 })
 public class Profile implements Serializable {
 
@@ -36,6 +36,9 @@ public class Profile implements Serializable {
 
     @Column
     private String bCryptHash;
+
+    @Column
+    private String bio;
 
     public Long getId() {
         return id;
@@ -94,6 +97,15 @@ public class Profile implements Serializable {
 
     public Profile setPassword(String pass) {
         this.bCryptHash = BCrypt.hashpw(pass, BCrypt.gensalt());
+        return this;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public Profile setBio(String bio) {
+        this.bio = bio;
         return this;
     }
 

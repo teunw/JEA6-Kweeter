@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col s12">
+    <div class="card white lighten-2" (submit)="postKweet(kweet)">
+      <div class="card-content black-text">
+        <span class="card-title">Add something to your profile</span>
+        <p>
+          <input type="text" class="materialize-textarea lighten-1" name="textContent"
+                 [(ngModel)]="kweet.textContent"
+                 placeholder="What are you up to?"/>
+        </p>
+      </div>
+      <div class="card-action">
+        <a href="javascript:void(0)" class="black-text" (click)="postKweet()">Post</a>
+      </div>
+    </div>
+  </div>
+</div>

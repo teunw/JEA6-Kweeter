@@ -11,9 +11,11 @@ class ProfileServiceImpl : ProfileService {
     @PersistenceContext
     private lateinit var entityManager : EntityManager
 
-    override fun findAll(): List<Profile> {
+    override fun findAll(maxResults: Int, offsetResults: Int): List<Profile> {
         return this.entityManager
                 .createNamedQuery("Profile.all")
+                .setMaxResults(maxResults)
+                .setFirstResult(offsetResults)
                 .resultList
                 .filterIsInstance<Profile>()
                 .toList()
@@ -25,9 +27,6 @@ class ProfileServiceImpl : ProfileService {
                 .setParameter("p_id", id)
                 .resultList
                 .filterIsInstance<Profile>()
-        if (returnList.size != 1) {
-            throw Exception("Found invalid number of profiles (should be 1): (${returnList.size}), for id $id")
-        }
         return returnList.first()
     }
 
@@ -37,17 +36,16 @@ class ProfileServiceImpl : ProfileService {
                 .setParameter("p_email", email)
                 .resultList
                 .filterIsInstance<Profile>()
-        if (returnList.size != 1) {
-            throw Exception("Found invalid number of profiles (should be 1): (${returnList.size}), for id $email")
-        }
         return returnList.first()
     }
 
     override fun updateProfile(profile: Profile) {
         this.entityManager.merge(profile)
+        this.entityManager.flush()
     }
 
     override fun createProfile(profile: Profile) {
         this.entityManager.persist(profile)
+        this.entityManager.flush()
     }
 }

@@ -2,15 +2,18 @@ package nl.teun.kweeter.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Entity
 @Table
 @NamedQueries({
-        @NamedQuery(name = "Kweet.all", query = "SELECT k FROM Kweet k"),
-        @NamedQuery(name = "Kweet.findbyid", query = "SELECT k FROM Kweet k WHERE k.id = :k_id"),
-        @NamedQuery(name = "Kweet.findbyprofile", query = "SELECT k FROM Kweet k WHERE k.author.id = :p_id"),
-        @NamedQuery(name = "Kweet.findbypublicId", query = "SELECT k FROM Kweet k WHERE k.publicId = :k_publicId")
+        @NamedQuery(name = "Kweet.all", query = "SELECT k FROM Kweet k order by k.date DESC"),
+        @NamedQuery(name = "Kweet.findbyid", query = "SELECT k FROM Kweet k WHERE k.id = :k_id order by k.date DESC"),
+        @NamedQuery(name = "Kweet.findbyprofile", query = "SELECT k FROM Kweet k WHERE k.author.id = :p_id order by k.date DESC"),
+        @NamedQuery(name = "Kweet.findbypublicId", query = "SELECT k FROM Kweet k WHERE k.publicId = :k_publicId order by k.date DESC")
 })
 public class Kweet implements Serializable {
 
@@ -87,6 +90,12 @@ public class Kweet implements Serializable {
 
     public Kweet setDate(Date date) {
         this.date = date;
+        return this;
+    }
+
+    public Kweet setDate(LocalDateTime ldate) {
+        Instant instant = Instant.from(ldate.atZone(ZoneId.of("GMT")));
+        this.date = Date.from(instant);
         return this;
     }
 

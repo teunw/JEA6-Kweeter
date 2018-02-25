@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Kweet} from '../../kweet';
+import {Component, Input, OnInit} from '@angular/core';
+import {IKweet} from '../../kweet';
 import {KweetService} from '../../services/kweet.service';
 
 @Component({
@@ -10,13 +9,13 @@ import {KweetService} from '../../services/kweet.service';
 })
 export class ViewKweetsComponent implements OnInit {
 
-  public kweets: Observable<Kweet[]>;
+  @Input()
+  public kweets: IKweet[];
 
   constructor(private kweetService: KweetService) {
   }
 
   ngOnInit() {
-    this.kweets = this.kweetService.getKweets();
   }
 
 }

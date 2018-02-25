@@ -5,7 +5,7 @@ import nl.teun.kweeter.domain.Profile
 
 interface KweetService {
 
-    fun findAll() : List<Kweet>
+    fun findAll(maxResults: Int, offsetResults: Int): List<Kweet>
 
     fun findById(id : Long) : Kweet
 

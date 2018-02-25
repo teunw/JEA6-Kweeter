@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ProfileService} from '../../services/profile.service';
-import {Observable} from 'rxjs/Observable';
-import {Profile} from '../../profile';
-import {ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {ActivatedRoute} from '@angular/router';
+import {IProfile} from '../../profile';
+import {KweetService} from '../../services/kweet.service';
+import {IKweet} from '../../kweet';
 
 @Component({
   selector: 'app-profile',
@@ -12,20 +12,26 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 })
 export class ProfileComponent implements OnInit {
 
-  public profiles: Observable<Profile[]>;
+  public profile: IProfile;
+  public kweets: IKweet[] = [];
 
-  constructor(private profileService: ProfileService, private route: ActivatedRoute) {
+  constructor(private profileService: ProfileService, private kweetService: KweetService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     console.log(this.route.params['id']);
-    if (this.route.params['id']) {
-      this.profiles = Observable.create(function (observer) {
-        observer.next(this.profileService.getProfile(this.route.params['id']));
-      });
-    } else {
-      this.profiles = this.profileService.getProfiles();
-    }
-  }
+    this.route.params.subscribe(param => {
+      if (param.id !== undefined && param.id !== null) {
+        this.profileService.getProfile(param.id)
+          .subscribe(profileData => {
+            this.profile = profileData;
 
+            this.kweetService.getKweetsForProfile(this.profile)
+              .subscribe(kweetData => {
+                this.kweets = kweetData;
+              });
+          });
+      }
+    });
+  }
 }

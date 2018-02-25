@@ -13,9 +13,11 @@ class KweetServiceImpl : KweetService {
     @PersistenceContext
     private lateinit var entityManager : EntityManager
 
-    override fun findAll(): List<Kweet> {
+    override fun findAll(maxResults: Int, offsetResults: Int): List<Kweet> {
         return this.entityManager
                 .createNamedQuery("Kweet.all")
+                .setMaxResults(maxResults)
+                .setFirstResult(offsetResults)
                 .resultList
                 .filterIsInstance<Kweet>()
                 .toList()
@@ -27,9 +29,6 @@ class KweetServiceImpl : KweetService {
                 .setParameter("k_id", id)
                 .resultList
                 .filterIsInstance<Kweet>()
-        if (returnList.size != 1) {
-            throw Exception("Found invalid number of kweets (should be 1): (${returnList.size}), for id $id")
-        }
         return returnList.first()
     }
 

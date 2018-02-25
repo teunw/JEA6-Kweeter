@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ConfigService} from './config.service';
 import {Observable} from 'rxjs/Observable';
-import {Kweet} from '../kweet';
+import {IKweet} from '../kweet';
+import {IProfile} from '../profile';
 
 @Injectable()
 export class KweetService {
@@ -10,12 +11,20 @@ export class KweetService {
   constructor(private httpClient: HttpClient, private configService: ConfigService) {
   }
 
-  getKweets(): Observable<Kweet[]> {
-    return this.httpClient.get(`${this.configService.getKweeterEndpoint()}/kweets`) as Observable<Kweet[]>;
+  getKweets(): Observable<IKweet[]> {
+    return this.httpClient.get<IKweet[]>(`${this.configService.getKweeterEndpoint()}/kweets`);
   }
 
-  getKweet(id: number): Observable<Kweet>|null {
-    return this.httpClient.get(`${this.configService.getKweeterEndpoint()}/api/kweets/${id}`) as Observable<Kweet>;
+  getKweetsForProfile(profile: IProfile): Observable<IKweet[]> {
+    return this.httpClient.get<IKweet[]>(`${this.configService.getKweeterEndpoint()}/kweets/forprofile/${profile.id}`);
+  }
+
+  getKweet(id: number): Observable<IKweet> | null {
+    return this.httpClient.get<IKweet>(`${this.configService.getKweeterEndpoint()}/api/kweets/${id}`);
+  }
+
+  createKweet(kweet: IKweet) {
+    return this.httpClient.post(`${this.configService.getKweeterEndpoint()}/api/kweets`, kweet);
   }
 
 }
