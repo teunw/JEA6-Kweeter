@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {KweetService} from '../../services/kweet.service';
-import {IKweet} from '../../kweet';
+import {IKweet, IKweetPost} from '../../kweet';
+import {LoginService} from "../../services/login.service";
 
 @Component({
   selector: 'app-post',
@@ -9,16 +10,23 @@ import {IKweet} from '../../kweet';
 })
 export class PostComponent implements OnInit {
 
-  public kweet: IKweet | any = {};
+  public kweet: IKweetPost | any = {};
 
-  constructor(private kweetService: KweetService) {
+  constructor(private loginService: LoginService, private kweetService: KweetService) {
   }
 
   ngOnInit() {
+    this.kweet.profileId = this.loginService.getLoginInfo().id;
   }
 
   postKweet() {
     this.kweetService.createKweet(this.kweet);
   }
 
+  postKweetEnter(e: KeyboardEvent) {
+    // 13 == enter
+    if (e.keyCode == 13) {
+      this.postKweet();
+    }
+  }
 }

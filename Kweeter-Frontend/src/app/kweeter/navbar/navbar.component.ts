@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {LoginService} from "../../services/login.service";
+
+declare var $: any;
 
 @Component({
   selector: 'app-navbar',
@@ -7,9 +10,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor(public loginService: LoginService) {
   }
 
+  ngOnInit(): void {
+    $(function() {
+      $(".dropdown-trigger").dropdown();
+    });
+  }
 }

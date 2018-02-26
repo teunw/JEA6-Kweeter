@@ -1,14 +1,14 @@
-<div class="card blue lighten-2">
-  <div class="card-content white-text">
+<div class="card white">
+  <div class="card-content white black-text">
         <span class="card-title">
-          <a class="white-text" routerLink="/profiles/{{ kweet.author.id }}">
+          <a class="kweeter-secondary-text-color" routerLink="/profiles/{{ kweet.author.id }}">
             @{{ kweet.author.username }}</a><br/>
           <span>{{ kweet.date | amTimeAgo }}</span>
         </span>
     <p>{{ kweet.textContent }}</p>
   </div>
-  <div class="card-action">
-    <a href="javascript:void(0)" class="white-text">Like</a>
-    <a href="javascript:void(0)" class="white-text">Rekweet</a>
+  <div class="card-action kweeter-secondary-text-color">
+    <a href="javascript:void(0)" class="">Like</a>
+    <a href="javascript:void(0)" class="">Rekweet</a>
   </div>
 </div>

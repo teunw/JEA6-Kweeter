@@ -10,3 +10,8 @@ export interface IKweet {
   rekweets: IKweet[];
   internalId: number;
 }
+
+export interface IKweetPost {
+  profileId: number;
+  textContent: string;
+}

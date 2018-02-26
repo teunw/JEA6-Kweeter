@@ -3,6 +3,7 @@ import {LoginService} from "../../../services/login.service";
 import {ProfileService} from "../../../services/profile.service";
 import {Router} from "@angular/router";
 import {IProfile} from "../../../profile";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'app-login',
@@ -21,14 +22,15 @@ export class LoginComponent implements OnInit {
   }
 
   public login() {
-    this.loginService.saveLoginEmail(this.email);
     this.isLoggingIn = true;
     this.profileService
       .getProfileByEmail(this.email)
       .subscribe(res => {
         if (res instanceof Object) {
           const profile = res as IProfile;
-          this.router.navigate([`profiles/${profile.id}`]);
+          this.loginService.saveLoginInfo(profile);
+          //TODO Implement navigation
+          //this.router.navigate([`profiles/${profile.id}`]);
         }
       })
   }
