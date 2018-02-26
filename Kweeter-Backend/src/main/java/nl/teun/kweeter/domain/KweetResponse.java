@@ -1,14 +1,13 @@
 package nl.teun.kweeter.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Entity
 public class KweetResponse extends Kweet {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public Kweet ParentKweet;
 
 }

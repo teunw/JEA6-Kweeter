@@ -8,26 +8,11 @@
             <span class="card-title">{{ profile.displayName }}</span>
             <p>
               @{{ profile.username }}<br/>
-              {{ profile.bio }}
+              "{{ profile.bio }}"
             </p>
-          </div>
-          <div class="card-action">
-            <div *ngIf="profile.contactLink" class="row white-text">
-              <div class="col s2">
-                Website:
-              </div>
-              <div class="col s10">
-                <a href="{{ profile.contactLink }}">{{ profile.contactLink }}</a>
-              </div>
-            </div>
-            <div *ngIf="profile.email" class="row white-text">
-              <div class="col s2">
-                Email:
-              </div>
-              <div class="col s10">
-                <a class="white-text" href="{{ profile.email }}">{{ profile.email }}</a>
-              </div>
-            </div>
+            Website: <a target="_blank" class="white-text" href="{{ profile.contactLink }}">{{ profile.contactLink
+            }}</a><br/>
+            Email: <a class="white-text" href="mailto:{{ profile.email }}">{{ profile.email }}</a>
           </div>
         </div>
       </div>
@@ -37,3 +22,4 @@
     <app-view-kweets [kweets]="kweets"></app-view-kweets>
   </div>
 </div>
+

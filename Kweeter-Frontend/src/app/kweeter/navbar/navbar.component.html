@@ -1,22 +1,24 @@
-<ul id="account-dropdown" class="dropdown-content">
+<ul id="account-dropdown" class="dropdown-content kweeter-accent kweeter-secondary-text-color">
   <li><a routerLink="/account">Account</a></li>
   <li><a routerLink="/logout">Logout</a></li>
+</ul>
+<ul id="login-dropdown" class="dropdown-content kweeter-accent kweeter-secondary-text-color">
+  <li><a routerLink="/login">Login</a></li>
+  <li><a routerLink="/registration">Registration</a></li>
 </ul>
 <nav>
   <div class="nav-wrapper kweeter-primary-color-dark kweeter-secondary-text-color">
     <a href="#" class="brand-logo">Kweeter</a>
     <ul id="nav-mobile" class="right hide-on-med-and-down">
       <li *ngIf="!loginService.isLoggedIn()">
-        <a routerLink="/login">Login</a>
+        <a routerLink="/login" class="dropdown-trigger" data-target="login-dropdown">Account<i
+          class="material-icons right">arrow_drop_down</i></a>
       </li>
       <li *ngIf="loginService.isLoggedIn()">
         <a class="dropdown-trigger" data-target="account-dropdown" href="#!">
           Hello {{ loginService.getLoginInfo().displayName }}<i class="material-icons right">arrow_drop_down</i>
         </a>
       </li>
-      <!--<li><a href="sass.html">Sass</a></li>-->
-      <!--<li><a href="badges.html">Components</a></li>-->
-      <!--<li><a href="collapsible.html">JavaScript</a></li>-->
     </ul>
   </div>
 </nav>

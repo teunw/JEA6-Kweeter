@@ -13,11 +13,15 @@ export class ProfileService {
     return this.httpClient.get<IProfile[]>(`${this.configService.getKweeterEndpoint()}/profiles`);
   }
 
-  getProfileByEmail(email:string) {
+  getProfileByEmail(email: string) {
     return this.httpClient.get<IProfile>(`${this.configService.getKweeterEndpoint()}/profiles/by-email/${email}`)
   }
 
   getProfile(id: number) {
     return this.httpClient.get<IProfile>(`${this.configService.getKweeterEndpoint()}/profiles/${id}`);
+  }
+
+  createProfile(profile: IProfile) {
+    return this.httpClient.post<IProfile>(`${this.configService.getKweeterEndpoint()}/profiles`, profile);
   }
 }

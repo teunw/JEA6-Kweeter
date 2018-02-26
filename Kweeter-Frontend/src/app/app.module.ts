@@ -18,15 +18,17 @@ import {HomeComponent} from './kweeter/home/home.component';
 import {LoadComponent} from './load/load.component';
 import {PostComponent} from './kweets/post/post.component';
 import {FormsModule} from '@angular/forms';
-import { NavbarComponent } from './kweeter/navbar/navbar.component';
-import { LoginComponent } from './kweeter/account/login/login.component';
+import {NavbarComponent} from './kweeter/navbar/navbar.component';
+import {LoginComponent} from './kweeter/account/login/login.component';
 import {LoginService} from "./services/login.service";
+import {RegistrationComponent} from './profiles/registration/registration.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'kweets', component: AllKweetsComponent},
   {path: 'profiles/:id', component: ProfileComponent},
-  {path: 'login', component: LoginComponent}
+  {path: 'login', component: LoginComponent},
+  {path: 'registration', component: RegistrationComponent}
 ];
 
 @NgModule({
@@ -41,7 +43,8 @@ const appRoutes: Routes = [
     LoadComponent,
     PostComponent,
     NavbarComponent,
-    LoginComponent
+    LoginComponent,
+    RegistrationComponent
   ],
   imports: [
     FormsModule,

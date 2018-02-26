@@ -26,6 +26,21 @@ class MockService {
     private val random = Random()
     private val profilesAndKweets = 999
 
+    fun insertFollowers() {
+        val profiles = this.profileService.findAll(Int.MAX_VALUE, 0)
+        for (i in 0..25) {
+            val profilesToRetrieveFollowers = getRandomElement(profiles)
+            for (x in 0..25) {
+                val profileToFollow = getRandomElement(profiles)
+                profilesToRetrieveFollowers.followedBy.add(profileToFollow)
+            }
+        }
+    }
+
+    fun <T> getRandomElement(elements: List<T>): T {
+        return elements[random.nextInt(elements.size - 1)]
+    }
+
     fun insertMockUsers() {
         val sentences = getSentences()
         for (i in 0..profilesAndKweets) {
@@ -46,8 +61,8 @@ class MockService {
         for (i in 0..profilesAndKweets) {
             val newDate = date.minusMinutes(random.nextInt(90000).toLong())
             val kweet = Kweet()
-                    .setTextContent(sentences[random.nextInt(sentences.size - 1)])
-                    .setAuthor(profiles[random.nextInt(profiles.size - 1)])
+                    .setTextContent(getRandomElement(sentences))
+                    .setAuthor(getRandomElement(profiles))
                     .setDate(newDate)
             kweetService.createKweet(kweet)
         }

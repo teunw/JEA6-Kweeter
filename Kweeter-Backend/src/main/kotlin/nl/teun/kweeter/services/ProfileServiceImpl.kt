@@ -22,21 +22,21 @@ class ProfileServiceImpl : ProfileService {
     }
 
     override fun findById(id : Long): Profile {
-        val returnList = this.entityManager
+        return entityManager
                 .createNamedQuery("Profile.findbyid")
                 .setParameter("p_id", id)
                 .resultList
                 .filterIsInstance<Profile>()
-        return returnList.first()
+                .first()
     }
 
     override fun findByEmail(email: String): Profile {
-        val returnList = this.entityManager
+        return entityManager
                 .createNamedQuery("Profile.findbyemail")
                 .setParameter("p_email", email)
                 .resultList
                 .filterIsInstance<Profile>()
-        return returnList.first()
+                .first()
     }
 
     override fun updateProfile(profile: Profile) {

@@ -53,26 +53,24 @@ class ProfileController {
     @Path("/{profileId}")
     fun updateProfile(
             @PathParam("profileId") id: Long,
-            @DefaultValue("") @QueryParam("email") email: String,
-            @DefaultValue("") @QueryParam("username") username: String,
-            @DefaultValue("") @QueryParam("displayName") displayName: String
+            reqProfile: Profile
     ): Response {
         if (id < 0) {
             return Response.serverError().entity("Id cannot be blank, got \"$id\"").build()
         }
-        val profile = profileService.findById(id)
+        val dbProfile = profileService.findById(id)
         var updatedAnything = false
 
-        if (!email.isBlank()) {
-            profile.email = email
+        if (!reqProfile.email.isBlank()) {
+            dbProfile.email = reqProfile.email
             updatedAnything = true
         }
-        if (!username.isBlank()) {
-            profile.username = username
+        if (!reqProfile.username.isBlank()) {
+            dbProfile.username = reqProfile.username
             updatedAnything = true
         }
-        if (!displayName.isBlank()) {
-            profile.displayName = displayName
+        if (!reqProfile.displayName.isBlank()) {
+            dbProfile.displayName = reqProfile.displayName
             updatedAnything = true
         }
 
@@ -80,44 +78,33 @@ class ProfileController {
             return Response
                     .serverError()
                     .entity("One of the parameters is empty")
-                    .entity(email)
-                    .entity(username)
-                    .entity(displayName)
+                    .entity(reqProfile.email)
+                    .entity(reqProfile.username)
+                    .entity(reqProfile.displayName)
                     .build()
         }
-        this.profileService.updateProfile(profile)
-        return Response.ok(profile).build()
+        this.profileService.updateProfile(dbProfile)
+        return Response.ok(dbProfile).build()
     }
 
     @POST
-    @Path("/create")
-    @Produces
+    @Path("/")
     fun createProfile(
-            @QueryParam("email") email: String,
-            @QueryParam("username") username: String,
-            @QueryParam("displayName") displayName: String,
-            @QueryParam("password") password: String
+            profile: Profile
     ): Response? {
-        if (email.isBlank() || username.isBlank() || displayName.isBlank() || password.isBlank()) {
+        if (profile.email.isBlank() || profile.username.isBlank() || profile.displayName.isBlank()) {
             return Response
                     .serverError()
                     .entity("One of the parameters is empty")
-                    .entity(email)
-                    .entity(username)
-                    .entity(displayName)
-                    .entity(password)
+                    .entity(profile.email)
+                    .entity(profile.username)
+                    .entity(profile.displayName)
                     .build()
         }
-        if (!this.validatorService.isUsernameValid(username)) {
+        if (!this.validatorService.isUsernameValid(profile.username)) {
             val usernameRegex = this.validatorService.usernameRegex.pattern
             return Response.serverError().entity("Username is invalid, regex: $usernameRegex").build()
         }
-
-        val profile = Profile()
-        profile.setPassword(password)
-        profile.email = email
-        profile.username = username
-        profile.displayName = displayName
         this.profileService.createProfile(profile)
         return Response.ok(profile).build()
     }

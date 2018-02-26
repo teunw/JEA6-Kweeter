@@ -14,7 +14,6 @@ class MockInitializerController {
     @GET
     @Path("/")
     fun initMocks() {
-        mockService.insertMockUsers()
-        mockService.insertMockKweets()
+        mockService.insertFollowers()
     }
 }

@@ -3,9 +3,11 @@
         <span class="card-title">
           <a class="kweeter-secondary-text-color" routerLink="/profiles/{{ kweet.author.id }}">
             @{{ kweet.author.username }}</a><br/>
-          <span>{{ kweet.date | amTimeAgo }}</span>
         </span>
-    <p>{{ kweet.textContent }}</p>
+    <p>
+      {{ kweet.textContent }}<br/>
+      <span class="kweeter-secondary-text-color" style="font-size: small">{{ kweet.date | amTimeAgo }}</span>
+    </p>
   </div>
   <div class="card-action kweeter-secondary-text-color">
     <a href="javascript:void(0)" class="">Like</a>

@@ -33,13 +33,13 @@ public class Kweet implements Serializable {
     @Column(nullable = false)
     private Date date;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<KweetResponse> responses;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Profile> likedBy;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Rekweet> rekweets;
 
     public Kweet() {
@@ -124,5 +124,26 @@ public class Kweet implements Serializable {
     public Kweet setRekweets(List<Rekweet> rekweets) {
         this.rekweets = rekweets;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Kweet kweet = (Kweet) o;
+        return Objects.equals(getPublicId(), kweet.getPublicId()) &&
+                Objects.equals(id, kweet.id) &&
+                Objects.equals(getTextContent(), kweet.getTextContent()) &&
+                Objects.equals(getAuthor(), kweet.getAuthor()) &&
+                Objects.equals(getDate(), kweet.getDate()) &&
+                Objects.equals(getResponses(), kweet.getResponses()) &&
+                Objects.equals(getLikedBy(), kweet.getLikedBy()) &&
+                Objects.equals(getRekweets(), kweet.getRekweets());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getPublicId(), id, getTextContent(), getAuthor(), getDate(), getResponses(), getLikedBy(), getRekweets());
     }
 }

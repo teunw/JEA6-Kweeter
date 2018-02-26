@@ -4,6 +4,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table
@@ -39,6 +40,9 @@ public class Profile implements Serializable {
 
     @Column
     private String bio;
+
+    public Profile() {
+    }
 
     public Long getId() {
         return id;
@@ -111,5 +115,26 @@ public class Profile implements Serializable {
 
     public boolean checkPassword(String pass) {
         return BCrypt.checkpw(pass, this.bCryptHash);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Profile profile = (Profile) o;
+        return Objects.equals(getId(), profile.getId()) &&
+                Objects.equals(getUsername(), profile.getUsername()) &&
+                Objects.equals(getDisplayName(), profile.getDisplayName()) &&
+                Objects.equals(getEmail(), profile.getEmail()) &&
+                Objects.equals(getLocation(), profile.getLocation()) &&
+                Objects.equals(getContactLink(), profile.getContactLink()) &&
+                Objects.equals(bCryptHash, profile.bCryptHash) &&
+                Objects.equals(getBio(), profile.getBio());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getId(), getUsername(), getDisplayName(), getEmail(), getLocation(), getContactLink(), bCryptHash, getBio());
     }
 }
