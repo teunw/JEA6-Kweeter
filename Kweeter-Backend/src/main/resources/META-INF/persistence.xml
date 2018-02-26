@@ -6,8 +6,7 @@
     <persistence-unit name="pu-kweeter" transaction-type="JTA">
         <jta-data-source>PostgresDS</jta-data-source>
         <properties>
-
-            <property name="hibernate.hbm2ddl.auto" value="validate"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="false"/>
@@ -15,6 +14,5 @@
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="hibernate.enable_lazy_load_no_trans" value="true" />
         </properties>
-
     </persistence-unit>
 </persistence>

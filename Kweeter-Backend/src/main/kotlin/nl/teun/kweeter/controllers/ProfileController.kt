@@ -17,12 +17,23 @@ class ProfileController {
     private lateinit var validatorService: ValidatorService
 
     @GET
+    @Path("/by-email/{email}")
+    fun getProfileByEmail(@PathParam("email") email: String): Response? {
+        if (email.isBlank()) {
+            return Response.serverError().entity("Email cannot be blank").build()
+        }
+        val profile = this.profileService.findByEmail(email)
+        return Response.ok(profile).build()
+    }
+
+    @GET
     @Path("/{userId}")
     fun getProfile(@PathParam("userId") userId: String): Response? {
         if (userId.isBlank()) {
             return Response.serverError().entity("userId is empty").build()
         }
-        val intToNumber = userId.toLongOrNull() ?: return Response.serverError().entity("userId is not parsable to long").build()
+        val intToNumber = userId.toLongOrNull()
+                ?: return Response.serverError().entity("userId is not parsable to long").build()
         val profile = profileService.findById(intToNumber)
 
         return Response.ok(profile).build()

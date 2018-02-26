@@ -13,6 +13,10 @@ export class ProfileService {
     return this.httpClient.get<IProfile[]>(`${this.configService.getKweeterEndpoint()}/profiles`);
   }
 
+  getProfileByEmail(email:string) {
+    return this.httpClient.get<IProfile>(`${this.configService.getKweeterEndpoint()}/profiles/by-email/${email}`)
+  }
+
   getProfile(id: number) {
     return this.httpClient.get<IProfile>(`${this.configService.getKweeterEndpoint()}/profiles/${id}`);
   }
