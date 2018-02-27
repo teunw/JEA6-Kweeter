@@ -1,6 +1,6 @@
 package nl.teun.kweeter.controllers
 
-import nl.teun.kweeter.controllers.requestTypes.KweetPost
+import nl.teun.kweeter.controllers.requestparameter.KweetPost
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.services.KweetService
 import nl.teun.kweeter.services.ProfileService
@@ -33,11 +33,12 @@ class KweetController {
     @GET
     @Path("/{kweetId}")
     @Produces
-    fun getKweet(@PathParam("kweetId") kweetId : String): Response {
+    fun getKweet(@PathParam("kweetId") kweetId: String): Response {
         if (kweetId.isEmpty()) {
             return Response.serverError().entity("kweetId is empty").build()
         }
-        val kweetIdAsLong = kweetId.toLongOrNull() ?: return Response.serverError().entity("profileId not a long").build()
+        val kweetIdAsLong = kweetId.toLongOrNull()
+                ?: return Response.serverError().entity("profileId not a long").build()
 
         return Response.ok(kweetService.findById(kweetIdAsLong)).build()
     }
@@ -55,7 +56,8 @@ class KweetController {
         if (textContent.isEmpty()) {
             return Response.serverError().entity("textContent is empty").build()
         }
-        val profileIdAsLong = profileId.toLongOrNull() ?: return Response.serverError().entity("profileId not a long").build()
+        val profileIdAsLong = profileId.toLongOrNull()
+                ?: return Response.serverError().entity("profileId not a long").build()
 
         val kweet = this.kweetService.findById(kweetId)
         kweet.author = this.profileService.findById(profileIdAsLong)
@@ -79,7 +81,7 @@ class KweetController {
     @POST
     @Path("/")
     fun createKweet(
-            requestPost : KweetPost
+            requestPost: KweetPost
     ): Response {
         if (requestPost.profileId.isEmpty()) {
             return Response.serverError().entity("profileId is empty (\"${requestPost.profileId}\")").build()
@@ -87,16 +89,21 @@ class KweetController {
         if (requestPost.textContent.isEmpty()) {
             return Response.serverError().entity("textContent is empty (\"${requestPost.textContent}\", \"${requestPost.profileId}\")").build()
         }
-        val profileIdAsLong = requestPost.profileId.toLongOrNull() ?: return Response.serverError().entity("profileId not a long").build()
+        val profileIdAsLong = requestPost.profileId.toLongOrNull()
+                ?: return Response.serverError().entity("profileId not a long").build()
 
-        val kweet = Kweet()
-        kweet.author = this.profileService.findById(profileIdAsLong)
-        kweet.textContent = requestPost.textContent
-        kweet.setPublicId(UUID.randomUUID())
-        kweet.setDate(LocalDateTime.now())
-        this.kweetService.createKweet(kweet)
+        requestPost.author = this.profileService.findById(profileIdAsLong)
+        requestPost.setPublicId(UUID.randomUUID())
+        requestPost.setDate(LocalDateTime.now())
 
-        return Response.ok(kweet).build()
+        requestPost.setLikedBy(mutableListOf())
+        requestPost.setRekweets(mutableListOf())
+        requestPost.setResponses(mutableListOf())
+
+        val asKweet = requestPost as Kweet
+        this.kweetService.createKweet(asKweet)
+
+        return Response.ok(asKweet).build()
     }
 
 }

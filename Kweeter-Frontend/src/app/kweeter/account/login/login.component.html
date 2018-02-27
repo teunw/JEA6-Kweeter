@@ -4,10 +4,10 @@
       <div class="card-content">
         <span class="card-title">Login</span>
         <p>
-          <app-load *ngIf="isLoggingIn" [loadSentences]="['This is a test', 'Another test']"></app-load>
-          <input *ngIf="!isLoggingIn" placeholder="Enter your email address" type="text" class="validate"
+          <app-load *ngIf="isSavingChanges" [loadSentences]="['This is a test', 'Another test']"></app-load>
+          <input *ngIf="!isSavingChanges" placeholder="Enter your email address" type="text" class="validate"
                  [(ngModel)]="email" [email]="true" (keyup)="formKeyUp($event)"/>
-          <button *ngIf="!isLoggingIn" class="btn btn-primary kweeter-accent-color" (click)="login()"
+          <button *ngIf="!isSavingChanges" class="btn btn-primary kweeter-accent-color" (click)="login()"
                   style="margin-top: 25px;">
             Login
           </button>
