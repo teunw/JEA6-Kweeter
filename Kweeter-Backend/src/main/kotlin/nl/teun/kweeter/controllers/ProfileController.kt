@@ -1,6 +1,6 @@
 package nl.teun.kweeter.controllers
 
-import nl.teun.kweeter.controllers.requesttypes.ProfilePost
+import nl.teun.kweeter.controllers.requestparameter.ProfilePost
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.services.ProfileService
 import nl.teun.kweeter.services.ValidatorService

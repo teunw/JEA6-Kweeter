@@ -13,7 +13,7 @@ import {Observable} from "rxjs/Observable";
 export class LoginComponent implements OnInit {
 
   public email: string;
-  public isLoggingIn: boolean = false;
+  public isSavingChanges: boolean = false;
 
   constructor(private loginService: LoginService, private profileService: ProfileService, private router: Router) {
   }
@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   }
 
   public login() {
-    this.isLoggingIn = true;
+    this.isSavingChanges = true;
     this.profileService
       .getProfileByEmail(this.email)
       .subscribe(res => {

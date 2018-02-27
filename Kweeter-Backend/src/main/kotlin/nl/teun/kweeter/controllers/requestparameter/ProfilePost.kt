@@ -1,4 +1,4 @@
-package nl.teun.kweeter.controllers.requesttypes
+package nl.teun.kweeter.controllers.requestparameter
 
 import nl.teun.kweeter.domain.Profile
 
