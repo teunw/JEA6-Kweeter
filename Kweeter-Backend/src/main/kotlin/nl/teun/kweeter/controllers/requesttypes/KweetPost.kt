@@ -1,6 +1,7 @@
 package nl.teun.kweeter.controllers.requestTypes
 
-open class KweetPost() {
+import nl.teun.kweeter.domain.Kweet
+
+open class KweetPost():Kweet() {
     public var profileId: String = ""
-    public var textContent: String = ""
 }

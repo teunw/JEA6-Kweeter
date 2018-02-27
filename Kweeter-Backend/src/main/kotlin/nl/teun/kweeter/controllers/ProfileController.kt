@@ -1,5 +1,6 @@
 package nl.teun.kweeter.controllers
 
+import nl.teun.kweeter.controllers.requesttypes.ProfilePost
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.services.ProfileService
 import nl.teun.kweeter.services.ValidatorService
@@ -90,35 +91,29 @@ class ProfileController {
     }
 
     @POST
-    @Path("/create")
+    @Path("/")
     @Produces
     fun createProfile(
-            @QueryParam("email") email: String,
-            @QueryParam("username") username: String,
-            @QueryParam("displayName") displayName: String,
-            @QueryParam("password") password: String
+            profile: ProfilePost
     ): Response? {
-        if (email.isBlank() || username.isBlank() || displayName.isBlank() || password.isBlank()) {
+        if (profile.email.isBlank() || profile.username.isBlank() || profile.displayName.isBlank() || profile.password.isBlank()) {
             return Response
                     .serverError()
                     .entity("One of the parameters is empty")
-                    .entity(email)
-                    .entity(username)
-                    .entity(displayName)
-                    .entity(password)
+                    .entity(profile.email)
+                    .entity(profile.username)
+                    .entity(profile.displayName)
                     .build()
         }
-        if (!this.validatorService.isUsernameValid(username)) {
+        if (!this.validatorService.isUsernameValid(profile.username)) {
             val usernameRegex = this.validatorService.usernameRegex.pattern
             return Response.serverError().entity("Username is invalid, regex: $usernameRegex").build()
         }
 
-        val profile = Profile()
-        profile.setPassword(password)
-        profile.email = email
-        profile.username = username
-        profile.displayName = displayName
-        this.profileService.createProfile(profile)
+        profile.setPassword(profile.password)
+        val asProfile = profile as Profile
+        this.profileService.createProfile(asProfile)
+
         return Response.ok(profile).build()
     }
 }
