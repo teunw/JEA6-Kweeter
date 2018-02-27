@@ -1,5 +1,6 @@
 package nl.teun.kweeter.controllers
 
+import nl.teun.kweeter.controllers.requestparameter.ProfilePost
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.services.ProfileService
 import nl.teun.kweeter.services.ValidatorService
@@ -53,7 +54,7 @@ class ProfileController {
     @Path("/{profileId}")
     fun updateProfile(
             @PathParam("profileId") id: Long,
-            reqProfile: Profile
+            reqProfile: ProfilePost
     ): Response {
         if (id < 0) {
             return Response.serverError().entity("Id cannot be blank, got \"$id\"").build()
@@ -71,6 +72,14 @@ class ProfileController {
         }
         if (!reqProfile.displayName.isBlank()) {
             dbProfile.displayName = reqProfile.displayName
+            updatedAnything = true
+        }
+        if (!reqProfile.bio.isBlank()) {
+            dbProfile.bio = reqProfile.bio
+            updatedAnything = true
+        }
+        if (!reqProfile.location.isBlank()) {
+            dbProfile.location = reqProfile.location
             updatedAnything = true
         }
 

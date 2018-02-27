@@ -32,7 +32,6 @@ class MockService {
             val profilesToRetrieveFollowers = getRandomElement(profiles)
             for (x in 0..25) {
                 val profileToFollow = getRandomElement(profiles)
-                profilesToRetrieveFollowers.followedBy.add(profileToFollow)
             }
         }
     }
@@ -63,7 +62,7 @@ class MockService {
             val kweet = Kweet()
                     .setTextContent(getRandomElement(sentences))
                     .setAuthor(getRandomElement(profiles))
-                    .setDate(newDate)
+                    .setDateWithLocalDateTime(newDate)
             kweetService.createKweet(kweet)
         }
     }

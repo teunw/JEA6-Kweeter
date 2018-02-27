@@ -93,7 +93,7 @@ public class Kweet implements Serializable {
         return this;
     }
 
-    public Kweet setDate(LocalDateTime ldate) {
+    public Kweet setDateWithLocalDateTime(LocalDateTime ldate) {
         Instant instant = Instant.from(ldate.atZone(ZoneId.of("GMT")));
         this.date = Date.from(instant);
         return this;

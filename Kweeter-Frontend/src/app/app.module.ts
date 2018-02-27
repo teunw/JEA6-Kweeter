@@ -21,8 +21,9 @@ import {FormsModule} from '@angular/forms';
 import {NavbarComponent} from './kweeter/navbar/navbar.component';
 import {LoginComponent} from './kweeter/account/login/login.component';
 import {LoginService} from "./services/login.service";
-import { ManageAccountComponent } from './kweeter/account/manage-account/manage-account.component';
+import {ManageAccountComponent} from './kweeter/account/manage-account/manage-account.component';
 import {RegistrationComponent} from './profiles/registration/registration.component';
+import {LogoutComponent} from './kweeter/account/logout/logout.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -30,7 +31,8 @@ const appRoutes: Routes = [
   {path: 'profiles/:id', component: ProfileComponent},
   {path: 'login', component: LoginComponent},
   {path: 'account', component: ManageAccountComponent},
-  {path: 'registration', component: RegistrationComponent}
+  {path: 'registration', component: RegistrationComponent},
+  {path: 'logout', component: LogoutComponent}
 ];
 
 @NgModule({
@@ -47,7 +49,8 @@ const appRoutes: Routes = [
     NavbarComponent,
     LoginComponent,
     RegistrationComponent,
-    ManageAccountComponent
+    ManageAccountComponent,
+    LogoutComponent
   ],
   imports: [
     FormsModule,

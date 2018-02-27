@@ -12,7 +12,8 @@
             </p>
             Website: <a target="_blank" class="white-text" href="{{ profile.contactLink }}">{{ profile.contactLink
             }}</a><br/>
-            Email: <a class="white-text" href="mailto:{{ profile.email }}">{{ profile.email }}</a>
+            Email: <a class="white-text" href="mailto:{{ profile.email }}">{{ profile.email }}</a><br/>
+            <span *ngIf="profile.location">Location: {{ profile.location }}<br/></span>
           </div>
         </div>
       </div>

@@ -7,7 +7,7 @@
           <app-load *ngIf="isSavingChanges" [loadSentences]="['This is a test', 'Another test']"></app-load>
           <input *ngIf="!isSavingChanges" placeholder="Enter your email address" type="text" class="validate"
                  [(ngModel)]="email" [email]="true" (keyup)="formKeyUp($event)"/>
-          <button *ngIf="!isSavingChanges" class="btn btn-primary kweeter-accent-color" (click)="login()"
+          <button *ngIf="!isSavingChanges" class="btn btn-primary" (click)="login()"
                   style="margin-top: 25px;">
             Login
           </button>

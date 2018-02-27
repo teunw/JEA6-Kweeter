@@ -1,14 +1,15 @@
-<ul id="account-dropdown" class="dropdown-content kweeter-accent kweeter-secondary-text-color">
-  <li><a routerLink="/account">Account</a></li>
-  <li><a routerLink="/logout">Logout</a></li>
+<ul id="account-dropdown" class="dropdown-content">
+  <li><a routerLink="/profiles/{{ loginService.getLoginInfo().id }}" class="dropdown-content-link">View profile</a></li>
+  <li><a routerLink="/account" class="dropdown-content-link">Account</a></li>
+  <li><a routerLink="/logout" class="dropdown-content-link">Logout</a></li>
 </ul>
-<ul id="login-dropdown" class="dropdown-content kweeter-accent kweeter-secondary-text-color">
-  <li><a routerLink="/login">Login</a></li>
-  <li><a routerLink="/registration">Registration</a></li>
+<ul id="login-dropdown" class="dropdown-content">
+  <li><a routerLink="/login" class="dropdown-content-link">Login</a></li>
+  <li><a routerLink="/registration" class="dropdown-content-link">Registration</a></li>
 </ul>
 <nav>
-  <div class="nav-wrapper kweeter-primary-color-dark kweeter-secondary-text-color">
-    <a href="#" class="brand-logo">Kweeter</a>
+  <div class="nav-wrapper">
+    <a routerLink="/" class="brand-logo">Kweeter</a>
     <ul id="nav-mobile" class="right hide-on-med-and-down">
       <li *ngIf="!loginService.isLoggedIn()">
         <a routerLink="/login" class="dropdown-trigger" data-target="login-dropdown">Account<i

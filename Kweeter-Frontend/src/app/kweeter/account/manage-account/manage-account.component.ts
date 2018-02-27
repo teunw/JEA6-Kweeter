@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {IProfile} from "../../../profile";
 import {ProfileService} from "../../../services/profile.service";
-import {ActivatedRoute} from "@angular/router";
+import {Router} from "@angular/router";
 import {LoginService} from "../../../services/login.service";
 
 @Component({
@@ -14,7 +14,7 @@ export class ManageAccountComponent implements OnInit {
   public isSavingChanges = false;
   public profile: IProfile;
 
-  constructor(private profileService: ProfileService, private loginService:LoginService) {
+  constructor(private profileService: ProfileService, private loginService: LoginService, private router: Router) {
   }
 
   ngOnInit() {
@@ -25,6 +25,14 @@ export class ManageAccountComponent implements OnInit {
       .subscribe(data => {
         this.profile = data as IProfile;
         this.isSavingChanges = false;
+      });
+  }
+
+  public saveChanges() {
+    this.isSavingChanges = true;
+    this.profileService.updateProfile(this.profile)
+      .subscribe(data => {
+        this.router.navigate(['/']);
       });
   }
 

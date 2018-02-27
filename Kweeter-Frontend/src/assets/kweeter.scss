@@ -10,6 +10,29 @@ $primary-text-color:   #212121;
 $secondary-text-color: #757575;
 $divider-color:        #BDBDBD;
 
+.nav-wrapper {
+  @extend .nav-wrapper;
+  background-color: $primary-color;
+  color: $primary-text-color;
+}
+
+.btn-primary {
+  @extend .btn-primary;
+  background-color: $accent-color;
+  color: $primary-color-text;
+
+  &:focus, &:hover {
+    background-color: lighten($accent-color, 7%);
+  }
+}
+
+.card-action {
+  color: $accent-color;
+}
+
+.dropdown-content-link {
+  color: $primary-color-dark !important;
+}
 
 .kweeter-primary-color {
   background-color: $primary-color;

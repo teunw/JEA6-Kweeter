@@ -92,18 +92,19 @@ class KweetController {
         val profileIdAsLong = requestPost.profileId.toLongOrNull()
                 ?: return Response.serverError().entity("profileId not a long").build()
 
-        requestPost.author = this.profileService.findById(profileIdAsLong)
-        requestPost.setPublicId(UUID.randomUUID())
-        requestPost.setDate(LocalDateTime.now())
+        val kweet = Kweet()
 
-        requestPost.setLikedBy(mutableListOf())
-        requestPost.setRekweets(mutableListOf())
-        requestPost.setResponses(mutableListOf())
+        kweet.textContent = requestPost.textContent
+        kweet.author = this.profileService.findById(profileIdAsLong)
+        kweet.setPublicId(UUID.randomUUID())
+        kweet.setDateWithLocalDateTime(LocalDateTime.now())
 
-        val asKweet = requestPost as Kweet
-        this.kweetService.createKweet(asKweet)
+        kweet.setLikedBy(mutableListOf())
+        kweet.setRekweets(mutableListOf())
+        kweet.setResponses(mutableListOf())
 
-        return Response.ok(asKweet).build()
+        this.kweetService.createKweet(kweet)
+        return Response.ok(kweet).build()
     }
 
 }

@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {LoginService} from "../../../services/login.service";
-import {ProfileService} from "../../../services/profile.service";
-import {Router} from "@angular/router";
-import {IProfile} from "../../../profile";
-import {Observable} from "rxjs/Observable";
+import {LoginService} from '../../../services/login.service';
+import {ProfileService} from '../../../services/profile.service';
+import {Router} from '@angular/router';
+import {IProfile} from '../../../profile';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +12,7 @@ import {Observable} from "rxjs/Observable";
 export class LoginComponent implements OnInit {
 
   public email: string;
-  public isSavingChanges: boolean = false;
+  public isSavingChanges = false;
 
   constructor(private loginService: LoginService, private profileService: ProfileService, private router: Router) {
   }
@@ -29,15 +28,14 @@ export class LoginComponent implements OnInit {
         if (res instanceof Object) {
           const profile = res as IProfile;
           this.loginService.saveLoginInfo(profile);
-          //TODO Implement navigation
-          //this.router.navigate([`profiles/${profile.id}`]);
+          this.router.navigate([`profiles/${profile.id}`]);
         }
-      })
+      });
   }
 
   formKeyUp(e: KeyboardEvent) {
     // 13 == enter
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       this.login();
     }
   }

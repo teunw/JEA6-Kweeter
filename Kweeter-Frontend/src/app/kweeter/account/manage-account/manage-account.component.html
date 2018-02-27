@@ -3,16 +3,23 @@
     <div class="card white black-text">
       <div class="card-content">
         <span class="card-title">Manage your account</span>
-        <form (submit)="saveChanges()">
         <p>
           <app-load *ngIf="isSavingChanges" [loadSentences]="['This is a test', 'Another test']"></app-load>
 
-          <input *ngIf="!isSavingChanges" placeholder="Change your email address" type="text" class="validate" [(ngModel)]="email" [email]="true" required/>
-          <input *ngIf="!isSavingChanges" placeholder="Change your username" type="text" class="validate" [(ngModel)]="email" [email]="true" required/>
-          <input *ngIf="!isSavingChanges" placeholder="Change your displayname" type="text" class="validate" [(ngModel)]="email" [email]="true" required/>
-          <button type="submit" class="btn kweeter-accent-color">Save changes</button>
+          <input *ngIf="!isSavingChanges" placeholder="Change your email address" type="text" class="validate"
+                 [(ngModel)]="profile.email" name="email" [email]="true" required/>
+          <input *ngIf="!isSavingChanges" placeholder="Change your username" type="text" class="validate"
+                 [(ngModel)]="profile.username" name="username" [email]="false" required/>
+          <input *ngIf="!isSavingChanges" placeholder="Change your displayname" type="text" class="validate"
+                 [(ngModel)]="profile.displayName" name="displayName" [email]="false" required/>
+          <input *ngIf="!isSavingChanges" placeholder="Change your page" type="text" class="validate"
+                 [(ngModel)]="profile.contactLink" name="contactLink" [email]="false" required/>
+          <input *ngIf="!isSavingChanges" placeholder="Change your location" type="text" class="validate"
+                 [(ngModel)]="profile.location" name="location" [email]="false" required/>
+          <input *ngIf="!isSavingChanges" placeholder="Change your bio" type="text" class="validate"
+                 [(ngModel)]="profile.bio" name="bio" [email]="false" required/><br/>
+          <button type="submit" class="btn btn-primary" (click)="saveChanges()">Save changes</button>
         </p>
-        </form>
       </div>
     </div>
   </div>
