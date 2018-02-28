@@ -3,6 +3,7 @@ import {IProfile} from "../../../profile";
 import {ProfileService} from "../../../services/profile.service";
 import {Router} from "@angular/router";
 import {LoginService} from "../../../services/login.service";
+import 'materialize-css';
 
 @Component({
   selector: 'app-manage-account',
@@ -19,12 +20,14 @@ export class ManageAccountComponent implements OnInit {
 
   ngOnInit() {
     this.isSavingChanges = true;
-    const profileId = this.loginService.getLoginInfo().id;
-    this.profileService
-      .getProfile(profileId)
-      .subscribe(data => {
-        this.profile = data as IProfile;
-        this.isSavingChanges = false;
+    this.loginService.loginInfo
+      .subscribe(loginInfo => {
+        this.profileService
+          .getProfile(loginInfo.id)
+          .subscribe(data => {
+            this.profile = data as IProfile;
+            this.isSavingChanges = false;
+          });
       });
   }
 
@@ -32,6 +35,10 @@ export class ManageAccountComponent implements OnInit {
     this.isSavingChanges = true;
     this.profileService.updateProfile(this.profile)
       .subscribe(data => {
+        M.toast({
+          html: `Saved changes!`,
+          inDuration: 4000
+        });
         this.router.navigate(['/']);
       });
   }

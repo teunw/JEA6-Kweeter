@@ -1,8 +1,13 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {IProfile} from "../profile";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Injectable()
 export class LoginService {
+
+  private _loginInfo = new BehaviorSubject(this.getLoginInfo());
+
+  public loginInfo = this._loginInfo.asObservable();
 
   constructor() {
   }
@@ -19,7 +24,7 @@ export class LoginService {
     return localStorage.removeItem('login');
   }
 
-  public getLoginInfo(): IProfile | null {
+  private getLoginInfo(): IProfile | null {
     const possibleProfile = localStorage.getItem('login');
     const parseResult = JSON.parse(possibleProfile);
     return parseResult;

@@ -6,19 +6,19 @@
         <p>
           <app-load *ngIf="isLoggingIn"
                     [loadSentences]="['Contacting the registration office', 'Creating your account']"></app-load>
-          <input *ngIf="!isLoggingIn" placeholder="Enter your email address" type="text" class="validate"
+          <input *ngIf="!isLoggingIn" placeholder="Enter your email address" type="text" class="validate materialize-textarea"
                  [(ngModel)]="profile.email" [email]="true" (keyup)="formKeyUp($event)" required=""/>
 
-          <input *ngIf="!isLoggingIn" placeholder="Enter a username" type="text" class="validate"
+          <input *ngIf="!isLoggingIn" placeholder="Enter a username" type="text" class="validate materialize-textarea"
                  [(ngModel)]="profile.username" (keyup)="formKeyUp($event)" required=""/>
 
-          <input *ngIf="!isLoggingIn" placeholder="Enter a display name" type="text" class="validate"
+          <input *ngIf="!isLoggingIn" placeholder="Enter a display name" type="text" class="validate materialize-textarea"
                  [(ngModel)]="profile.displayName" (keyup)="formKeyUp($event)" required=""/>
 
-          <input *ngIf="!isLoggingIn" aria-multiline="true" placeholder="Enter a bio" type="text" class="validate"
+          <input *ngIf="!isLoggingIn" aria-multiline="true" placeholder="Enter a bio" type="text" class="validate materialize-textarea"
                  [(ngModel)]="profile.bio" (keyup)="formKeyUp($event)"/>
 
-          <input *ngIf="!isLoggingIn" placeholder="Enter a contact url" type="url" class="validate"
+          <input *ngIf="!isLoggingIn" placeholder="Enter a contact url" type="url" class="validate materialize-textarea"
                  [(ngModel)]="profile.contactLink" (keyup)="formKeyUp($event)"/>
 
           <button *ngIf="!isLoggingIn" class="btn btn-primary" (click)="attemptRegistration()"

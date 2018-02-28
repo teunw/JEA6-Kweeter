@@ -3,6 +3,7 @@ import {LoginService} from '../../../services/login.service';
 import {ProfileService} from '../../../services/profile.service';
 import {Router} from '@angular/router';
 import {IProfile} from '../../../profile';
+import 'materialize-css';
 
 @Component({
   selector: 'app-login',
@@ -28,6 +29,9 @@ export class LoginComponent implements OnInit {
         if (res instanceof Object) {
           const profile = res as IProfile;
           this.loginService.saveLoginInfo(profile);
+          M.toast({
+            html: `You are logged in, hello ${profile.displayName}!`
+          });
           this.router.navigate([`profiles/${profile.id}`]);
         }
       });

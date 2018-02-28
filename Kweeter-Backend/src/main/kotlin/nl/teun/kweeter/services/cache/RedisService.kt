@@ -8,27 +8,26 @@ import javax.ejb.Stateless
 @Stateless
 class RedisService {
 
-    private val jedis = Jedis("localhost", 6379)
-    private val uuid = UUID.randomUUID()
+    private var jedis = Jedis("localhost", 6379)
     private val gson = Gson()
 
     fun getJedis(): Jedis {
         return this.jedis
     }
 
-    fun cacheObject(obj: Any, cacheName: String) {
-        jedis.rpush(this.uuid.toString(), gson.toJson(obj))
+    fun cacheObject(obj: Any, cacheName:String) {
+        jedis.rpush(cacheName, gson.toJson(obj))
     }
 
-    fun getCachedObjects(cacheName: String): List<String> {
-        return jedis.lrange(this.uuid.toString(), 0, -1)
+    fun getCachedObjects(cacheName:String): List<String> {
+        return jedis.lrange(cacheName, 0, -1)
     }
 
-    fun hasCachedObjects(): Boolean {
-        return jedis.llen(this.uuid.toString()) > 0
+    fun hasCachedObjects(cacheName:String): Boolean {
+        return jedis.llen(cacheName) > 0
     }
 
-    fun invalidate() {
-        jedis.del(this.uuid.toString())
+    fun invalidate(cacheName:String) {
+        jedis.del(cacheName)
     }
 }

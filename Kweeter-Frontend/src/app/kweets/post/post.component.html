@@ -4,14 +4,14 @@
       <div class="card-content">
         <span class="card-title">Add something to your profile</span>
         <p>
-          <input type="text" class="materialize-textarea lighten-1" name="textContent"
+          <input type="text" class="materialize-textarea" name="textContent"
                  [(ngModel)]="kweet.textContent"
                  placeholder="What are you up to?"
                  (keyup)="postKweetEnter($event)"/>
         </p>
       </div>
       <div class="card-action">
-        <a href="#!" class="btn btn-primary" (click)="postKweet($event)">Post</a>
+        <a href="javascript:void(0)" class="btn btn-primary" (click)="postKweet($event)">Post</a>
       </div>
     </div>
   </div>

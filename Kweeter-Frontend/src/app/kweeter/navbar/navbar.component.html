@@ -1,5 +1,5 @@
 <ul id="account-dropdown" class="dropdown-content">
-  <li><a routerLink="/profiles/{{ loginService.getLoginInfo().id }}" class="dropdown-content-link">View profile</a></li>
+  <li><a routerLink="/profiles/{{ profile?.id }}" class="dropdown-content-link">View profile</a></li>
   <li><a routerLink="/account" class="dropdown-content-link">Account</a></li>
   <li><a routerLink="/logout" class="dropdown-content-link">Logout</a></li>
 </ul>
@@ -11,13 +11,13 @@
   <div class="nav-wrapper">
     <a routerLink="/" class="brand-logo">Kweeter</a>
     <ul id="nav-mobile" class="right hide-on-med-and-down">
-      <li *ngIf="!loginService.isLoggedIn()">
+      <li *ngIf="!profile">
         <a routerLink="/login" class="dropdown-trigger" data-target="login-dropdown">Account<i
           class="material-icons right">arrow_drop_down</i></a>
       </li>
-      <li *ngIf="loginService.isLoggedIn()">
-        <a class="dropdown-trigger" data-target="account-dropdown" href="#!">
-          Hello {{ loginService.getLoginInfo().displayName }}<i class="material-icons right">arrow_drop_down</i>
+      <li *ngIf="profile">
+        <a class="dropdown-trigger" data-target="account-dropdown" href="javascript:void(0)">
+          Hello {{ profile.displayName }}<i class="material-icons right">arrow_drop_down</i>
         </a>
       </li>
     </ul>

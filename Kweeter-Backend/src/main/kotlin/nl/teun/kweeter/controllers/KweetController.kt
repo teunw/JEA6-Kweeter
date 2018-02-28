@@ -1,6 +1,6 @@
 package nl.teun.kweeter.controllers
 
-import nl.teun.kweeter.controllers.requestparameter.KweetPost
+import nl.teun.kweeter.controllers.types.request.KweetPost
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.services.KweetService
 import nl.teun.kweeter.services.ProfileService

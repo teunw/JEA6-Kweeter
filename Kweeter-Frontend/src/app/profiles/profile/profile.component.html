@@ -3,11 +3,11 @@
   <div class="col s4" *ngIf="profile !== undefined">
     <div class="row">
       <div class="col s12">
-        <div class="card blue darken-1">
-          <div class="card-content white-text">
+        <div class="card">
+          <div class="card-content black-text">
             <span class="card-title">{{ profile.displayName }}</span>
             <p>
-              @{{ profile.username }}<br/>
+              <a href="javascript:void(0)">@{{ profile.username }}</a><br/>
               "{{ profile.bio }}"
             </p>
             Website: <a target="_blank" class="white-text" href="{{ profile.contactLink }}">{{ profile.contactLink
@@ -23,4 +23,3 @@
     <app-view-kweets [kweets]="kweets"></app-view-kweets>
   </div>
 </div>
-

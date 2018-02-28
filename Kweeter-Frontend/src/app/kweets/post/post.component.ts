@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {KweetService} from '../../services/kweet.service';
 import {IKweet, IKweetPost} from '../../kweet';
 import {LoginService} from "../../services/login.service";
+import {IProfile} from "../../profile";
 
 @Component({
   selector: 'app-post',
@@ -16,7 +17,12 @@ export class PostComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.kweet.profileId = this.loginService.getLoginInfo().id;
+    this.loginService
+      .loginInfo
+      .subscribe(loginInfo => {
+        if (loginInfo == null) return;
+        this.kweet.profileId = loginInfo.id;
+      });
   }
 
   postKweet() {

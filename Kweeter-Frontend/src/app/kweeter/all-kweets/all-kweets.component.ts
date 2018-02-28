@@ -16,10 +16,11 @@ export class AllKweetsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.kweetService.getKweets()
-      .subscribe(data => {
-        this.kweets = data;
+    this.kweetService.kweets
+      .subscribe(kweetsList => {
+        this.kweets = kweetsList;
       });
+    this.kweetService.getKweets();
   }
 
 }

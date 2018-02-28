@@ -17,5 +17,8 @@ export class ViewKweetsComponent implements OnInit {
 
   ngOnInit() {
   }
+  reloadKweets() {
+    this.kweetService.refreshKweets();
+  }
 
 }

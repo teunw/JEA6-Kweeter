@@ -24,6 +24,7 @@ import {LoginService} from "./services/login.service";
 import {ManageAccountComponent} from './kweeter/account/manage-account/manage-account.component';
 import {RegistrationComponent} from './profiles/registration/registration.component';
 import {LogoutComponent} from './kweeter/account/logout/logout.component';
+import {KweetActionService} from "./services/kweetaction.service";
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -59,7 +60,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes, {enableTracing: false}),
     MomentModule
   ],
-  providers: [HttpClient, ConfigService, KweetService, ProfileService, LoginService],
+  providers: [HttpClient, ConfigService, KweetService, ProfileService, LoginService, KweetActionService],
   bootstrap: [AppComponent],
 })
 export class AppModule {

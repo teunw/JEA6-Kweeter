@@ -9,8 +9,13 @@
       <span style="font-size: small">{{ kweet.date | amTimeAgo: 'minutes' }}</span>
     </p>
   </div>
-  <div class="card-action">
-    <a href="javascript:void(0)" class="card-action-link">Like</a>
-    <a href="javascript:void(0)" class="card-action-link">Rekweet</a>
+  <div class="card-action" *ngIf="loginService.isLoggedIn()">
+    <a (click)="toggleLike()" href="javascript:void(0)" class="card-action-link">
+      <i *ngIf="kweet.hasLiked(loginService.getLoginInfo())" class="material-icons">favorite</i>
+      <i *ngIf="!kweet.hasLiked(loginService.getLoginInfo())" class="material-icons">favorite_border</i>
+    </a>
+    <a href="javascript:void(0)" class="card-action-link">
+      <i class="material-icons">repeat</i>
+    </a>
   </div>
 </div>

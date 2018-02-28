@@ -4,15 +4,30 @@ import {ConfigService} from './config.service';
 import {Observable} from 'rxjs/Observable';
 import {IKweet, IKweetPost} from '../kweet';
 import {IProfile} from '../profile';
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Injectable()
 export class KweetService {
 
+  private _kweets: BehaviorSubject<IKweet[]> = new BehaviorSubject<IKweet[]>([]);
+
+  public readonly kweets = this._kweets.asObservable();
+
   constructor(private httpClient: HttpClient, private configService: ConfigService) {
   }
 
+  refreshKweets() {
+    return this.getKweets();
+  }
+
   getKweets(): Observable<IKweet[]> {
-    return this.httpClient.get<IKweet[]>(`${this.configService.getKweeterEndpoint()}/kweets`);
+    this._kweets.next([]);
+    const http = this.httpClient
+      .get<IKweet[]>(`${this.configService.getKweeterEndpoint()}/kweets`);
+    http.subscribe(data => {
+      this._kweets.next(data as IKweet[]);
+    });
+    return http;
   }
 
   getKweetsForProfile(profile: IProfile): Observable<IKweet[]> {
@@ -24,9 +39,7 @@ export class KweetService {
   }
 
   createKweet(kweet: IKweetPost) {
-    console.log("Posting ....");
-    console.log(kweet);
-    const headers =  new HttpHeaders();
+    const headers = new HttpHeaders();
     headers.append("Accepts", "application/json");
 
     return this.httpClient.post<IKweet>(
@@ -35,6 +48,7 @@ export class KweetService {
     ).subscribe(res => {
       console.log("Got");
       console.log(res);
+      this.getKweets();
     });
   }
 }
