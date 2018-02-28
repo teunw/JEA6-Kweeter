@@ -8,6 +8,10 @@ $primary-text-color:   #212121;
 $secondary-text-color: #757575;
 $divider-color:        #BDBDBD;
 
+.kweeter-spinner {
+  border-color: $accent-color;
+
+}
 
 .nav-wrapper {
   @extend .nav-wrapper;

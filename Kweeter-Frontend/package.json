@@ -21,6 +21,7 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
+    "@types/elasticsearch": "^5.0.19",
     "@types/jquery": "^3.3.0",
     "@types/materialize-css": "^1.0.1",
     "angular2-moment": "^1.8.0",

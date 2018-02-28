@@ -1,8 +1,15 @@
-<div class="row center-align" style="margin-top: 25px;">
-  <div class="col s12">
-    <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-      <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
-    </svg><br/>
-    <span class="title" *ngIf="hasValidSentences()">{{ currentSentence }}</span>
+<div class="row center-align">
+  <div class="preloader-wrapper big active">
+    <div class="spinner-layer kweeter-spinner">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div>
+      <div class="gap-patch">
+        <div class="circle"></div>
+      </div>
+      <div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
   </div>
 </div>

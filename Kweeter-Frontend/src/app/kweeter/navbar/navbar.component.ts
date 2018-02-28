@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {LoginService} from '../../services/login.service';
-import {IProfile} from "../../profile";
+import {IProfile} from '../../profile';
 
 declare var $: any;
 
@@ -11,7 +11,7 @@ declare var $: any;
 })
 export class NavbarComponent implements OnInit {
 
-  public profile : IProfile;
+  public profile: IProfile;
 
   constructor(public loginService: LoginService) {
   }
@@ -21,9 +21,13 @@ export class NavbarComponent implements OnInit {
       .loginInfo
       .subscribe(data => {
         this.profile = data as IProfile;
-        $(function() {
+        $(function () {
           $(".dropdown-trigger").dropdown();
         });
-      })
+      });
+
+    $(document).ready(function () {
+      $('.sidenav').sidenav();
+    });
   }
 }

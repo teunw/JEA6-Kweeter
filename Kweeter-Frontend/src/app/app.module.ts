@@ -25,6 +25,8 @@ import {ManageAccountComponent} from './kweeter/account/manage-account/manage-ac
 import {RegistrationComponent} from './profiles/registration/registration.component';
 import {LogoutComponent} from './kweeter/account/logout/logout.component';
 import {KweetActionService} from "./services/kweetaction.service";
+import {SearchbarComponent} from './search/searchbar/searchbar.component';
+import {KweetComponent} from './search/kweet/kweet.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -51,7 +53,9 @@ const appRoutes: Routes = [
     LoginComponent,
     RegistrationComponent,
     ManageAccountComponent,
-    LogoutComponent
+    LogoutComponent,
+    SearchbarComponent,
+    KweetComponent
   ],
   imports: [
     FormsModule,
