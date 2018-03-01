@@ -61,7 +61,6 @@ dependencies {
     compile group: "javax", name: "javaee-web-api", version: "8.0"
     // https://mvnrepository.com/artifact/org.mindrot/jbcrypt
     compile group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'
-    compile 'com.squareup.okhttp3:okhttp:3.9.1'
 
     compile 'com.github.salomonbrys.kotson:kotson:2.5.0'
     compile "com.github.kstyrc:embedded-redis:0.6"

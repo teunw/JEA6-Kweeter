@@ -10,9 +10,9 @@ import {LoginService} from "../../services/login.service";
 })
 export class AllKweetsComponent implements OnInit {
 
-  private kweets: IKweet[];
+  public kweets: IKweet[];
 
-  constructor(private kweetService: KweetService, private loginService: LoginService) {
+  constructor(private kweetService: KweetService, public loginService: LoginService) {
   }
 
   ngOnInit() {
