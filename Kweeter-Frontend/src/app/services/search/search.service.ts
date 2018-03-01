@@ -11,7 +11,7 @@ import {Observable} from 'rxjs/Observable';
 export class SearchService {
 
   private _lastSearchResult = new BehaviorSubject([]);
-  private lastSearchResult: Observable<Array<{
+  public lastSearchResult: Observable<Array<{
     _index: string;
     _type: string;
     _id: string;
@@ -24,6 +24,7 @@ export class SearchService {
     inner_hits?: any;
     sort?: string[];
   }>> = this._lastSearchResult.asObservable();
+  public hasSearchResult = false;
 
   constructor(private httpClient: HttpClient, private configService: ConfigService) {
   }
@@ -40,6 +41,7 @@ export class SearchService {
       .post(`${this.configService.getSearchEndpoint()}/_search`, search)
       .subscribe(data => {
         const res = data as SearchResponse<IKweet[] | IProfile[]>;
+        this.hasSearchResult = true;
         this._lastSearchResult.next(res.hits.hits);
       });
   }
