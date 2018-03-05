@@ -17,7 +17,7 @@ export class ViewKweetComponent implements OnInit {
   public kweet: Kweet;
   public profile : IProfile;
 
-  constructor(private loginService: LoginService, private kweetActionService: KweetActionService) {
+  constructor(public loginService: LoginService, private kweetActionService: KweetActionService) {
   }
 
   ngOnInit() {

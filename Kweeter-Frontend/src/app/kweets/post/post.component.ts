@@ -13,7 +13,7 @@ export class PostComponent implements OnInit {
 
   public kweet: IKweetPost | any = {};
 
-  constructor(private loginService: LoginService, private kweetService: KweetService) {
+  constructor(public loginService: LoginService, private kweetService: KweetService) {
   }
 
   ngOnInit() {
