@@ -1,5 +1,7 @@
 package nl.teun.kweeter.domain;
 
+import nl.teun.kweeter.Utilities;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -53,8 +55,9 @@ public class Kweet implements Serializable {
         return publicId;
     }
 
-    public void setPublicId(UUID publicId) {
+    public Kweet setPublicId(UUID publicId) {
         this.publicId = publicId.toString();
+        return this;
     }
 
     public Long getInternalId() {
@@ -94,8 +97,7 @@ public class Kweet implements Serializable {
     }
 
     public Kweet setDateWithLocalDateTime(LocalDateTime ldate) {
-        Instant instant = Instant.from(ldate.atZone(ZoneId.of("GMT")));
-        this.date = Date.from(instant);
+        this.date = Utilities.Companion.localDateTimeToJavaDate(ldate);
         return this;
     }
 
@@ -143,7 +145,6 @@ public class Kweet implements Serializable {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(getPublicId(), id, getTextContent(), getAuthor(), getDate(), getResponses(), getLikedBy(), getRekweets());
     }
 }

@@ -4,6 +4,7 @@ import nl.teun.kweeter.domain.Profile
 import javax.ejb.Stateless
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
+import javax.ws.rs.NotFoundException
 
 @Stateless
 class ProfileServiceImpl : ProfileService {
@@ -22,12 +23,7 @@ class ProfileServiceImpl : ProfileService {
     }
 
     override fun findById(id : Long): Profile {
-        return entityManager
-                .createNamedQuery("Profile.findbyid")
-                .setParameter("p_id", id)
-                .resultList
-                .filterIsInstance<Profile>()
-                .first()
+        return entityManager.find(Profile::class.java, id) ?: throw NotFoundException("Profile is null")
     }
 
     override fun findByEmail(email: String): Profile {

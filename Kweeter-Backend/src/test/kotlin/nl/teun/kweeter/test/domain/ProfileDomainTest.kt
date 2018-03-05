@@ -1,8 +1,10 @@
+package nl.teun.kweeter.test.domain
+
 import nl.teun.kweeter.domain.Profile
 import org.junit.Assert
 import org.junit.Test
 
-class ProfileTest {
+class ProfileDomainTest {
 
     @Test
     fun testProfile() {

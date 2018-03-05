@@ -9,6 +9,7 @@ import javax.ejb.Stateless
 import javax.inject.Inject
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
+import javax.ws.rs.NotFoundException
 
 @Stateless
 class KweetServiceImpl : KweetService {
@@ -43,13 +44,8 @@ class KweetServiceImpl : KweetService {
     }
 
     override fun findById(id : Long): Kweet {
-        val returnList = this.entityManager
-                .createNamedQuery("Kweet.findbyid")
-                .setParameter("k_id", id)
-                .resultList
-                .filterIsInstance<Kweet>()
-                .sortedByDescending { it.date.time }
-        return returnList.first()
+        val kweet = this.entityManager.find(Kweet::class.java, id) ?: throw NotFoundException("Kweet not found")
+        return kweet
     }
 
     override fun findByProfile(profile : Profile) : List<Kweet> {

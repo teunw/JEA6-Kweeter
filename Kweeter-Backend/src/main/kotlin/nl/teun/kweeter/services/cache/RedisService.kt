@@ -6,9 +6,9 @@ import java.util.*
 import javax.ejb.Stateless
 
 @Stateless
-class RedisService {
+class RedisService(port : Int = 6379) {
 
-    private var jedis = Jedis("localhost", 6379)
+    private var jedis = Jedis("localhost", port)
     private val gson = Gson()
 
     fun getJedis(): Jedis {
