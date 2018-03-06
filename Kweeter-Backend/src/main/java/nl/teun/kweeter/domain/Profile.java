@@ -41,6 +41,9 @@ public class Profile implements Serializable {
     @Column
     private String bio;
 
+    @Column
+    private String password;
+
     public Profile() {
     }
 

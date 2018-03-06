@@ -2,10 +2,8 @@ package nl.teun.kweeter.controllers
 
 import nl.teun.kweeter.controllers.types.response.KweetLikeResponse
 import nl.teun.kweeter.services.KweetService
-import nl.teun.kweeter.services.KweetServiceImpl
 import nl.teun.kweeter.services.ProfileService
 import javax.inject.Inject
-import javax.ws.rs.GET
 import javax.ws.rs.PUT
 import javax.ws.rs.Path
 import javax.ws.rs.PathParam
@@ -15,10 +13,10 @@ import javax.ws.rs.core.Response
 class KweetActionController {
 
     @Inject
-    private lateinit var kweetService : KweetService
+    private lateinit var kweetService: KweetService
 
     @Inject
-    private lateinit var profileService : ProfileService
+    private lateinit var profileService: ProfileService
 
     @PUT
     @Path("/like/{profileId}")
@@ -38,5 +36,4 @@ class KweetActionController {
         val res = KweetLikeResponse(!hasLiked, kweet)
         return Response.ok(res).build()
     }
-
 }

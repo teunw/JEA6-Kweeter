@@ -4,11 +4,13 @@ import nl.teun.kweeter.controllers.types.request.ProfilePost
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.services.ProfileService
 import nl.teun.kweeter.services.ValidatorService
+import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
 import javax.ws.rs.*
 import javax.ws.rs.core.Response
 
 @Path("/profiles")
+@RolesAllowed("user")
 class ProfileController {
 
     @Inject

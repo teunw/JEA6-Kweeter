@@ -1,7 +1,9 @@
 package nl.teun.kweeter.controllers
 
+import nl.teun.kweeter.annotations.Secured
 import nl.teun.kweeter.controllers.types.request.KweetPost
 import nl.teun.kweeter.domain.Kweet
+import nl.teun.kweeter.domain.KweetResponse
 import nl.teun.kweeter.services.KweetService
 import nl.teun.kweeter.services.ProfileService
 import java.time.LocalDateTime
@@ -78,6 +80,7 @@ class KweetController {
         return Response.ok(kweets).build()
     }
 
+    @Secured
     @POST
     @Path("/")
     fun createKweet(
@@ -92,7 +95,12 @@ class KweetController {
         val profileIdAsLong = requestPost.profileId.toLongOrNull()
                 ?: return Response.serverError().entity("profileId not a long").build()
 
-        val kweet = Kweet()
+        var kweet = Kweet()
+        if (requestPost.responseToKweetId > 0) {
+            kweet = KweetResponse()
+            val responseKweet = kweet
+            responseKweet.ParentKweet = responseKweet
+        }
 
         kweet.textContent = requestPost.textContent
         kweet.author = this.profileService.findById(profileIdAsLong)
