@@ -6,11 +6,12 @@ import javax.persistence.*
 
 @Entity
 @NamedQueries(
-        NamedQuery(name = "authToken.forprofile", query = "SELECT at FROM AuthToken at WHERE at.profile.id = :profileId")
+        NamedQuery(name = "authToken.forprofile", query = "SELECT at FROM AuthToken at WHERE at.profile.id = :profileId"),
+        NamedQuery(name = "authToken.fortoken", query = "SELECT at FROM AuthToken at WHERE at.token = :token")
 )
 data class AuthToken(
         @Id
-        val token: UUID = UUID.randomUUID(),
+        val token: String = UUID.randomUUID().toString(),
         @Column
         val profile: Profile? = null,
         @Column

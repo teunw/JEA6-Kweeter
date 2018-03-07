@@ -3,8 +3,8 @@ package nl.teun.kweeter.services
 import nl.teun.kweeter.domain.Profile
 import javax.ejb.Stateless
 import javax.persistence.EntityManager
+import javax.persistence.EntityNotFoundException
 import javax.persistence.PersistenceContext
-import javax.ws.rs.NotFoundException
 
 @Stateless
 class ProfileServiceImpl : ProfileService {
@@ -23,16 +23,19 @@ class ProfileServiceImpl : ProfileService {
     }
 
     override fun findById(id : Long): Profile {
-        return entityManager.find(Profile::class.java, id) ?: throw NotFoundException("Profile is null")
+        return entityManager.find(Profile::class.java, id) ?: throw EntityNotFoundException("Profile is null")
     }
 
     override fun findByEmail(email: String): Profile {
-        return entityManager
+        val results = this.entityManager
                 .createNamedQuery("Profile.findbyemail")
                 .setParameter("p_email", email)
                 .resultList
                 .filterIsInstance<Profile>()
-                .first()
+        if (results.isEmpty()) {
+            throw EntityNotFoundException("Profile not found")
+        }
+        return results.first()
     }
 
     override fun updateProfile(profile: Profile) {

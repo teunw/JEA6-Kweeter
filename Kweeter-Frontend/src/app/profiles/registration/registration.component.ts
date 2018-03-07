@@ -29,8 +29,13 @@ export class RegistrationComponent implements OnInit {
   attemptRegistration() {
     this.profileService.createProfile(this.profile)
       .subscribe(data => {
-        this.loginService.saveLoginInfo(data as IProfile);
+        this.loginService
+          .attemptLogin(this.profile.email, this.profile.password)
+          .then((res) => {
+            this.loginService.validateLogin(this.loginService.getAuthToken());
+          });
       });
+
   }
 
 }

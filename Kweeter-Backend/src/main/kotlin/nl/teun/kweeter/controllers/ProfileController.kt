@@ -1,5 +1,6 @@
 package nl.teun.kweeter.controllers
 
+import nl.teun.kweeter.annotations.KweeterAuthRequired
 import nl.teun.kweeter.controllers.types.request.ProfilePost
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.services.ProfileService
@@ -53,6 +54,7 @@ class ProfileController {
     }
 
     @PUT
+    @KweeterAuthRequired
     @Path("/{profileId}")
     fun updateProfile(
             @PathParam("profileId") id: Long,

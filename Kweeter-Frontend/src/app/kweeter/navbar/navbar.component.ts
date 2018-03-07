@@ -21,6 +21,7 @@ export class NavbarComponent implements OnInit {
       .loginInfo
       .subscribe(data => {
         this.profile = data as IProfile;
+        console.log(this.profile);
         $(function () {
           $(".dropdown-trigger").dropdown();
         });

@@ -1,6 +1,6 @@
 package nl.teun.kweeter.controllers
 
-import nl.teun.kweeter.annotations.Secured
+import nl.teun.kweeter.annotations.KweeterAuthRequired
 import nl.teun.kweeter.controllers.types.request.KweetPost
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.KweetResponse
@@ -80,7 +80,7 @@ class KweetController {
         return Response.ok(kweets).build()
     }
 
-    @Secured
+    @KweeterAuthRequired
     @POST
     @Path("/")
     fun createKweet(

@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {LoginService} from '../../../services/login.service';
 import {ProfileService} from '../../../services/profile.service';
 import {Router} from '@angular/router';
-import {IProfile} from '../../../profile';
 import 'materialize-css';
 
 @Component({
@@ -13,6 +12,7 @@ import 'materialize-css';
 export class LoginComponent implements OnInit {
 
   public email: string;
+  public password: string;
   public isSavingChanges = false;
 
   constructor(private loginService: LoginService, private profileService: ProfileService, private router: Router) {
@@ -23,17 +23,15 @@ export class LoginComponent implements OnInit {
 
   public login() {
     this.isSavingChanges = true;
-    this.profileService
-      .getProfileByEmail(this.email)
-      .subscribe(res => {
-        if (res instanceof Object) {
-          const profile = res as IProfile;
-          this.loginService.saveLoginInfo(profile);
-          M.toast({
-            html: `You are logged in, hello ${profile.displayName}!`
-          });
-          this.router.navigate([`profiles/${profile.id}`]);
-        }
+    this.loginService
+      .attemptLogin(this.email, this.password)
+      .then((res) => {
+        M.toast({html: 'You are logged in'});
+        this.router.navigate(['/']);
+      })
+      .catch((res) => {
+        M.toast({html: 'Invalid login'});
+        this.password = '';
       });
   }
 

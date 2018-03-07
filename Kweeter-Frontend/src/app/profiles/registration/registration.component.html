@@ -21,6 +21,10 @@
           <input *ngIf="!isLoggingIn" placeholder="Enter a contact url" type="url" class="validate materialize-textarea"
                  [(ngModel)]="profile.contactLink" (keyup)="formKeyUp($event)"/>
 
+          <input *ngIf="!isLoggingIn" placeholder="Enter a contact password" type="text"
+                 class="validate materialize-textarea"
+                 [(ngModel)]="profile.password" (keyup)="formKeyUp($event)"/>
+
           <button *ngIf="!isLoggingIn" class="btn btn-primary" (click)="attemptRegistration()"
                   style="margin-top: 25px;">
             Register

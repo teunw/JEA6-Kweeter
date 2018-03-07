@@ -6,4 +6,5 @@ export interface IProfile {
   location: string;
   contactLink: string;
   bio: string;
+  password: string;
 }

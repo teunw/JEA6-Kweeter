@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {ViewKweetsComponent} from './kweets/view-kweets/view-kweets.component';
 import {ConfigService} from './services/config.service';
 import {KweetService} from './services/kweet.service';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {RouterModule, Routes} from '@angular/router';
 import {MomentModule} from 'angular2-moment';
 import {ProfileComponent} from './profiles/profile/profile.component';
@@ -20,13 +20,14 @@ import {PostComponent} from './kweets/post/post.component';
 import {FormsModule} from '@angular/forms';
 import {NavbarComponent} from './kweeter/navbar/navbar.component';
 import {LoginComponent} from './kweeter/account/login/login.component';
-import {LoginService} from "./services/login.service";
+import {LoginService} from './services/login.service';
 import {ManageAccountComponent} from './kweeter/account/manage-account/manage-account.component';
 import {RegistrationComponent} from './profiles/registration/registration.component';
 import {LogoutComponent} from './kweeter/account/logout/logout.component';
-import {KweetActionService} from "./services/kweetaction.service";
+import {KweetActionService} from './services/kweetaction.service';
 import {SearchbarComponent} from './search/searchbar/searchbar.component';
-import {SearchService} from "./services/search/search.service";
+import {SearchService} from './services/search/search.service';
+import {JWTInterceptor} from './interceptor/JWT.interceptor';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -63,7 +64,20 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes, {enableTracing: false}),
     MomentModule
   ],
-  providers: [HttpClient, ConfigService, KweetService, ProfileService, LoginService, KweetActionService, SearchService],
+  providers: [
+    HttpClient,
+    ConfigService,
+    KweetService,
+    ProfileService,
+    LoginService,
+    KweetActionService,
+    SearchService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JWTInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {
