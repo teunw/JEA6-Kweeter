@@ -1,6 +1,6 @@
 package nl.teun.kweeter.controllers
 
-import nl.teun.kweeter.annotations.KweeterAuthRequired
+import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
 import nl.teun.kweeter.controllers.types.request.ProfilePost
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.services.ProfileService
@@ -8,7 +8,9 @@ import nl.teun.kweeter.services.ValidatorService
 import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
 import javax.ws.rs.*
+import javax.ws.rs.core.Context
 import javax.ws.rs.core.Response
+import javax.ws.rs.core.SecurityContext
 
 @Path("/profiles")
 @RolesAllowed("user")
@@ -55,15 +57,12 @@ class ProfileController {
 
     @PUT
     @KweeterAuthRequired
-    @Path("/{profileId}")
+    @Path("/")
     fun updateProfile(
-            @PathParam("profileId") id: Long,
-            reqProfile: ProfilePost
+            reqProfile: ProfilePost,
+            @Context securityContext: SecurityContext
     ): Response {
-        if (id < 0) {
-            return Response.serverError().entity("Id cannot be blank, got \"$id\"").build()
-        }
-        val dbProfile = profileService.findById(id)
+        val dbProfile = profileService.findByPrincipal(securityContext.userPrincipal)
         var updatedAnything = false
 
         if (!reqProfile.email.isBlank()) {

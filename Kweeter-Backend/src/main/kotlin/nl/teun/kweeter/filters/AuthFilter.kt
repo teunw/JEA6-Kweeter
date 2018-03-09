@@ -1,8 +1,12 @@
 package nl.teun.kweeter.filters
 
-import nl.teun.kweeter.annotations.KweeterAuthRequired
+import nl.teun.kweeter.authentication.KweetUserSecurityContext
+import nl.teun.kweeter.authentication.annotations.AuthenticatedUser
+import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
+import nl.teun.kweeter.domain.AuthToken
 import nl.teun.kweeter.services.AuthService
 import javax.annotation.Priority
+import javax.enterprise.event.Event
 import javax.inject.Inject
 import javax.persistence.EntityNotFoundException
 import javax.ws.rs.Priorities
@@ -22,6 +26,10 @@ open class AuthFilter : ContainerRequestFilter {
     }
 
     @Inject
+    @AuthenticatedUser
+    private lateinit var userAuthenticatedEvent: Event<String>
+
+    @Inject
     private lateinit var authService: AuthService
 
     override fun filter(requestContext: ContainerRequestContext) {
@@ -38,8 +46,9 @@ open class AuthFilter : ContainerRequestFilter {
         }
 
         val token = authHeader.substring(AUTHENTICATION_SCHEME.length).trim()
+        val authToken: AuthToken
         try {
-            authService.findAuthToken(token)
+            authToken = authService.findAuthToken(token)
         } catch (e: EntityNotFoundException) {
             requestContext.abortWith(
                     Response
@@ -49,6 +58,7 @@ open class AuthFilter : ContainerRequestFilter {
             )
             return
         }
-
+        requestContext.securityContext = KweetUserSecurityContext(authToken)
+        this.userAuthenticatedEvent.fire(authToken.token)
     }
 }

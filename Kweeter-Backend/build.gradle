@@ -76,6 +76,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.jboss.arquillian.junit/arquillian-junit-container
     testCompile group: 'org.jboss.arquillian.junit', name: 'arquillian-junit-container', version: '1.3.0.Final'
     testCompile "com.github.kstyrc:embedded-redis:0.6"
+    testCompile 'io.rest-assured:rest-assured:3.0.7'
 
     testCompile "junit:junit:4.12"
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"

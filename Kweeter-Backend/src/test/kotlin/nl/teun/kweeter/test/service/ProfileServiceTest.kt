@@ -35,6 +35,11 @@ class ProfileServiceTest {
 
     private var testProfile: Profile = Profile()
 
+    private var zeroProfile = Profile()
+            .setUsername("testUsername")
+            .setEmail("test@email.com")
+            .setDisplayName("Display Name")
+
     @Before
     fun beforeTests() {
         MockitoAnnotations.initMocks(this)
@@ -47,26 +52,19 @@ class ProfileServiceTest {
 
     @Test
     fun testProfileFindById() {
-        val zeroProfile = Profile()
-                .setUsername("testUsername")
-                .setEmail("test@email.com")
-                .setDisplayName("Display Name")
         Mockito
                 .`when`(profileService.findById(0))
                 .thenReturn(zeroProfile)
-
-        Assert.assertEquals(zeroProfile.username, "testUsername")
-        Assert.assertEquals(zeroProfile.email, "test@email.com")
-        Assert.assertEquals(zeroProfile.displayName, "Display Name")
+        val whenProfile = profileService.findById(0)
+        Assert.assertEquals(whenProfile.username, "testUsername")
+        Assert.assertEquals(whenProfile.email, "test@email.com")
+        Assert.assertEquals(whenProfile.displayName, "Display Name")
     }
 
     @Test(expected = Exception::class)
     fun testProfileCreation() {
-        val zeroProfile = Profile()
-                .setUsername("testUsername")
-                .setEmail("test@email.com")
-                .setDisplayName("Display Name")
-        Mockito.`when`(profileService.createProfile(zeroProfile)).thenThrow(Exception("Works"))
+        Mockito
+                .`when`(profileService.createProfile(zeroProfile))
         profileService.createProfile(zeroProfile)
     }
 

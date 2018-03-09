@@ -4,9 +4,7 @@ import nl.teun.kweeter.Utilities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 
 @Entity
@@ -29,7 +27,7 @@ public class Kweet implements Serializable {
     @Column(nullable = false)
     private String textContent = "";
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REFRESH)
     private Profile author;
 
     @Column(nullable = false)

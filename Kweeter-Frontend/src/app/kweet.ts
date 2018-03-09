@@ -44,6 +44,5 @@ export class Kweet implements IKweet {
 }
 
 export interface IKweetPost {
-  profileId: number;
   textContent: string;
 }

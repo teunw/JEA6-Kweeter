@@ -16,7 +16,7 @@ export class KweetActionService {
   }
 
   public likeKweet(kweet: IKweet, profile:IProfile) {
-    return this.httpClient.put(`${this.configService.getKweeterEndpoint()}/kweets/actions/${kweet.internalId}/like/${profile.id}`, {})
+    return this.httpClient.put(`${this.configService.getKweeterEndpoint()}/kweets/actions/${kweet.internalId}/like`, {})
       .subscribe(data => {});
   }
 

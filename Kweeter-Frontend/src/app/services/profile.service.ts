@@ -26,6 +26,6 @@ export class ProfileService {
   }
 
   updateProfile(profile: IProfile) {
-    return this.httpClient.put<IProfile>(`${this.configService.getKweeterEndpoint()}/profiles/${profile.id}`, profile);
+    return this.httpClient.put<IProfile>(`${this.configService.getKweeterEndpoint()}/profiles`, profile);
   }
 }

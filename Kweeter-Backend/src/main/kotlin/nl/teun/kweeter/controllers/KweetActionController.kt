@@ -1,5 +1,6 @@
 package nl.teun.kweeter.controllers
 
+import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
 import nl.teun.kweeter.controllers.types.response.KweetLikeResponse
 import nl.teun.kweeter.services.KweetService
 import nl.teun.kweeter.services.ProfileService
@@ -7,7 +8,9 @@ import javax.inject.Inject
 import javax.ws.rs.PUT
 import javax.ws.rs.Path
 import javax.ws.rs.PathParam
+import javax.ws.rs.core.Context
 import javax.ws.rs.core.Response
+import javax.ws.rs.core.SecurityContext
 
 @Path("/kweets/actions/{kweetId}")
 class KweetActionController {
@@ -18,11 +21,13 @@ class KweetActionController {
     @Inject
     private lateinit var profileService: ProfileService
 
+    @KweeterAuthRequired
     @PUT
-    @Path("/like/{profileId}")
-    fun toggleLikeKweet(@PathParam("kweetId") kweetId: Long, @PathParam("profileId") profileId: Long): Response? {
+    @Path("/like")
+    fun toggleLikeKweet(@PathParam("kweetId") kweetId: Long,
+                        @Context securityContext: SecurityContext): Response? {
         val kweet = this.kweetService.findById(kweetId)
-        val profile = this.profileService.findById(profileId)
+        val profile = this.profileService.findByPrincipal(securityContext.userPrincipal)
         val hasLiked = kweet.likedBy.contains(profile)
 
         if (hasLiked) {

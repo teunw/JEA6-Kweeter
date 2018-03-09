@@ -1,6 +1,7 @@
 package nl.teun.kweeter.services
 
 import nl.teun.kweeter.domain.Profile
+import java.security.Principal
 import javax.ejb.Stateless
 import javax.persistence.EntityManager
 import javax.persistence.EntityNotFoundException
@@ -10,21 +11,19 @@ import javax.persistence.PersistenceContext
 class ProfileServiceImpl : ProfileService {
 
     @PersistenceContext
-    private lateinit var entityManager : EntityManager
+    private lateinit var entityManager: EntityManager
 
-    override fun findAll(maxResults: Int, offsetResults: Int): List<Profile> {
-        return this.entityManager
-                .createNamedQuery("Profile.all")
-                .setMaxResults(maxResults)
-                .setFirstResult(offsetResults)
-                .resultList
-                .filterIsInstance<Profile>()
-                .toList()
-    }
+    override fun findAll(maxResults: Int, offsetResults: Int) =
+            this.entityManager
+                    .createNamedQuery("Profile.all")
+                    .setMaxResults(maxResults)
+                    .setFirstResult(offsetResults)
+                    .resultList
+                    .filterIsInstance<Profile>()
+                    .toList()
 
-    override fun findById(id : Long): Profile {
-        return entityManager.find(Profile::class.java, id) ?: throw EntityNotFoundException("Profile is null")
-    }
+    override fun findById(id: Long) = entityManager.find(Profile::class.java, id)
+            ?: throw EntityNotFoundException("Profile is null")
 
     override fun findByEmail(email: String): Profile {
         val results = this.entityManager
@@ -46,5 +45,20 @@ class ProfileServiceImpl : ProfileService {
     override fun createProfile(profile: Profile) {
         this.entityManager.persist(profile)
         this.entityManager.flush()
+    }
+
+    override fun findByPrincipal(userPrincipal: Principal): Profile {
+        val possibleProfiles = this.entityManager
+                .createNamedQuery("Profile.findbyusername")
+                .setParameter("p_username", userPrincipal.name)
+                .resultList
+                .filterIsInstance<Profile>()
+        if (possibleProfiles.isEmpty()) {
+            throw EntityNotFoundException("Profile not found")
+        }
+        if (possibleProfiles.size != 1) {
+            throw Exception("Found multiple profiles for same username")
+        }
+        return possibleProfiles.first()
     }
 }

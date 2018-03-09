@@ -1,4 +1,4 @@
-package nl.teun.kweeter.annotations
+package nl.teun.kweeter.authentication.annotations
 
 import javax.ws.rs.NameBinding
 

@@ -1,16 +1,20 @@
 package nl.teun.kweeter.controllers
 
-import nl.teun.kweeter.annotations.KweeterAuthRequired
+import nl.teun.kweeter.authentication.annotations.AuthenticatedUser
+import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
 import nl.teun.kweeter.controllers.types.request.KweetPost
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.KweetResponse
+import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.services.KweetService
 import nl.teun.kweeter.services.ProfileService
 import java.time.LocalDateTime
 import java.util.*
 import javax.inject.Inject
 import javax.ws.rs.*
+import javax.ws.rs.core.Context
 import javax.ws.rs.core.Response
+import javax.ws.rs.core.SecurityContext
 
 @Path("/kweets")
 class KweetController {
@@ -20,6 +24,10 @@ class KweetController {
 
     @Inject
     private lateinit var profileService: ProfileService
+
+    @Inject
+    @AuthenticatedUser
+    private lateinit var authenticatedUser: Profile
 
     @GET
     @Path("/")
@@ -45,12 +53,14 @@ class KweetController {
         return Response.ok(kweetService.findById(kweetIdAsLong)).build()
     }
 
+    @KweeterAuthRequired
     @PUT
     @Path("/{kweetId}")
     fun updateKweet(
             @PathParam("kweetId") kweetId: Long,
             @QueryParam("profileId") profileId: String,
-            @QueryParam("textContent") textContent: String
+            @QueryParam("textContent") textContent: String,
+            @Context securityContext: SecurityContext
     ): Response {
         if (profileId.isEmpty()) {
             return Response.serverError().entity("profileId is empty").build()
@@ -58,11 +68,9 @@ class KweetController {
         if (textContent.isEmpty()) {
             return Response.serverError().entity("textContent is empty").build()
         }
-        val profileIdAsLong = profileId.toLongOrNull()
-                ?: return Response.serverError().entity("profileId not a long").build()
 
         val kweet = this.kweetService.findById(kweetId)
-        kweet.author = this.profileService.findById(profileIdAsLong)
+        kweet.author = this.profileService.findByPrincipal(securityContext.userPrincipal)
         kweet.textContent = textContent
         return Response.ok(kweet).build()
     }
@@ -84,17 +92,12 @@ class KweetController {
     @POST
     @Path("/")
     fun createKweet(
-            requestPost: KweetPost
+            requestPost: KweetPost,
+            @Context securityContext: SecurityContext
     ): Response {
-        if (requestPost.profileId.isEmpty()) {
-            return Response.serverError().entity("profileId is empty (\"${requestPost.profileId}\")").build()
-        }
         if (requestPost.textContent.isEmpty()) {
-            return Response.serverError().entity("textContent is empty (\"${requestPost.textContent}\", \"${requestPost.profileId}\")").build()
+            return Response.status(Response.Status.BAD_REQUEST).entity("textContent is empty (\"${requestPost.textContent}\"").build()
         }
-        val profileIdAsLong = requestPost.profileId.toLongOrNull()
-                ?: return Response.serverError().entity("profileId not a long").build()
-
         var kweet = Kweet()
         if (requestPost.responseToKweetId > 0) {
             kweet = KweetResponse()
@@ -103,7 +106,7 @@ class KweetController {
         }
 
         kweet.textContent = requestPost.textContent
-        kweet.author = this.profileService.findById(profileIdAsLong)
+        kweet.author = this.profileService.findByPrincipal(securityContext.userPrincipal)
         kweet.setPublicId(UUID.randomUUID())
         kweet.setDateWithLocalDateTime(LocalDateTime.now())
 

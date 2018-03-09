@@ -1,5 +1,6 @@
 package nl.teun.kweeter.domain;
 
+import nl.teun.kweeter.authentication.ProfileRole;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.persistence.*;
@@ -42,7 +43,7 @@ public class Profile implements Serializable {
     private String bio;
 
     @Column
-    private String password;
+    private ProfileRole role;
 
     public Profile() {
     }
@@ -118,6 +119,19 @@ public class Profile implements Serializable {
 
     public boolean checkPassword(String pass) {
         return BCrypt.checkpw(pass, this.bCryptHash);
+    }
+
+    public ProfileRole getRole() {
+        return role;
+    }
+
+    public Profile setRole(ProfileRole role) {
+        this.role = role;
+        return this;
+    }
+
+    public boolean hasRole(String role) {
+        return this.role.name().equals(role);
     }
 
     @Override
