@@ -24,13 +24,6 @@ class KweetServiceImpl : KweetService {
     private val KweetCacheName = "Cache_Kweets"
 
     override fun findAll(maxResults: Int, offsetResults: Int): List<Kweet> {
-        if (redisCache.hasCachedObjects(this.KweetCacheName)) {
-            System.out.println("Getting cached objects")
-            return redisCache
-                    .getCachedObjects(KweetCacheName)
-                    .map { it -> gson.fromJson(it, Kweet::class.java) }
-                    .sortedByDescending { it.date.time }
-        }
         val kweets = this.entityManager
                 .createNamedQuery("Kweet.all")
                 .setMaxResults(maxResults)
@@ -39,7 +32,6 @@ class KweetServiceImpl : KweetService {
                 .filterIsInstance<Kweet>()
                 .toList()
                 .sortedByDescending { it.date.time }
-        kweets.forEach { it -> redisCache.cacheObject(it, KweetCacheName) }
         return kweets
     }
 
@@ -58,7 +50,6 @@ class KweetServiceImpl : KweetService {
 
     override fun updateKweet(kweet: Kweet) {
         this.entityManager.merge(kweet)
-        this.redisCache.invalidate(this.KweetCacheName)
     }
 
     override fun createKweet(kweet: Kweet) {
@@ -66,6 +57,5 @@ class KweetServiceImpl : KweetService {
             kweet.setPublicId(UUID.randomUUID())
         }
         this.entityManager.persist(kweet)
-        this.redisCache.invalidate(this.KweetCacheName)
     }
 }

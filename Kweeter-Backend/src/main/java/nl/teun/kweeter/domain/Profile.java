@@ -15,7 +15,7 @@ import java.util.Objects;
         @NamedQuery(name = "Profile.findbyemail", query = "SELECT p FROM Profile p WHERE p.email = :p_email ORDER BY p.id"),
         @NamedQuery(name = "Profile.findbyusername", query = "SELECT p FROM Profile p WHERE p.username = :p_username ORDER BY p.id")
 })
-public class Profile implements Serializable {
+public class Profile implements Serializable, Cloneable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -132,6 +132,15 @@ public class Profile implements Serializable {
 
     public boolean hasRole(String role) {
         return this.role.name().equals(role);
+    }
+
+    @Override
+    public Profile clone() throws CloneNotSupportedException {
+        Object clone = super.clone();
+        if (clone instanceof Profile) {
+            return (Profile) clone;
+        }
+        throw new CloneNotSupportedException("Clone failed, clone not a profile");
     }
 
     @Override
