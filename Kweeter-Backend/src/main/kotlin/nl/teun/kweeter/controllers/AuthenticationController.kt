@@ -1,8 +1,10 @@
 package nl.teun.kweeter.controllers
 
+import com.sun.istack.internal.logging.Logger
 import nl.teun.kweeter.controllers.types.request.AuthenticationRequest
 import nl.teun.kweeter.domain.AuthToken
 import nl.teun.kweeter.filters.AuthFilter
+import nl.teun.kweeter.httpResponseBadRequest
 import nl.teun.kweeter.services.AuthService
 import nl.teun.kweeter.services.ProfileService
 import javax.inject.Inject
@@ -27,7 +29,7 @@ class AuthenticationController {
     @Path("/authenticate")
     fun authenticateUser(authRequest: AuthenticationRequest): Response {
         if (authRequest.email == null || authRequest.email.isBlank() || authRequest.password == null || authRequest.password.isBlank()) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Email or password field is blank").build()
+            return httpResponseBadRequest().entity("Email or password field is blank").build()
         }
 
         val profile = profileService.findByEmail(authRequest.email)
@@ -47,8 +49,7 @@ class AuthenticationController {
     fun validateKey(@HeaderParam(HttpHeaders.AUTHORIZATION) authorization: String): Response {
 
         if (!authorization.trim().toLowerCase().startsWith(AuthFilter.AUTHENTICATION_SCHEME.toLowerCase())) {
-            return Response
-                    .status(Response.Status.BAD_REQUEST)
+            return httpResponseBadRequest()
                     .entity("Auth header not valid or not present")
                     .build()
 

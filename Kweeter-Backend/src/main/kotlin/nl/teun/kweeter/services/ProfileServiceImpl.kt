@@ -1,5 +1,7 @@
 package nl.teun.kweeter.services
 
+import com.sun.istack.internal.logging.Logger
+import nl.teun.kweeter.controllers.KweetJaxApplication
 import nl.teun.kweeter.domain.Profile
 import java.security.Principal
 import javax.ejb.Stateless

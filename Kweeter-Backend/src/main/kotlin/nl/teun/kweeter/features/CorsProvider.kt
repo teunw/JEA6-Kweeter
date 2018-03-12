@@ -8,7 +8,7 @@ open class CorsProvider : Feature {
 
     @Override
     override fun configure(context: FeatureContext): Boolean {
-        var corsFilter = CorsFilter()
+        val corsFilter = CorsFilter()
         corsFilter.allowedOrigins.add("*")
         context.register(corsFilter)
         return true

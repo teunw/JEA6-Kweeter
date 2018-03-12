@@ -59,8 +59,8 @@ class FollowerServiceImpl : FollowerService {
         entityManager.persist(profileFollower)
     }
 
-    override fun getFollowers(target: Profile): List<ProfileFollower> = this
-            .entityManager
+    override fun getFollowers(target: Profile): List<ProfileFollower> =
+            this.entityManager
             .createNamedQuery("profilefollower.byprofile")
             .setParameter("profileId", target.id)
             .resultList

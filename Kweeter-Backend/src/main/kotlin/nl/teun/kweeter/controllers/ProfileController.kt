@@ -3,6 +3,7 @@ package nl.teun.kweeter.controllers
 import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
 import nl.teun.kweeter.controllers.types.request.ProfilePost
 import nl.teun.kweeter.domain.Profile
+import nl.teun.kweeter.httpResponseBadRequest
 import nl.teun.kweeter.services.ProfileService
 import nl.teun.kweeter.services.ValidatorService
 import javax.annotation.security.RolesAllowed
@@ -20,13 +21,13 @@ class ProfileController {
     private lateinit var profileService: ProfileService
 
     @Inject
-    private lateinit var validatorService: ValidatorService
+    private lateinit var validatorServiceImpl: ValidatorService
 
     @GET
     @Path("/by-email/{email}")
     fun getProfileByEmail(@PathParam("email") email: String): Response? {
         if (email.isBlank()) {
-            return Response.serverError().entity("Email cannot be blank").build()
+            return httpResponseBadRequest().entity("Email cannot be blank").build()
         }
         val profile = this.profileService.findByEmail(email)
         return Response.ok(profile).build()
@@ -36,7 +37,7 @@ class ProfileController {
     @Path("/{userId}")
     fun getProfile(@PathParam("userId") userId: String): Response? {
         if (userId.isBlank()) {
-            return Response.serverError().entity("userId is empty").build()
+            return httpResponseBadRequest().entity("userId is empty").build()
         }
         val intToNumber = userId.toLongOrNull()
                 ?: return Response.serverError().entity("userId is not parsable to long").build()
@@ -49,7 +50,7 @@ class ProfileController {
     @Path("/")
     fun getProfiles(@QueryParam("results") results: Int, @QueryParam("page") page: Int): Response? {
         if (results > 100) {
-            return Response.serverError().entity("For performance reasons > 100 results is not allowed").build()
+            return Response.status(Response.Status.PARTIAL_CONTENT).entity(profileService.findAll(100 )).build()
         }
         val amountOfResults = if (results == 0) results else 50
         return Response.ok(profileService.findAll(amountOfResults, page)).build()
@@ -87,8 +88,7 @@ class ProfileController {
         }
 
         if (!updatedAnything) {
-            return Response
-                    .serverError()
+            return httpResponseBadRequest()
                     .entity("One of the parameters is empty")
                     .entity(reqProfile.email)
                     .entity(reqProfile.username)
@@ -105,17 +105,15 @@ class ProfileController {
             profile: Profile
     ): Response? {
         if (profile.email.isBlank() || profile.username.isBlank() || profile.displayName.isBlank()) {
-            return Response
-                    .serverError()
+            return httpResponseBadRequest()
                     .entity("One of the parameters is empty")
                     .entity(profile.email)
                     .entity(profile.username)
                     .entity(profile.displayName)
                     .build()
         }
-        if (!this.validatorService.isUsernameValid(profile.username)) {
-            val usernameRegex = this.validatorService.usernameRegex.pattern
-            return Response.serverError().entity("Username is invalid, regex: $usernameRegex").build()
+        if (!this.validatorServiceImpl.isUsernameValid(profile.username)) {
+            return Response.serverError().entity("Username is invalid").build()
         }
         this.profileService.createProfile(profile)
         return Response.ok(profile).build()
