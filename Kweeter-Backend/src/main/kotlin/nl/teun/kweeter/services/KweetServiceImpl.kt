@@ -15,7 +15,7 @@ import javax.ws.rs.NotFoundException
 class KweetServiceImpl : KweetService {
 
     @PersistenceContext
-    private lateinit var entityManager : EntityManager
+    private lateinit var entityManager: EntityManager
 
     @Inject
     private lateinit var redisCache: RedisService
@@ -23,30 +23,24 @@ class KweetServiceImpl : KweetService {
     private val gson = Gson()
     private val KweetCacheName = "Cache_Kweets"
 
-    override fun findAll(maxResults: Int, offsetResults: Int): List<Kweet> {
-        val kweets = this.entityManager
-                .createNamedQuery("Kweet.all")
-                .setMaxResults(maxResults)
-                .setFirstResult(offsetResults)
-                .resultList
-                .filterIsInstance<Kweet>()
-                .toList()
-                .sortedByDescending { it.date.time }
-        return kweets
-    }
+    override fun findAll(maxResults: Int, offsetResults: Int) =
+            this.entityManager
+                    .createNamedQuery("Kweet.all")
+                    .setMaxResults(maxResults)
+                    .setFirstResult(offsetResults)
+                    .resultList
+                    .filterIsInstance<Kweet>()
+                    .sortedByDescending { it.date.time }
 
-    override fun findById(id : Long): Kweet {
-        val kweet = this.entityManager.find(Kweet::class.java, id) ?: throw NotFoundException("Kweet not found")
-        return kweet
-    }
+    override fun findById(id: Long) = this.entityManager.find(Kweet::class.java, id)
+            ?: throw NotFoundException("Kweet not found")
 
-    override fun findByProfile(profile : Profile) : List<Kweet> {
-        return this.entityManager
-                .createNamedQuery("Kweet.findbyprofile")
-                .setParameter("p_id", profile.id)
-                .resultList
-                .filterIsInstance<Kweet>()
-    }
+    override fun findByProfile(profile: Profile) =
+            this.entityManager
+                    .createNamedQuery("Kweet.findbyprofile")
+                    .setParameter("p_id", profile.id)
+                    .resultList
+                    .filterIsInstance<Kweet>()
 
     override fun updateKweet(kweet: Kweet) {
         this.entityManager.merge(kweet)

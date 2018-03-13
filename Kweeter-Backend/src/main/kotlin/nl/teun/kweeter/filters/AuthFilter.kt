@@ -4,6 +4,7 @@ import nl.teun.kweeter.authentication.KweetUserSecurityContext
 import nl.teun.kweeter.authentication.annotations.AuthenticatedUser
 import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
 import nl.teun.kweeter.domain.AuthToken
+import nl.teun.kweeter.httpResponseBadRequest
 import nl.teun.kweeter.services.AuthService
 import javax.annotation.Priority
 import javax.enterprise.event.Event
@@ -37,8 +38,7 @@ open class AuthFilter : ContainerRequestFilter {
 
         if (authHeader == null || !authHeader.trim().toLowerCase().startsWith(AUTHENTICATION_SCHEME.toLowerCase())) {
             requestContext.abortWith(
-                    Response
-                            .status(Response.Status.BAD_REQUEST)
+                    httpResponseBadRequest()
                             .entity("Auth header not valid or not present")
                             .build()
             )

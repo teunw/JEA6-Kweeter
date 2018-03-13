@@ -62,19 +62,12 @@ class CorsFilter : ContainerRequestFilter, ContainerResponseFilter {
     }
 
     companion object {
-
-        private val HEADER_ORIGIN = "Origin"
-
-        private val HEADER_ACCESS_CONTROL_ALLOW_ORIGIN = "Access-Control-Allow-Origin"
-
-        private val HEADER_ACCESS_CONTROL_ALLOW_CREDENTIALS = "Access-Control-Allow-Credentials"
-
-        private val HEADER_ACCESS_CONTROL_REQUEST_METHOD = "Access-Control-Request-Method"
-
-        private val HEADER_ACCESS_CONTROL_ALLOW_METHODS = "Access-Control-Allow-Methods"
-
-        private val HEADER_ACCESS_CONTROL_REQUEST_HEADERS = "Access-Control-Request-Headers"
-
-        private val HEADER_ACCESS_CONTROL_ALLOW_HEADERS = "Access-Control-Allow-Headers"
+        private const val HEADER_ORIGIN = "Origin"
+        private const val HEADER_ACCESS_CONTROL_ALLOW_ORIGIN = "Access-Control-Allow-Origin"
+        private const val HEADER_ACCESS_CONTROL_ALLOW_CREDENTIALS = "Access-Control-Allow-Credentials"
+        private const val HEADER_ACCESS_CONTROL_REQUEST_METHOD = "Access-Control-Request-Method"
+        private const val HEADER_ACCESS_CONTROL_ALLOW_METHODS = "Access-Control-Allow-Methods"
+        private const val HEADER_ACCESS_CONTROL_REQUEST_HEADERS = "Access-Control-Request-Headers"
+        private const val HEADER_ACCESS_CONTROL_ALLOW_HEADERS = "Access-Control-Allow-Headers"
     }
 }

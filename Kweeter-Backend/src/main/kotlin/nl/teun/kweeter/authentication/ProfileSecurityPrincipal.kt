@@ -6,7 +6,5 @@ import java.security.Principal
 class ProfileSecurityPrincipal(
         val profile: Profile
 ) : Principal {
-    override fun getName(): String {
-        return profile.username
-    }
+    override fun getName() = profile.username!!
 }

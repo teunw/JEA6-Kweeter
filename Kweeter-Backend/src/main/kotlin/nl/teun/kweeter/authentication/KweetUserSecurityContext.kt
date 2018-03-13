@@ -4,12 +4,9 @@ import nl.teun.kweeter.domain.AuthToken
 import javax.ws.rs.core.SecurityContext
 
 class KweetUserSecurityContext(
-        val authToken: AuthToken
+        private val authToken: AuthToken
 ) : SecurityContext {
-    override fun isUserInRole(role: String?): Boolean {
-        val profile = this.authToken.profile ?: return false
-        return profile.hasRole(role)
-    }
+    override fun isUserInRole(role: String?) = this.authToken.profile != null && this.authToken.profile.hasRole(role)
 
     override fun getAuthenticationScheme() = "JWT"
 

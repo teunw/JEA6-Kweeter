@@ -1,12 +1,17 @@
 package nl.teun.kweeter.test.service
 
 import nl.teun.kweeter.services.ValidatorService
+import nl.teun.kweeter.services.ValidatorServiceImpl
+import org.jboss.arquillian.junit.Arquillian
 import org.junit.Assert
 import org.junit.Test
+import org.junit.runner.RunWith
+import javax.inject.Inject
 
+@RunWith(Arquillian::class)
 class ValidatorServiceTest {
 
-    private val validatorService : ValidatorService = ValidatorService()
+    private val validatorService = ValidatorServiceImpl()
 
     @Test
     fun testUsernameValidation() {

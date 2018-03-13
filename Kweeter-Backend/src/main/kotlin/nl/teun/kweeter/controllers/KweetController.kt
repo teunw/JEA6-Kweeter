@@ -5,6 +5,8 @@ import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
 import nl.teun.kweeter.controllers.types.request.KweetPost
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
+import nl.teun.kweeter.httpResponseBadRequest
+import nl.teun.kweeter.httpResponseNotFound
 import nl.teun.kweeter.services.KweetService
 import nl.teun.kweeter.services.ProfileService
 import nl.teun.kweeter.toKweetFacade
@@ -34,7 +36,7 @@ class KweetController {
     @Produces
     fun getKweets(@QueryParam("results") results: Int, @QueryParam("page") page: Int): Response? {
         if (results > 100) {
-            return Response.serverError().entity("For performance reasons > 100 results is not allowed").build()
+            return httpResponseNotFound().entity("For performance reasons > 100 results is not allowed").build()
         }
         val amountOfResults = if (results != 0) results else 50
         val kweets = kweetService.findAll(amountOfResults, page * results).map { it.toKweetFacade() }
@@ -46,7 +48,7 @@ class KweetController {
     @Produces
     fun getKweet(@PathParam("kweetId") kweetId: String): Response {
         if (kweetId.isEmpty()) {
-            return Response.serverError().entity("kweetId is empty").build()
+            return httpResponseBadRequest().entity("kweetId is empty").build()
         }
         val kweetIdAsLong = kweetId.toLongOrNull()
                 ?: return Response.serverError().entity("profileId not a long").build()
@@ -64,10 +66,10 @@ class KweetController {
             @Context securityContext: SecurityContext
     ): Response {
         if (profileId.isEmpty()) {
-            return Response.serverError().entity("profileId is empty").build()
+            return httpResponseBadRequest().entity("profileId is empty").build()
         }
         if (textContent.isEmpty()) {
-            return Response.serverError().entity("textContent is empty").build()
+            return httpResponseBadRequest().entity("textContent is empty").build()
         }
 
         val kweet = this.kweetService.findById(kweetId)
@@ -83,7 +85,7 @@ class KweetController {
             return Response.serverError().entity("Profile with id: $profileId not found").build()
         }
         val longProfileId = profileId.toLongOrNull()
-                ?: return Response.serverError().entity("Profile ID not a long").build()
+                ?: return httpResponseBadRequest().entity("Profile ID not a long").build()
         val profile = this.profileService.findById(longProfileId)
         val kweets = this.kweetService.findByProfile(profile).map { it.toKweetFacade() }
         return Response.ok(kweets).build()
@@ -97,7 +99,7 @@ class KweetController {
             @Context securityContext: SecurityContext
     ): Response {
         if (requestPost.textContent.isEmpty()) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("textContent is empty (\"${requestPost.textContent}\"").build()
+            return httpResponseBadRequest().entity("textContent is empty (\"${requestPost.textContent}\"").build()
         }
         val kweet = Kweet()
 
