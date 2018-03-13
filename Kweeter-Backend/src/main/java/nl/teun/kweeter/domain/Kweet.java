@@ -1,6 +1,7 @@
 package nl.teun.kweeter.domain;
 
 import nl.teun.kweeter.Utilities;
+import nl.teun.kweeter.facades.KweetFacade;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -33,20 +34,20 @@ public class Kweet implements Serializable {
     @Column(nullable = false)
     private Date date;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<KweetResponse> responses;
-
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Profile> likedBy;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Rekweet> rekweets;
-
     public Kweet() {
         this.date = new Date();
-        this.responses = new ArrayList<>();
         this.likedBy = new ArrayList<>();
-        this.rekweets = new ArrayList<>();
+    }
+
+    public Kweet(KweetFacade kweetFacade) {
+        this.setAuthor(new Profile(kweetFacade.getAuthor()))
+                .setDate(kweetFacade.getDate())
+                .setPublicId(UUID.fromString(kweetFacade.getPublicId()))
+                .setTextContent(kweetFacade.getTextContent());
+        kweetFacade.getLikedBy().forEach(c -> this.likedBy.add(new Profile(c)));
     }
 
     public String getPublicId() {
@@ -99,30 +100,12 @@ public class Kweet implements Serializable {
         return this;
     }
 
-    public Collection<KweetResponse> getResponses() {
-        return responses;
-    }
-
-    public Kweet setResponses(List<KweetResponse> responses) {
-        this.responses = responses;
-        return this;
-    }
-
     public Collection<Profile> getLikedBy() {
         return likedBy;
     }
 
     public Kweet setLikedBy(List<Profile> likedBy) {
         this.likedBy = likedBy;
-        return this;
-    }
-
-    public Collection<Rekweet> getRekweets() {
-        return rekweets;
-    }
-
-    public Kweet setRekweets(List<Rekweet> rekweets) {
-        this.rekweets = rekweets;
         return this;
     }
 
@@ -136,13 +119,11 @@ public class Kweet implements Serializable {
                 Objects.equals(getTextContent(), kweet.getTextContent()) &&
                 Objects.equals(getAuthor(), kweet.getAuthor()) &&
                 Objects.equals(getDate(), kweet.getDate()) &&
-                Objects.equals(getResponses(), kweet.getResponses()) &&
-                Objects.equals(getLikedBy(), kweet.getLikedBy()) &&
-                Objects.equals(getRekweets(), kweet.getRekweets());
+                Objects.equals(getLikedBy(), kweet.getLikedBy());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPublicId(), id, getTextContent(), getAuthor(), getDate(), getResponses(), getLikedBy(), getRekweets());
+        return Objects.hash(getPublicId(), id, getTextContent(), getAuthor(), getDate(), getLikedBy());
     }
 }

@@ -2,9 +2,11 @@ package nl.teun.kweeter.controllers
 
 import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
 import nl.teun.kweeter.controllers.types.request.ProfilePost
-import nl.teun.kweeter.domain.Profile
+import nl.teun.kweeter.facades.ProfileFacade
 import nl.teun.kweeter.services.ProfileService
 import nl.teun.kweeter.services.ValidatorService
+import nl.teun.kweeter.toProfile
+import nl.teun.kweeter.toProfileFacade
 import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
 import javax.ws.rs.*
@@ -29,7 +31,7 @@ class ProfileController {
             return Response.serverError().entity("Email cannot be blank").build()
         }
         val profile = this.profileService.findByEmail(email)
-        return Response.ok(profile).build()
+        return Response.ok(profile.toProfileFacade()).build()
     }
 
     @GET
@@ -42,7 +44,7 @@ class ProfileController {
                 ?: return Response.serverError().entity("userId is not parsable to long").build()
         val profile = profileService.findById(intToNumber)
 
-        return Response.ok(profile).build()
+        return Response.ok(profile.toProfileFacade()).build()
     }
 
     @GET
@@ -52,7 +54,8 @@ class ProfileController {
             return Response.serverError().entity("For performance reasons > 100 results is not allowed").build()
         }
         val amountOfResults = if (results == 0) results else 50
-        return Response.ok(profileService.findAll(amountOfResults, page)).build()
+        val profileFacades = this.profileService.findAll(amountOfResults, page).map { it.toProfileFacade() }
+        return Response.ok(profileFacades).build()
     }
 
     @PUT
@@ -96,19 +99,19 @@ class ProfileController {
                     .build()
         }
         this.profileService.updateProfile(dbProfile)
-        return Response.ok(dbProfile).build()
+        return Response.ok(dbProfile.toProfileFacade()).build()
     }
 
     @POST
     @Path("/")
     fun createProfile(
-            profile: Profile
+            profile: ProfileFacade
     ): Response? {
-        if (profile.email.isBlank() || profile.username.isBlank() || profile.displayName.isBlank()) {
+        if (profile.emailAddress.isBlank() || profile.username.isBlank() || profile.displayName.isBlank()) {
             return Response
                     .serverError()
                     .entity("One of the parameters is empty")
-                    .entity(profile.email)
+                    .entity(profile.emailAddress)
                     .entity(profile.username)
                     .entity(profile.displayName)
                     .build()
@@ -117,7 +120,7 @@ class ProfileController {
             val usernameRegex = this.validatorService.usernameRegex.pattern
             return Response.serverError().entity("Username is invalid, regex: $usernameRegex").build()
         }
-        this.profileService.createProfile(profile)
+        this.profileService.createProfile(profile.toProfile())
         return Response.ok(profile).build()
     }
 }

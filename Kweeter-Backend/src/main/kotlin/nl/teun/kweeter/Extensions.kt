@@ -1,5 +1,9 @@
 package nl.teun.kweeter
 
+import nl.teun.kweeter.domain.Kweet
+import nl.teun.kweeter.domain.Profile
+import nl.teun.kweeter.facades.KweetFacade
+import nl.teun.kweeter.facades.ProfileFacade
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -9,3 +13,8 @@ fun LocalDateTime.toJavaUtilDate(): Date {
     val instant = Instant.from(this.atZone(ZoneId.systemDefault()))
     return java.util.Date.from(instant)
 }
+
+fun Profile.toProfileFacade() = ProfileFacade(this)
+fun ProfileFacade.toProfile() = Profile(this)
+fun Kweet.toKweetFacade() = nl.teun.kweeter.facades.KweetFacade(this)
+fun KweetFacade.toKweet() = nl.teun.kweeter.domain.Kweet(this)

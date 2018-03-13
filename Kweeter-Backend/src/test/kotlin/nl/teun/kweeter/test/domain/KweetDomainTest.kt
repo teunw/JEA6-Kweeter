@@ -1,9 +1,7 @@
 package nl.teun.kweeter.test.domain
 
 import nl.teun.kweeter.domain.Kweet
-import nl.teun.kweeter.domain.KweetResponse
 import nl.teun.kweeter.domain.Profile
-import nl.teun.kweeter.domain.Rekweet
 import nl.teun.kweeter.toJavaUtilDate
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.shrinkwrap.api.ShrinkWrap
@@ -96,22 +94,6 @@ class KweetDomainTest {
     }
 
     @Test
-    fun getResponses() {
-        Assert.assertEquals(this.kweet1.responses.size, 0)
-    }
-
-    @Test
-    fun setResponses() {
-        val kweetRes = KweetResponse()
-        kweetRes.ParentKweet = kweet1
-        this.kweet1.responses.add(kweetRes)
-        Assert.assertEquals(this.kweet1.responses.size, 1)
-
-        this.kweet1.setResponses(mutableListOf(kweetRes))
-        Assert.assertEquals(this.kweet1.responses.size, 1)
-    }
-
-    @Test
     fun getLikedBy() {
         Assert.assertEquals(this.kweet1.likedBy.size, 0)
     }
@@ -123,25 +105,6 @@ class KweetDomainTest {
 
         this.kweet1.setLikedBy(mutableListOf(profile2))
         Assert.assertEquals(this.kweet1.likedBy.size, 1)
-    }
-
-    @Test
-    fun getRekweets() {
-        Assert.assertEquals(this.kweet1.rekweets.size, 0)
-    }
-
-    @Test
-    fun setRekweets() {
-        val rekweet = Rekweet()
-        rekweet.parentKweet = kweet1
-        this.kweet1.rekweets.add(rekweet)
-        Assert.assertEquals(this.kweet1.rekweets.size, 1)
-
-        this.kweet1.setRekweets(mutableListOf(rekweet))
-        Assert.assertEquals(this.kweet1.rekweets.size, 1)
-
-        Assert.assertEquals(this.kweet1.rekweets.toMutableList()[0], rekweet)
-        Assert.assertEquals(this.kweet1.rekweets.toMutableList()[0].parentKweet, kweet1)
     }
 
     @Test

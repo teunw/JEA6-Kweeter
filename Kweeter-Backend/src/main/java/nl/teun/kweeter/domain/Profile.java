@@ -1,10 +1,13 @@
 package nl.teun.kweeter.domain;
 
 import nl.teun.kweeter.authentication.ProfileRole;
+import nl.teun.kweeter.facades.ProfileFacade;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -45,7 +48,21 @@ public class Profile implements Serializable, Cloneable {
     @Column
     private ProfileRole role;
 
+    @ManyToMany(mappedBy = "followers")
+    private List<Profile> followers = new ArrayList();
+
     public Profile() {
+    }
+
+    public Profile(ProfileFacade profileFacade) {
+        this.setId(profileFacade.getId())
+                .setUsername(profileFacade.getUsername())
+                .setEmail(profileFacade.getEmailAddress())
+                .setBio(profileFacade.getBio())
+                .setContactLink(profileFacade.getContactLink())
+                .setDisplayName(profileFacade.getDisplayName())
+                .setRole(ProfileRole.valueOf(profileFacade.getRole()))
+                .setFollowers(profileFacade.getFollowers());
     }
 
     public Long getId() {
@@ -132,6 +149,15 @@ public class Profile implements Serializable, Cloneable {
 
     public boolean hasRole(String role) {
         return this.role.name().equals(role);
+    }
+
+    public List<Profile> getFollowers() {
+        return followers;
+    }
+
+    public Profile setFollowers(List<Profile> followers) {
+        this.followers = followers;
+        return this;
     }
 
     @Override
