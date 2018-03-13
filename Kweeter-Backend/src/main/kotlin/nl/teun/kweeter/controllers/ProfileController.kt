@@ -1,14 +1,11 @@
 package nl.teun.kweeter.controllers
 
 import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
-import nl.teun.kweeter.controllers.types.request.ProfilePost
 import nl.teun.kweeter.facades.ProfileFacade
 import nl.teun.kweeter.httpResponseBadRequest
 import nl.teun.kweeter.services.ProfileService
 import nl.teun.kweeter.services.ValidatorService
-import nl.teun.kweeter.toProfile
 import nl.teun.kweeter.toProfileFacade
-import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
 import javax.ws.rs.*
 import javax.ws.rs.core.Context
@@ -16,7 +13,6 @@ import javax.ws.rs.core.Response
 import javax.ws.rs.core.SecurityContext
 
 @Path("/profiles")
-@RolesAllowed("user")
 class ProfileController {
 
     @Inject
@@ -63,14 +59,14 @@ class ProfileController {
     @KweeterAuthRequired
     @Path("/")
     fun updateProfile(
-            reqProfile: ProfilePost,
+            reqProfile: ProfileFacade,
             @Context securityContext: SecurityContext
     ): Response {
         val dbProfile = profileService.findByPrincipal(securityContext.userPrincipal)
         var updatedAnything = false
 
-        if (!reqProfile.email.isBlank()) {
-            dbProfile.email = reqProfile.email
+        if (!reqProfile.emailAddress.isBlank()) {
+            dbProfile.email = reqProfile.emailAddress
             updatedAnything = true
         }
         if (!reqProfile.username.isBlank()) {
@@ -93,7 +89,7 @@ class ProfileController {
         if (!updatedAnything) {
             return httpResponseBadRequest()
                     .entity("One of the parameters is empty")
-                    .entity(reqProfile.email)
+                    .entity(reqProfile.emailAddress)
                     .entity(reqProfile.username)
                     .entity(reqProfile.displayName)
                     .build()
@@ -105,20 +101,22 @@ class ProfileController {
     @POST
     @Path("/")
     fun createProfile(
-            profile: ProfileFacade
+            profileFacade: ProfileFacade
     ): Response? {
-        if (profile.emailAddress.isBlank() || profile.username.isBlank() || profile.displayName.isBlank()) {
+        if (profileFacade.emailAddress.isBlank() || profileFacade.username.isBlank() || profileFacade.displayName.isBlank()) {
             return httpResponseBadRequest()
                     .entity("One of the parameters is empty")
-                    .entity(profile.emailAddress)
-                    .entity(profile.username)
-                    .entity(profile.displayName)
+                    .entity(profileFacade.emailAddress)
+                    .entity(profileFacade.username)
+                    .entity(profileFacade.displayName)
                     .build()
         }
-        if (!this.validatorService.isUsernameValid(profile.username)) {
+        if (!this.validatorService.isUsernameValid(profileFacade.username)) {
             return Response.serverError().entity("Username is invalid").build()
         }
-        this.profileService.createProfile(profile.toProfile())
+
+        val profile = this.profileService.recreateFromFacade(profileFacade)
+        this.profileService.createProfile(profile)
         return Response.ok(profile).build()
     }
 }

@@ -2,6 +2,7 @@ package nl.teun.kweeter.services
 
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
+import nl.teun.kweeter.facades.KweetFacade
 import javax.persistence.EntityNotFoundException
 
 interface KweetService {
@@ -17,5 +18,7 @@ interface KweetService {
     fun updateKweet(kweet: Kweet)
 
     fun createKweet(kweet: Kweet)
+
+    fun recreateFromFacade(kweetFacade: KweetFacade): Kweet
 
 }

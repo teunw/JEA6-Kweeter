@@ -1,6 +1,7 @@
 package nl.teun.kweeter.services
 
 import nl.teun.kweeter.domain.Profile
+import nl.teun.kweeter.facades.ProfileFacade
 import java.security.Principal
 import javax.persistence.EntityNotFoundException
 
@@ -14,10 +15,14 @@ interface ProfileService {
     @Throws(EntityNotFoundException::class)
     fun findByEmail(email: String): Profile
 
+    fun findByUsername(username: String): Profile
+
     fun updateProfile(profile: Profile)
 
     fun createProfile(profile: Profile)
 
     fun findByPrincipal(userPrincipal: Principal): Profile
+
+    fun recreateFromFacade(profileFacade: ProfileFacade): Profile
 
 }

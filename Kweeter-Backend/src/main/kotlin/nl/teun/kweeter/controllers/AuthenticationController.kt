@@ -1,12 +1,12 @@
 package nl.teun.kweeter.controllers
 
-import com.sun.istack.internal.logging.Logger
 import nl.teun.kweeter.controllers.types.request.AuthenticationRequest
 import nl.teun.kweeter.domain.AuthToken
 import nl.teun.kweeter.filters.AuthFilter
 import nl.teun.kweeter.httpResponseBadRequest
 import nl.teun.kweeter.services.AuthService
 import nl.teun.kweeter.services.ProfileService
+import nl.teun.kweeter.toAuthFacade
 import javax.inject.Inject
 import javax.persistence.EntityNotFoundException
 import javax.ws.rs.GET
@@ -58,7 +58,7 @@ class AuthenticationController {
         val token = authorization.substring(AuthFilter.AUTHENTICATION_SCHEME.length).trim()
         return try {
             val authToken = this.authenticationService.findAuthToken(token)
-            Response.ok(authToken).build()
+            Response.ok(authToken.toAuthFacade()).build()
         } catch (e: EntityNotFoundException) {
             Response
                     .status(Response.Status.UNAUTHORIZED)

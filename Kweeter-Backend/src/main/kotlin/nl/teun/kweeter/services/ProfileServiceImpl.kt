@@ -1,8 +1,8 @@
 package nl.teun.kweeter.services
 
-import com.sun.istack.internal.logging.Logger
-import nl.teun.kweeter.controllers.KweetJaxApplication
+import nl.teun.kweeter.authentication.ProfileRole
 import nl.teun.kweeter.domain.Profile
+import nl.teun.kweeter.facades.ProfileFacade
 import java.security.Principal
 import javax.ejb.Stateless
 import javax.persistence.EntityManager
@@ -14,6 +14,18 @@ class ProfileServiceImpl : ProfileService {
 
     @PersistenceContext
     private lateinit var entityManager: EntityManager
+
+    override fun recreateFromFacade(profileFacade: ProfileFacade): Profile {
+        val profile = this.findById(profileFacade.id)
+        profile.username = profileFacade.username
+        profile.displayName = profileFacade.displayName
+        profile.email = profileFacade.emailAddress
+        profile.location = profileFacade.location
+        profile.bio = profileFacade.bio
+        profile.contactLink = profileFacade.contactLink
+        if (profileFacade.role != null) profile.role = ProfileRole.valueOf(profileFacade.role)
+        return profile
+    }
 
     override fun findAll(maxResults: Int, offsetResults: Int) =
             this.entityManager
@@ -31,6 +43,18 @@ class ProfileServiceImpl : ProfileService {
         val results = this.entityManager
                 .createNamedQuery("Profile.findbyemail")
                 .setParameter("p_email", email)
+                .resultList
+                .filterIsInstance<Profile>()
+        if (results.isEmpty()) {
+            throw EntityNotFoundException("Profile not found")
+        }
+        return results.first()
+    }
+
+    override fun findByUsername(username: String): Profile {
+        val results = this.entityManager
+                .createNamedQuery("Profile.findbyusername")
+                .setParameter("p_username", username)
                 .resultList
                 .filterIsInstance<Profile>()
         if (results.isEmpty()) {

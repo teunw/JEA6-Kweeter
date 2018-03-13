@@ -1,9 +1,8 @@
 package nl.teun.kweeter.services
 
-import com.google.gson.Gson
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
-import nl.teun.kweeter.services.cache.RedisService
+import nl.teun.kweeter.facades.KweetFacade
 import java.util.*
 import javax.ejb.Stateless
 import javax.inject.Inject
@@ -18,10 +17,7 @@ class KweetServiceImpl : KweetService {
     private lateinit var entityManager: EntityManager
 
     @Inject
-    private lateinit var redisCache: RedisService
-
-    private val gson = Gson()
-    private val KweetCacheName = "Cache_Kweets"
+    private lateinit var profileService: ProfileService
 
     override fun findAll(maxResults: Int, offsetResults: Int) =
             this.entityManager
@@ -51,5 +47,18 @@ class KweetServiceImpl : KweetService {
             kweet.setPublicId(UUID.randomUUID())
         }
         this.entityManager.persist(kweet)
+    }
+
+    override fun recreateFromFacade(kweetFacade: KweetFacade): Kweet {
+        val kweet = this.findById(kweetFacade.id)
+
+        kweet.textContent = kweetFacade.textContent
+        kweet.author = this.profileService.recreateFromFacade(kweetFacade.author)
+        kweet.setPublicId(UUID.fromString(kweetFacade.publicId))
+        kweet.internalId = kweetFacade.id
+        kweet.likedBy = kweetFacade.likedBy.map { this.profileService.findByUsername(it) }
+        kweet.date = kweetFacade.date
+
+        return kweet
     }
 }

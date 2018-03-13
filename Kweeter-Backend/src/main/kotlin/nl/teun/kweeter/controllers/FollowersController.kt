@@ -1,5 +1,6 @@
 package nl.teun.kweeter.controllers
 
+import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
 import nl.teun.kweeter.services.FollowerService
 import nl.teun.kweeter.services.ProfileService
 import javax.inject.Inject
@@ -26,6 +27,7 @@ class FollowersController {
         return Response.ok(followers).build()
     }
 
+    @KweeterAuthRequired
     @POST
     @Path("/follow/{profileToFollow}")
     fun addFollower(@PathParam("profileToFollow") profileToFollowId: Long,
@@ -36,6 +38,7 @@ class FollowersController {
         return Response.ok(authenticatedProfile).build()
     }
 
+    @KweeterAuthRequired
     @DELETE
     @Path("/follow/{profileToFollow}")
     fun removeFollower(@PathParam("profileToUnfollow") profileToUnfollowId: Long,

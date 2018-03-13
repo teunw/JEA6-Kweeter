@@ -1,7 +1,6 @@
 package nl.teun.kweeter.domain;
 
 import nl.teun.kweeter.Utilities;
-import nl.teun.kweeter.facades.KweetFacade;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -40,14 +39,6 @@ public class Kweet implements Serializable {
     public Kweet() {
         this.date = new Date();
         this.likedBy = new ArrayList<>();
-    }
-
-    public Kweet(KweetFacade kweetFacade) {
-        this.setAuthor(new Profile(kweetFacade.getAuthor()))
-                .setDate(kweetFacade.getDate())
-                .setPublicId(UUID.fromString(kweetFacade.getPublicId()))
-                .setTextContent(kweetFacade.getTextContent());
-        kweetFacade.getLikedBy().forEach(c -> this.likedBy.add(new Profile(c)));
     }
 
     public String getPublicId() {
@@ -100,7 +91,7 @@ public class Kweet implements Serializable {
         return this;
     }
 
-    public Collection<Profile> getLikedBy() {
+    public List<Profile> getLikedBy() {
         return likedBy;
     }
 

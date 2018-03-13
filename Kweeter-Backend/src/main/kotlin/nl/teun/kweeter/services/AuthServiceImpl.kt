@@ -36,7 +36,7 @@ class AuthServiceImpl : AuthService {
         if (tokens.isEmpty()) {
             throw NotFoundException("Token not found")
         }
-        return tokens[0]
+        return tokens.first()
     }
 
     override fun insertAuthToken(token: AuthToken) {

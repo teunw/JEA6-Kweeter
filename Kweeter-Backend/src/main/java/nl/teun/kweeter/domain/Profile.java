@@ -1,7 +1,6 @@
 package nl.teun.kweeter.domain;
 
 import nl.teun.kweeter.authentication.ProfileRole;
-import nl.teun.kweeter.facades.ProfileFacade;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.persistence.*;
@@ -48,21 +47,10 @@ public class Profile implements Serializable, Cloneable {
     @Column
     private ProfileRole role;
 
-    @ManyToMany(mappedBy = "followers")
+    @ManyToMany
     private List<Profile> followers = new ArrayList();
 
     public Profile() {
-    }
-
-    public Profile(ProfileFacade profileFacade) {
-        this.setId(profileFacade.getId())
-                .setUsername(profileFacade.getUsername())
-                .setEmail(profileFacade.getEmailAddress())
-                .setBio(profileFacade.getBio())
-                .setContactLink(profileFacade.getContactLink())
-                .setDisplayName(profileFacade.getDisplayName())
-                .setRole(ProfileRole.valueOf(profileFacade.getRole()))
-                .setFollowers(profileFacade.getFollowers());
     }
 
     public Long getId() {

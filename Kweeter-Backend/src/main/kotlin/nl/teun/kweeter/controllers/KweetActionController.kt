@@ -4,6 +4,7 @@ import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
 import nl.teun.kweeter.controllers.types.response.KweetLikeResponse
 import nl.teun.kweeter.services.KweetService
 import nl.teun.kweeter.services.ProfileService
+import nl.teun.kweeter.toKweetFacade
 import javax.inject.Inject
 import javax.ws.rs.PUT
 import javax.ws.rs.Path
@@ -38,7 +39,7 @@ class KweetActionController {
 
         this.kweetService.updateKweet(kweet)
 
-        val res = KweetLikeResponse(!hasLiked, kweet)
+        val res = KweetLikeResponse(!hasLiked, kweet.toKweetFacade())
         return Response.ok(res).build()
     }
 }

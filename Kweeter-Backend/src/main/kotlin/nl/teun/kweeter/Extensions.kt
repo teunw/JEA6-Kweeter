@@ -1,8 +1,9 @@
 package nl.teun.kweeter
 
+import nl.teun.kweeter.domain.AuthToken
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
-import nl.teun.kweeter.facades.KweetFacade
+import nl.teun.kweeter.facades.AuthTokenFacade
 import nl.teun.kweeter.facades.ProfileFacade
 import java.time.Instant
 import java.time.LocalDateTime
@@ -16,11 +17,8 @@ fun LocalDateTime.toJavaUtilDate(): Date {
 }
 
 fun Profile.toProfileFacade() = ProfileFacade(this)
-fun ProfileFacade.toProfile() = Profile(this)
 fun Kweet.toKweetFacade() = nl.teun.kweeter.facades.KweetFacade(this)
-fun KweetFacade.toKweet() = nl.teun.kweeter.domain.Kweet(this)
-fun List<Kweet>.toKweetFacades() = this.map { it.toKweetFacade() }
-fun List<KweetFacade>.toKweets() = this.map { it.toKweet() }
+fun AuthToken.toAuthFacade() = AuthTokenFacade(this)
 
 fun httpResponseNotFound(): Response.ResponseBuilder {
     return Response.status(Response.Status.NOT_FOUND)

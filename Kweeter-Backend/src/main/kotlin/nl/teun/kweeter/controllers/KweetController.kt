@@ -2,8 +2,6 @@ package nl.teun.kweeter.controllers
 
 import nl.teun.kweeter.authentication.annotations.AuthenticatedUser
 import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
-import nl.teun.kweeter.controllers.types.request.KweetPost
-import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.facades.KweetFacade
 import nl.teun.kweeter.httpResponseBadRequest
@@ -11,8 +9,6 @@ import nl.teun.kweeter.httpResponseNotFound
 import nl.teun.kweeter.services.KweetService
 import nl.teun.kweeter.services.ProfileService
 import nl.teun.kweeter.toKweetFacade
-import java.time.LocalDateTime
-import java.util.*
 import javax.inject.Inject
 import javax.ws.rs.*
 import javax.ws.rs.core.Context
@@ -65,7 +61,7 @@ class KweetController {
             parameters: KweetFacade,
             @Context securityContext: SecurityContext
     ): Response {
-        if (parameters.author.id > 0) {
+        if (parameters.author != null) {
             return httpResponseBadRequest().entity("profileId is empty").build()
         }
         if (parameters.textContent.isEmpty()) {
@@ -95,21 +91,14 @@ class KweetController {
     @POST
     @Path("/")
     fun createKweet(
-            requestPost: KweetPost,
+            requestPost: KweetFacade,
             @Context securityContext: SecurityContext
     ): Response {
         if (requestPost.textContent.isEmpty()) {
             return httpResponseBadRequest().entity("textContent is empty (\"${requestPost.textContent}\"").build()
         }
-        val kweet = Kweet()
 
-        kweet.textContent = requestPost.textContent
-        kweet.author = this.profileService.findByPrincipal(securityContext.userPrincipal)
-        kweet.setPublicId(UUID.randomUUID())
-        kweet.setDateWithLocalDateTime(LocalDateTime.now())
-
-        kweet.setLikedBy(mutableListOf())
-
+        val kweet = this.kweetService.recreateFromFacade(requestPost)
         this.kweetService.createKweet(kweet)
         return Response.ok(kweet.toKweetFacade()).build()
     }
