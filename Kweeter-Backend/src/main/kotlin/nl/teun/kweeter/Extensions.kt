@@ -19,6 +19,8 @@ fun Profile.toProfileFacade() = ProfileFacade(this)
 fun ProfileFacade.toProfile() = Profile(this)
 fun Kweet.toKweetFacade() = nl.teun.kweeter.facades.KweetFacade(this)
 fun KweetFacade.toKweet() = nl.teun.kweeter.domain.Kweet(this)
+fun List<Kweet>.toKweetFacades() = this.map { it.toKweetFacade() }
+fun List<KweetFacade>.toKweets() = this.map { it.toKweet() }
 
 fun httpResponseNotFound(): Response.ResponseBuilder {
     return Response.status(Response.Status.NOT_FOUND)

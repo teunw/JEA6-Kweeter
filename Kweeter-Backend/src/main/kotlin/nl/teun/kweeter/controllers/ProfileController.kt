@@ -4,8 +4,6 @@ import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
 import nl.teun.kweeter.controllers.types.request.ProfilePost
 import nl.teun.kweeter.facades.ProfileFacade
 import nl.teun.kweeter.httpResponseBadRequest
-import nl.teun.kweeter.domain.Profile
-import nl.teun.kweeter.httpResponseBadRequest
 import nl.teun.kweeter.services.ProfileService
 import nl.teun.kweeter.services.ValidatorService
 import nl.teun.kweeter.toProfile
@@ -118,8 +116,7 @@ class ProfileController {
                     .build()
         }
         if (!this.validatorService.isUsernameValid(profile.username)) {
-            val usernameRegex = this.validatorService.usernameRegex.pattern
-            return Response.serverError().entity("Username is invalid, regex: $usernameRegex").build()
+            return Response.serverError().entity("Username is invalid").build()
         }
         this.profileService.createProfile(profile.toProfile())
         return Response.ok(profile).build()

@@ -5,6 +5,7 @@ import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
 import nl.teun.kweeter.controllers.types.request.KweetPost
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
+import nl.teun.kweeter.facades.KweetFacade
 import nl.teun.kweeter.httpResponseBadRequest
 import nl.teun.kweeter.httpResponseNotFound
 import nl.teun.kweeter.services.KweetService
@@ -61,20 +62,19 @@ class KweetController {
     @Path("/{kweetId}")
     fun updateKweet(
             @PathParam("kweetId") kweetId: Long,
-            @QueryParam("profileId") profileId: String,
-            @QueryParam("textContent") textContent: String,
+            parameters: KweetFacade,
             @Context securityContext: SecurityContext
     ): Response {
-        if (profileId.isEmpty()) {
+        if (parameters.author.id > 0) {
             return httpResponseBadRequest().entity("profileId is empty").build()
         }
-        if (textContent.isEmpty()) {
+        if (parameters.textContent.isEmpty()) {
             return httpResponseBadRequest().entity("textContent is empty").build()
         }
 
         val kweet = this.kweetService.findById(kweetId)
         kweet.author = this.profileService.findByPrincipal(securityContext.userPrincipal)
-        kweet.textContent = textContent
+        kweet.textContent = parameters.textContent
         return Response.ok(kweet.toKweetFacade()).build()
     }
 
