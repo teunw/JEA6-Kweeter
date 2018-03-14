@@ -10,10 +10,12 @@ interface KweetService {
     fun findAll(maxResults: Int, offsetResults: Int): List<Kweet>
 
     @Throws(EntityNotFoundException::class)
-    fun findById(id : Long) : Kweet
+    fun findById(id: Long): Kweet
+
+    fun findByPublicId(id: String): Kweet
 
     @Throws(EntityNotFoundException::class)
-    fun findByProfile(profile : Profile) : List<Kweet>
+    fun findByProfile(profile: Profile): List<Kweet>
 
     fun updateKweet(kweet: Kweet)
 

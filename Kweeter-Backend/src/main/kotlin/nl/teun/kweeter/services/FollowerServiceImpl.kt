@@ -59,10 +59,15 @@ class FollowerServiceImpl : FollowerService {
         entityManager.persist(profileFollower)
     }
 
-    override fun getFollowers(target: Profile): List<ProfileFollower> =
-            this.entityManager
-            .createNamedQuery("profilefollower.byprofile")
-            .setParameter("profileId", target.id)
-            .resultList
-            .filterIsInstance<ProfileFollower>()
+    override fun getFollowers(target: Profile): ProfileFollower {
+        val followers = this.entityManager
+                .createNamedQuery("profilefollower.byprofile")
+                .setParameter("profileId", target.id)
+                .resultList
+                .filterIsInstance<ProfileFollower>()
+        if (followers.size != 1) {
+            throw Exception("found multiple followers for profile id ${target.id}")
+        }
+        return followers.first()
+    }
 }

@@ -8,12 +8,14 @@
             <span class="card-title">{{ profile.displayName }}</span>
             <p>
               <a href="javascript:void(0)">@{{ profile.username }}</a><br/>
-              "{{ profile.bio }}"
+              "{{ profile.bio }}"<br/>
+              Website: <a target="_blank" href="{{ profile.contactLink }}">{{ profile.contactLink }}</a><br/>
+              Email: <a href="mailto:{{ profile.emailAddress }}">{{ profile.emailAddress }}</a><br/>
             </p>
-            Website: <a target="_blank" class="white-text" href="{{ profile.contactLink }}">{{ profile.contactLink
-            }}</a><br/>
-            Email: <a class="white-text" href="mailto:{{ profile.email }}">{{ profile.email }}</a><br/>
             <span *ngIf="profile.location">Location: {{ profile.location }}<br/></span>
+            <div class="card-action" *ngIf="!isProfileSelf">
+              <a href="javascript:void(0)" class="card-action-link">Follow {{ profile.displayName }}</a>
+            </div>
           </div>
         </div>
       </div>

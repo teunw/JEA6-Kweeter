@@ -103,7 +103,7 @@ class KweetDomainTest {
         this.kweet1.likedBy.add(profile2)
         Assert.assertEquals(this.kweet1.likedBy.size, 1)
 
-        this.kweet1.setLikedBy(mutableListOf(profile2))
+        this.kweet1.likedBy = mutableListOf(profile2)
         Assert.assertEquals(this.kweet1.likedBy.size, 1)
     }
 

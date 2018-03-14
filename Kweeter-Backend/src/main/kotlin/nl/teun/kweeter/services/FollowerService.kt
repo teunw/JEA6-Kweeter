@@ -9,5 +9,5 @@ interface FollowerService {
 
     fun removeFollower(target: Profile, follower: Profile)
 
-    fun getFollowers(target: Profile): List<ProfileFollower>
+    fun getFollowers(target: Profile): ProfileFollower
 }

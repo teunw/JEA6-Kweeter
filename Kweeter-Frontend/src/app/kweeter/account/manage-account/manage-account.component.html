@@ -7,7 +7,7 @@
           <app-load *ngIf="isSavingChanges" [loadSentences]="['This is a test', 'Another test']"></app-load>
 
           <input *ngIf="!isSavingChanges" placeholder="Change your email address" type="text" class="validate materialize-textarea"
-                 [(ngModel)]="profile.email" name="email" [email]="true" required/>
+                 [(ngModel)]="profile.emailAddress" name="email" [email]="true" required/>
           <input *ngIf="!isSavingChanges" placeholder="Change your username" type="text" class="validate materialize-textarea"
                  [(ngModel)]="profile.username" name="username" [email]="false" required/>
           <input *ngIf="!isSavingChanges" placeholder="Change your displayname" type="text" class="validate materialize-textarea"

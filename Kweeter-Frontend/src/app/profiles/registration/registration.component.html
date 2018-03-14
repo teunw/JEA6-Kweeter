@@ -7,7 +7,7 @@
           <app-load *ngIf="isLoggingIn"
                     [loadSentences]="['Contacting the registration office', 'Creating your account']"></app-load>
           <input *ngIf="!isLoggingIn" placeholder="Enter your email address" type="text" class="validate materialize-textarea"
-                 [(ngModel)]="profile.email" [email]="true" (keyup)="formKeyUp($event)" required=""/>
+                 [(ngModel)]="profile.emailAddress" [email]="true" (keyup)="formKeyUp($event)" required=""/>
 
           <input *ngIf="!isLoggingIn" placeholder="Enter a username" type="text" class="validate materialize-textarea"
                  [(ngModel)]="profile.username" (keyup)="formKeyUp($event)" required=""/>

@@ -41,7 +41,7 @@ class AuthenticationController {
         val authToken = AuthToken(profile = profile)
         this.authenticationService.insertAuthToken(authToken)
 
-        return Response.ok(authToken).header(HttpHeaders.AUTHORIZATION, "Bearer ${authToken.token}").build()
+        return Response.ok(authToken.toAuthFacade()).header(HttpHeaders.AUTHORIZATION, "Bearer ${authToken.token}").build()
     }
 
     @GET
