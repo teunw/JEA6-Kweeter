@@ -35,7 +35,7 @@ class ProfileController {
     @Path("/{userId}")
     fun getProfile(@PathParam("userId") userId: String): Response? {
         if (userId.isBlank()) {
-            return httpResponseBadRequest().entity("userId is empty").build()
+            return httpResponseBadRequest().entity("userId is empty ($userId)").build()
         }
         val intToNumber = userId.toLongOrNull()
                 ?: return Response.serverError().entity("userId is not parsable to long").build()

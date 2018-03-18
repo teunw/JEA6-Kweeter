@@ -34,6 +34,10 @@ export class SearchService {
   constructor(private httpClient: HttpClient, private configService: ConfigService) {
   }
 
+  public clearResults() {
+    this._lastSearchResult.next([]);
+  }
+
   public getSearchResultsForQuery(query: string) {
     const search = {
       'query': {

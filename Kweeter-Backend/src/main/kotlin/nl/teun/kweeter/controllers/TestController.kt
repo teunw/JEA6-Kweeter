@@ -1,6 +1,6 @@
 package nl.teun.kweeter.controllers
 
-import nl.teun.kweeter.services.mock.MockService
+import nl.teun.kweeter.services.search.KweeterSearchService
 import javax.inject.Inject
 import javax.ws.rs.GET
 import javax.ws.rs.Path
@@ -9,13 +9,11 @@ import javax.ws.rs.Path
 class TestController {
 
     @Inject
-    private lateinit var mockService: MockService
+    private lateinit var searchService: KweeterSearchService
 
     @GET
     @Path("/")
     fun getTest() {
-        this.mockService.insertMockUsers()
-        this.mockService.insertMockKweets()
-        this.mockService.insertFollowers()
+        this.searchService.updateSearchIndex()
     }
 }

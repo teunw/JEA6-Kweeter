@@ -1,5 +1,6 @@
 package nl.teun.kweeter
 
+import com.google.gson.Gson
 import nl.teun.kweeter.domain.AuthToken
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
@@ -30,3 +31,5 @@ fun httpResponseNotFound(): Response.ResponseBuilder {
 fun httpResponseBadRequest(): Response.ResponseBuilder {
     return Response.status(Response.Status.BAD_REQUEST)
 }
+
+fun Any.toJson() = Gson().toJson(this)

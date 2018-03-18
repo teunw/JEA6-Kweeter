@@ -8,11 +8,12 @@
 <div class="row" *ngIf="searchService.hasSearchResult">
   <div class="collection">
     <a *ngFor="let searchResult of searchService.lastSearchResult | async"
-       [routerLink]="this.getSearchResultLink(searchResult)" class="collection-item">
+       [routerLink]="this.getSearchResultLink(searchResult)" (click)="searchService.clearResults()"
+       class="collection-item">
       <p *ngIf="searchResult._type == 'profile'">
         Profile: {{ searchResult._source.displayName }} (@{{ searchResult._source.username}})
       </p>
-      <p *ngIf="searchResult._type == 'kweet'">
+      <p *ngIf="searchResult._type == 'kweet'" (click)="searchService.clearResults()">
         Kweet by @{{ searchResult._source.author?.username }}: {{ searchResult._source.textContent?.substr(0, 60) }}
       </p>
     </a>

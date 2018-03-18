@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {IProfile} from "../../../profile";
-import {ProfileService} from "../../../services/profile.service";
-import {Router} from "@angular/router";
-import {LoginService} from "../../../services/login.service";
+import {IProfile} from '../../../profile';
+import {ProfileService} from '../../../services/profile.service';
+import {Router} from '@angular/router';
+import {LoginService} from '../../../services/login.service';
 import 'materialize-css';
 
 @Component({
@@ -22,6 +22,7 @@ export class ManageAccountComponent implements OnInit {
     this.isSavingChanges = true;
     this.loginService.loginInfo
       .subscribe(loginInfo => {
+        if (loginInfo == null) return;
         this.profileService
           .getProfile(loginInfo.id)
           .subscribe(data => {

@@ -3,6 +3,8 @@ package nl.teun.kweeter.services
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.facades.KweetFacade
+import nl.teun.kweeter.services.search.KweeterSearchService
+import nl.teun.kweeter.toKweetFacade
 import java.util.*
 import javax.ejb.Stateless
 import javax.inject.Inject
@@ -17,7 +19,7 @@ class KweetServiceImpl : KweetService {
     private lateinit var entityManager: EntityManager
 
     @Inject
-    private lateinit var profileService: ProfileService
+    private lateinit var searchService: KweeterSearchService
 
     override fun findByPublicId(id: String): Kweet {
         val kweets = this
@@ -53,6 +55,7 @@ class KweetServiceImpl : KweetService {
 
     override fun updateKweet(kweet: Kweet) {
         this.entityManager.merge(kweet)
+        this.searchService.updateKweetIndex(kweet.toKweetFacade())
     }
 
     override fun createKweet(kweet: Kweet) {
@@ -60,6 +63,7 @@ class KweetServiceImpl : KweetService {
             kweet.setPublicId(UUID.randomUUID())
         }
         this.entityManager.persist(kweet)
+        this.searchService.addKweetToIndex(kweet.toKweetFacade())
     }
 
     override fun recreateFromFacade(kweetFacade: KweetFacade) = this.findByPublicId(kweetFacade.publicId)
