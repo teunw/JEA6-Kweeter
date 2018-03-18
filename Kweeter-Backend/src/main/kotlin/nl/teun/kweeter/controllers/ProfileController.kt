@@ -117,6 +117,6 @@ class ProfileController {
 
         val profile = this.profileService.recreateFromFacade(profileFacade)
         this.profileService.createProfile(profile)
-        return Response.ok(profile).build()
+        return Response.ok(profile.toProfileFacade()).build()
     }
 }

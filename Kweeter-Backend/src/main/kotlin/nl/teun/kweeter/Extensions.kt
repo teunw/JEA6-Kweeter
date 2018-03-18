@@ -3,8 +3,10 @@ package nl.teun.kweeter
 import nl.teun.kweeter.domain.AuthToken
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
+import nl.teun.kweeter.domain.ProfileFollower
 import nl.teun.kweeter.facades.AuthTokenFacade
 import nl.teun.kweeter.facades.ProfileFacade
+import nl.teun.kweeter.facades.ProfileFollowerFacade
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -19,6 +21,7 @@ fun LocalDateTime.toJavaUtilDate(): Date {
 fun Profile.toProfileFacade() = ProfileFacade(this)
 fun Kweet.toKweetFacade() = nl.teun.kweeter.facades.KweetFacade(this)
 fun AuthToken.toAuthFacade() = AuthTokenFacade(this)
+fun ProfileFollower.toFollowerFacade() = ProfileFollowerFacade(this)
 
 fun httpResponseNotFound(): Response.ResponseBuilder {
     return Response.status(Response.Status.NOT_FOUND)

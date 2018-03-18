@@ -3,6 +3,7 @@ package nl.teun.kweeter.domain;
 import nl.teun.kweeter.Utilities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -24,7 +25,7 @@ public class Kweet implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id = 0L;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 160)
     private String textContent = "";
 
     @OneToOne(cascade = CascadeType.REFRESH)

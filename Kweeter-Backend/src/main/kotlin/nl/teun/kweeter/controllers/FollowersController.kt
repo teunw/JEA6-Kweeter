@@ -3,6 +3,8 @@ package nl.teun.kweeter.controllers
 import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
 import nl.teun.kweeter.services.FollowerService
 import nl.teun.kweeter.services.ProfileService
+import nl.teun.kweeter.toFollowerFacade
+import nl.teun.kweeter.toProfileFacade
 import javax.inject.Inject
 import javax.ws.rs.*
 import javax.ws.rs.core.Context
@@ -23,8 +25,8 @@ class FollowersController {
     @Path("/{profileId}")
     fun getFollowersForProfile(@PathParam("profileId") profileId: Long): Response {
         val profile = this.profileService.findById(profileId)
-        val followers = this.followersService.getFollowers(profile)
-        return Response.ok(followers).build()
+        val follower = this.followersService.getFollowers(profile)
+        return Response.ok(follower.toFollowerFacade()).build()
     }
 
     @KweeterAuthRequired
@@ -34,8 +36,8 @@ class FollowersController {
                     @Context securityContext: SecurityContext): Response {
         val authenticatedProfile = this.profileService.findByPrincipal(securityContext.userPrincipal)
         val profileToFollow = this.profileService.findById(profileToFollowId)
-        followersService.addFollower(authenticatedProfile, profileToFollow)
-        return Response.ok(authenticatedProfile).build()
+        this.followersService.addFollower(authenticatedProfile, profileToFollow)
+        return Response.ok(authenticatedProfile.toProfileFacade()).build()
     }
 
     @KweeterAuthRequired
@@ -45,8 +47,8 @@ class FollowersController {
                        @Context securityContext: SecurityContext): Response {
         val authenticatedProfile = this.profileService.findByPrincipal(securityContext.userPrincipal)
         val profileToFollow = this.profileService.findById(profileToUnfollowId)
-        followersService.removeFollower(authenticatedProfile, profileToFollow)
-        return Response.ok(authenticatedProfile).build()
+        this.followersService.removeFollower(authenticatedProfile, profileToFollow)
+        return Response.ok(authenticatedProfile.toProfileFacade()).build()
     }
 
 }

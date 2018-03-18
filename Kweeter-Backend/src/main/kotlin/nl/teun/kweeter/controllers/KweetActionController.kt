@@ -25,9 +25,9 @@ class KweetActionController {
     @KweeterAuthRequired
     @PUT
     @Path("/like")
-    fun toggleLikeKweet(@PathParam("kweetId") kweetId: Long,
+    fun toggleLikeKweet(@PathParam("kweetId") kweetId: String,
                         @Context securityContext: SecurityContext): Response? {
-        val kweet = this.kweetService.findById(kweetId)
+        val kweet = this.kweetService.findByPublicId(kweetId)
         val profile = this.profileService.findByPrincipal(securityContext.userPrincipal)
         val hasLiked = kweet.likedBy.contains(profile)
 

@@ -8,7 +8,6 @@ export interface IKweet {
   responses: IKweet[];
   likedBy: IProfile[];
   rekweets: IKweet[];
-  internalId: number;
 }
 
 export class Kweet implements IKweet {
@@ -20,7 +19,6 @@ export class Kweet implements IKweet {
   responses: IKweet[] = this.kweet.responses;
   likedBy: IProfile[] = this.kweet.likedBy;
   rekweets: IKweet[] = this.kweet.rekweets;
-  internalId: number = this.kweet.internalId;
 
   constructor(public kweet: IKweet) {
   }

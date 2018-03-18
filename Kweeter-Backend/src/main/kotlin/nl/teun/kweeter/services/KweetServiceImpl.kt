@@ -19,6 +19,19 @@ class KweetServiceImpl : KweetService {
     @Inject
     private lateinit var profileService: ProfileService
 
+    override fun findByPublicId(id: String): Kweet {
+        val kweets = this
+                .entityManager
+                .createNamedQuery("Kweet.findbypublicId")
+                .setParameter("k_publicId", id)
+                .resultList
+                .filterIsInstance<Kweet>()
+        if (kweets.size != 1) {
+            throw Exception("Invalid number of instances found")
+        }
+        return kweets.first()
+    }
+
     override fun findAll(maxResults: Int, offsetResults: Int) =
             this.entityManager
                     .createNamedQuery("Kweet.all")
@@ -49,16 +62,5 @@ class KweetServiceImpl : KweetService {
         this.entityManager.persist(kweet)
     }
 
-    override fun recreateFromFacade(kweetFacade: KweetFacade): Kweet {
-        val kweet = this.findById(kweetFacade.id)
-
-        kweet.textContent = kweetFacade.textContent
-        kweet.author = this.profileService.recreateFromFacade(kweetFacade.author)
-        kweet.setPublicId(UUID.fromString(kweetFacade.publicId))
-        kweet.internalId = kweetFacade.id
-        kweet.likedBy = kweetFacade.likedBy.map { this.profileService.findByUsername(it) }
-        kweet.date = kweetFacade.date
-
-        return kweet
-    }
+    override fun recreateFromFacade(kweetFacade: KweetFacade) = this.findByPublicId(kweetFacade.publicId)
 }
