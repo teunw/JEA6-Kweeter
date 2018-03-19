@@ -22,7 +22,9 @@ export class ManageAccountComponent implements OnInit {
     this.isSavingChanges = true;
     this.loginService.loginInfo
       .subscribe(loginInfo => {
-        if (loginInfo == null) return;
+        if (loginInfo == null) {
+          return;
+        }
         this.profileService
           .getProfile(loginInfo.id)
           .subscribe(data => {

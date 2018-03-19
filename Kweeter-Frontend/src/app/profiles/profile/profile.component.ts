@@ -16,10 +16,14 @@ export class ProfileComponent implements OnInit {
 
   public profile: IProfile;
   public kweets: IKweet[] = [];
-  public isProfileSelf: boolean = false;
-  public isProfileBeingFollowed: boolean = false;
+  public isProfileSelf = false;
+  public isProfileBeingFollowed: boolean = null;
 
-  constructor(private profileService: ProfileService, private followService: FollowService, private loginService: LoginService, private kweetService: KweetService, private route: ActivatedRoute) {
+  constructor(private profileService: ProfileService,
+              private followService: FollowService,
+              private loginService: LoginService,
+              private kweetService: KweetService,
+              private route: ActivatedRoute) {
   }
 
   public getProfile() {
@@ -39,9 +43,13 @@ export class ProfileComponent implements OnInit {
               .subscribe(kweetData => {
                 this.kweets = kweetData;
               });
-            this.followService.getFollowers()
+            this.followService.getFollowers(this.profile.id)
               .subscribe(profileFollower => {
-                this.isProfileBeingFollowed = profileFollower.followingProfiles.filter(followingUser => followingUser.username === this.profile.username).length > 0;
+                console.log(profileFollower.followingProfiles);
+                console.log(this.loginService.getLoginInfo().username);
+                this.isProfileBeingFollowed = profileFollower.followingProfiles
+                  .filter(followingUser => followingUser.username.toString() === this.loginService.getLoginInfo().username.toString())
+                  .length > 0;
               });
           });
       }
@@ -50,9 +58,13 @@ export class ProfileComponent implements OnInit {
 
   public toggleFollow() {
     if (!this.isProfileBeingFollowed) {
-      this.followService.startFollowing(this.profile).subscribe(d => {})
+      this.followService.startFollowing(this.profile)
+        .subscribe(d => {
+        });
     } else {
-      this.followService.stopFollowing(this.profile).subscribe(d => {});
+      this.followService.stopFollowing(this.profile)
+        .subscribe(d => {
+        });
     }
     this.isProfileBeingFollowed = !this.isProfileBeingFollowed;
   }

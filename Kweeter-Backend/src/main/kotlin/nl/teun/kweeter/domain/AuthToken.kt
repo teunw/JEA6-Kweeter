@@ -12,7 +12,7 @@ import javax.persistence.*
 data class AuthToken(
         @Id
         val token: String = UUID.randomUUID().toString(),
-        @Column
+        @OneToOne
         val profile: Profile? = null,
         @Column
         val issueDate: DateTime = DateTime.now(),

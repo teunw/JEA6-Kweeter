@@ -16,7 +16,7 @@ class FollowerServiceImpl : FollowerService {
         val profileFollowers = this
                 .entityManager
                 .createNamedQuery("profilefollower.byprofile")
-                .setParameter("profileId", follower.id)
+                .setParameter("profileId", profileToBeFollowed.id)
                 .resultList
                 .filterIsInstance<ProfileFollower>()
 
@@ -45,13 +45,13 @@ class FollowerServiceImpl : FollowerService {
         val profileFollowers = this
                 .entityManager
                 .createNamedQuery("profilefollower.byprofile")
-                .setParameter("profileId", follower.id)
+                .setParameter("profileId", profileToBeUnfollowed.id)
                 .resultList
                 .filterIsInstance<ProfileFollower>()
         if (profileFollowers.size != 1) {
             throw Exception("Invalid number of followers (${profileFollowers.size}")
         }
-        val profileFollower = profileFollowers[0]
+        val profileFollower = profileFollowers.first()
 
         if (!profileFollower.followingProfiles.contains(follower)) {
             throw Exception("This profile doesnt have @${follower.username} as follower")

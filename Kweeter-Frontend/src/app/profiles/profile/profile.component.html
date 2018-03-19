@@ -13,7 +13,7 @@
               Email: <a href="mailto:{{ profile.emailAddress }}">{{ profile.emailAddress }}</a><br/>
             </p>
             <span *ngIf="profile.location">Location: {{ profile.location }}<br/></span>
-            <div class="card-action" *ngIf="!isProfileSelf">
+            <div class="card-action" *ngIf="!isProfileSelf && isProfileBeingFollowed != null">
               <a href="javascript:void(0)" (click)="toggleFollow()" class="card-action-link">{{ isProfileBeingFollowed ? "Unfollow" : "Follow" }} {{ profile.displayName }}</a>
             </div>
           </div>
