@@ -15,9 +15,11 @@ export class KweetActionService {
   constructor(private configService: ConfigService, private httpClient: HttpClient, private kweetService:KweetService) {
   }
 
-  public likeKweet(kweet: IKweet, profile:IProfile) {
-    return this.httpClient.put(`${this.configService.getKweeterEndpoint()}/kweets/actions/${kweet.publicId}/like`, {})
-      .subscribe(data => {});
+  public likeKweet(kweet: IKweet) {
+    return this.httpClient.put(`${this.configService.getKweeterEndpoint()}/kweets/actions/${kweet.publicId}/like`, {}).subscribe(d => {})
   }
 
+  public unlikeKweet(kweet: IKweet) {
+    return this.httpClient.delete(`${this.configService.getKweeterEndpoint()}/kweets/actions/${kweet.publicId}/like`, {}).subscribe(d => {})
+  }
 }

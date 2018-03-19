@@ -1,21 +1,22 @@
-<div class="card white">
+<div class="card white" *ngIf="ikweet !== undefined">
   <div class="card-content white black-text">
         <span class="card-title">
-          <a routerLink="/profiles/{{ kweet.author.id }}">
-            @{{ kweet.author.username }}</a><br/>
+          <a routerLink="/profiles/{{ ikweet.author.id }}">
+            @{{ ikweet.author.username }}</a><br/>
         </span>
     <p>
-      {{ kweet.textContent }}<br/>
-      <span style="font-size: small">{{ kweet.date | amTimeAgo: 'minutes' }}</span>
+      {{ ikweet.textContent }}<br/>
+      <span style="font-size: small">{{ ikweet.date | amTimeAgo: 'minutes' }}</span>
     </p>
   </div>
   <div class="card-action" *ngIf="loginService.isLoggedIn()">
     <a (click)="toggleLike()" href="javascript:void(0)" class="card-action-link">
-      <i *ngIf="kweet.hasLiked(loginService.getLoginInfo())" class="material-icons">favorite</i>
-      <i *ngIf="!kweet.hasLiked(loginService.getLoginInfo())" class="material-icons">favorite_border</i>
+      <i *ngIf="getKweet().hasLiked(loginService.getLoginInfo())" class="material-icons">favorite</i>
+      <i *ngIf="!getKweet().hasLiked(loginService.getLoginInfo())" class="material-icons">favorite_border</i>
     </a>
     <a href="javascript:void(0)" class="card-action-link">
       <i class="material-icons">repeat</i>
     </a>
   </div>
 </div>
+

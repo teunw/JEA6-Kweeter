@@ -47,9 +47,7 @@ class KweetController {
         if (kweetId.isEmpty()) {
             return httpResponseBadRequest().entity("kweetId is empty").build()
         }
-        val kweetIdAsLong = kweetId.toLongOrNull()
-                ?: return Response.serverError().entity("profileId not a long").build()
-
+        val kweetIdAsLong = kweetId.toLongOrNull() ?: return Response.ok(kweetService.findByPublicId(kweetId).toKweetFacade()).build()
         return Response.ok(kweetService.findById(kweetIdAsLong).toKweetFacade()).build()
     }
 
@@ -57,7 +55,7 @@ class KweetController {
     @PUT
     @Path("/{kweetId}")
     fun updateKweet(
-            @PathParam("kweetId") kweetId: Long,
+            @PathParam("kweetId") kweetId: String,
             parameters: KweetFacade,
             @Context securityContext: SecurityContext
     ): Response {
@@ -68,7 +66,7 @@ class KweetController {
             return httpResponseBadRequest().entity("textContent is empty").build()
         }
 
-        val kweet = this.kweetService.findById(kweetId)
+        val kweet = this.kweetService.findByPublicId(kweetId)
         kweet.author = this.profileService.findByPrincipal(securityContext.userPrincipal)
         kweet.textContent = parameters.textContent
         return Response.ok(kweet.toKweetFacade()).build()

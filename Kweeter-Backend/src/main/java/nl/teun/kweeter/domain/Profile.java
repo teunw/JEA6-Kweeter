@@ -47,9 +47,6 @@ public class Profile implements Serializable, Cloneable {
     @Column
     private ProfileRole role;
 
-    @ManyToMany
-    private List<Profile> followers = new ArrayList();
-
     public Profile() {
     }
 
@@ -139,15 +136,6 @@ public class Profile implements Serializable, Cloneable {
         return this.role.name().equals(role);
     }
 
-    public List<Profile> getFollowers() {
-        return followers;
-    }
-
-    public Profile setFollowers(List<Profile> followers) {
-        this.followers = followers;
-        return this;
-    }
-
     @Override
     public Profile clone() throws CloneNotSupportedException {
         Object clone = super.clone();
@@ -174,7 +162,6 @@ public class Profile implements Serializable, Cloneable {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(getId(), getUsername(), getDisplayName(), getEmail(), getLocation(), getContactLink(), bCryptHash, getBio());
     }
 }

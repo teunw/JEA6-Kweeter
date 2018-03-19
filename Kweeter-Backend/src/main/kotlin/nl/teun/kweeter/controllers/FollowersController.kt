@@ -23,32 +23,41 @@ class FollowersController {
 
     @GET
     @Path("/{profileId}")
-    fun getFollowersForProfile(@PathParam("profileId") profileId: Long): Response {
+    fun getFollowersForProfileById(@PathParam("profileId") profileId: Long): Response {
         val profile = this.profileService.findById(profileId)
         val follower = this.followersService.getFollowers(profile)
         return Response.ok(follower.toFollowerFacade()).build()
     }
 
     @KweeterAuthRequired
+    @GET
+    @Path("/")
+    fun getFollowersForProfile(@Context securityContext: SecurityContext): Response {
+        val authenticatedProfile = this.profileService.findByPrincipal(securityContext.userPrincipal)
+        val follower = this.followersService.getFollowers(authenticatedProfile)
+        return Response.ok(follower.toFollowerFacade()).build()
+    }
+
+    @KweeterAuthRequired
     @POST
-    @Path("/follow/{profileToFollow}")
+    @Path("/follower/{profileToFollow}")
     fun addFollower(@PathParam("profileToFollow") profileToFollowId: Long,
                     @Context securityContext: SecurityContext): Response {
         val authenticatedProfile = this.profileService.findByPrincipal(securityContext.userPrincipal)
         val profileToFollow = this.profileService.findById(profileToFollowId)
-        this.followersService.addFollower(authenticatedProfile, profileToFollow)
-        return Response.ok(authenticatedProfile.toProfileFacade()).build()
+        val profileFollow = this.followersService.addFollower(profileToFollow, authenticatedProfile)
+        return Response.ok(profileFollow.toFollowerFacade()).build()
     }
 
     @KweeterAuthRequired
     @DELETE
-    @Path("/follow/{profileToFollow}")
+    @Path("/follower/{profileToUnfollow}")
     fun removeFollower(@PathParam("profileToUnfollow") profileToUnfollowId: Long,
                        @Context securityContext: SecurityContext): Response {
         val authenticatedProfile = this.profileService.findByPrincipal(securityContext.userPrincipal)
         val profileToFollow = this.profileService.findById(profileToUnfollowId)
-        this.followersService.removeFollower(authenticatedProfile, profileToFollow)
-        return Response.ok(authenticatedProfile.toProfileFacade()).build()
+        val profileFollow = this.followersService.removeFollower(profileToFollow, authenticatedProfile)
+        return Response.ok(profileFollow.toFollowerFacade()).build()
     }
 
 }

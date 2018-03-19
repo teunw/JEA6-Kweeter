@@ -34,8 +34,8 @@ export class KweetService {
     return this.httpClient.get<IKweet[]>(`${this.configService.getKweeterEndpoint()}/kweets/forprofile/${profile.id}`);
   }
 
-  getKweet(id: number): Observable<IKweet> | null {
-    return this.httpClient.get<IKweet>(`${this.configService.getKweeterEndpoint()}/api/kweets/${id}`);
+  getKweet(id: string): Observable<IKweet> | null {
+    return this.httpClient.get<IKweet>(`${this.configService.getKweeterEndpoint()}/kweets/${id}`);
   }
 
   createKweet(kweet: IKweetPost) {

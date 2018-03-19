@@ -6,6 +6,7 @@ import java.util.*
 import javax.ejb.Stateless
 
 @Stateless
+@Deprecated("Redis is not used anymore")
 class RedisService(port : Int = 6379) {
 
     private var jedis = Jedis("localhost", port)

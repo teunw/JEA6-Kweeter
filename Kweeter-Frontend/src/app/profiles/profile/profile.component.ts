@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ProfileService} from '../../services/profile.service';
 import {ActivatedRoute} from '@angular/router';
-import {IProfile} from '../../profile';
+import {IProfile, Profile} from '../../profile';
 import {KweetService} from '../../services/kweet.service';
 import {IKweet} from '../../kweet';
 import {LoginService} from '../../services/login.service';
+import {FollowService} from '../../services/follow.service';
 
 @Component({
   selector: 'app-profile',
@@ -15,9 +16,14 @@ export class ProfileComponent implements OnInit {
 
   public profile: IProfile;
   public kweets: IKweet[] = [];
-  public isProfileSelf : boolean = false;
+  public isProfileSelf: boolean = false;
+  public isProfileBeingFollowed: boolean = false;
 
-  constructor(private profileService: ProfileService, private loginService:LoginService, private kweetService: KweetService, private route: ActivatedRoute) {
+  constructor(private profileService: ProfileService, private followService: FollowService, private loginService: LoginService, private kweetService: KweetService, private route: ActivatedRoute) {
+  }
+
+  public getProfile() {
+    return new Profile(this.profile);
   }
 
   ngOnInit() {
@@ -33,8 +39,22 @@ export class ProfileComponent implements OnInit {
               .subscribe(kweetData => {
                 this.kweets = kweetData;
               });
+            this.followService.getFollowers()
+              .subscribe(profileFollower => {
+                this.isProfileBeingFollowed = profileFollower.followingProfiles.filter(followingUser => followingUser.username === this.profile.username).length > 0;
+              });
           });
       }
     });
   }
+
+  public toggleFollow() {
+    if (!this.isProfileBeingFollowed) {
+      this.followService.startFollowing(this.profile).subscribe(d => {})
+    } else {
+      this.followService.stopFollowing(this.profile).subscribe(d => {});
+    }
+    this.isProfileBeingFollowed = !this.isProfileBeingFollowed;
+  }
 }
+

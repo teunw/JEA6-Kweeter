@@ -10,7 +10,7 @@ data class ProfileFollower(
         @Id
         @GeneratedValue
         val id: Long = -1L,
-        @Column
+        @Column(unique = true)
         var profile: Profile? = null,
         @OneToMany
         val followingProfiles: MutableList<Profile> = mutableListOf()

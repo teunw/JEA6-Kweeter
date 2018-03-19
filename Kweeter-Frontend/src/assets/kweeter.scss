@@ -8,11 +8,18 @@ $primary-text-color:   #212121;
 $secondary-text-color: #757575;
 $divider-color:        #BDBDBD;
 
+.specific-kweet {
+  border-color: $primary-color-dark;
+}
+.search {
+  color: #FFF;
+  &:active, &:focus {
+    color: #000;
+  }
+}
 .kweeter-spinner {
   border-color: $accent-color;
-
 }
-
 .nav-wrapper {
   @extend .nav-wrapper;
   background-color: $primary-color;

@@ -13,15 +13,17 @@ export class ViewKweetComponent implements OnInit {
 
   @Input()
   private ikweet: IKweet;
-
-  public kweet: Kweet;
   public profile : IProfile;
 
   constructor(public loginService: LoginService, private kweetActionService: KweetActionService) {
   }
 
+  public getKweet() {
+    return new Kweet(this.ikweet);
+  }
+
+
   ngOnInit() {
-    this.kweet = new Kweet(this.ikweet)
     this.loginService
       .loginInfo
       .subscribe(data => {
@@ -30,8 +32,12 @@ export class ViewKweetComponent implements OnInit {
   }
 
   public toggleLike() {
-    this.kweet.toggleLike(this.profile);
-    this.kweetActionService.likeKweet(this.kweet, this.profile);
+    const liked = this.getKweet().toggleLike(this.profile);
+    if (liked) {
+      this.kweetActionService.likeKweet(this.getKweet());
+    } else {
+      this.kweetActionService.unlikeKweet(this.getKweet());
+    }
   }
 
 }

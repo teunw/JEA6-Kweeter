@@ -28,10 +28,13 @@ import {KweetActionService} from './services/kweetaction.service';
 import {SearchbarComponent} from './search/searchbar/searchbar.component';
 import {SearchService} from './services/search/search.service';
 import {JWTInterceptor} from './interceptor/JWT.interceptor';
+import { SpecifickweetComponent } from './kweets/specifickweet/specifickweet.component';
+import {FollowService} from './services/follow.service';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'kweets', component: AllKweetsComponent},
+  {path: 'kweets/:id', component: SpecifickweetComponent},
   {path: 'profiles/:id', component: ProfileComponent},
   {path: 'login', component: LoginComponent},
   {path: 'account', component: ManageAccountComponent},
@@ -55,7 +58,8 @@ const appRoutes: Routes = [
     RegistrationComponent,
     ManageAccountComponent,
     LogoutComponent,
-    SearchbarComponent
+    SearchbarComponent,
+    SpecifickweetComponent
   ],
   imports: [
     FormsModule,
@@ -71,6 +75,7 @@ const appRoutes: Routes = [
     ProfileService,
     LoginService,
     KweetActionService,
+    FollowService,
     SearchService,
     {
       provide: HTTP_INTERCEPTORS,

@@ -28,16 +28,17 @@ export class Kweet implements IKweet {
     return this.kweet.likedBy.map(p => p.id).indexOf(profile.id, 0) != -1;
   }
 
-  public toggleLike(profile:IProfile) {
+  public toggleLike(profile:IProfile):boolean {
     const likeIndex = this.kweet.likedBy.map(p => p.id).indexOf(profile.id);
     if (likeIndex != -1) {
       console.log("Slicing...");
       this.kweet.likedBy.splice(likeIndex, 1);
+      return false;
     } else {
       console.log("Adding...");
       this.kweet.likedBy.push(profile);
+      return true;
     }
-    return this.kweet.likedBy;
   }
 }
 

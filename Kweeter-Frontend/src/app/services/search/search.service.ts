@@ -31,11 +31,11 @@ export class SearchService {
   public lastSearchResult: Observable<SearchResults> = this._lastSearchResult.asObservable();
   public hasSearchResult = false;
 
-  constructor(private httpClient: HttpClient, private configService: ConfigService) {
-  }
+  constructor(private httpClient: HttpClient, private configService: ConfigService) {}
 
   public clearResults() {
     this._lastSearchResult.next([]);
+    this.hasSearchResult = false;
   }
 
   public getSearchResultsForQuery(query: string) {
@@ -50,7 +50,8 @@ export class SearchService {
       .post(`${this.configService.getSearchEndpoint()}_search`, search)
       .subscribe(data => {
         const res = data as SearchResponse<IKweet[] | IProfile[]>;
-        this.hasSearchResult = true;
+        this.hasSearchResult = res.hits.total > 0;
+
         this._lastSearchResult.next(res.hits.hits);
       });
   }

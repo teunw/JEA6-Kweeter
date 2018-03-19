@@ -5,9 +5,9 @@ import nl.teun.kweeter.domain.ProfileFollower
 
 interface FollowerService {
 
-    fun addFollower(target: Profile, follower: Profile)
+    fun addFollower(profileToBeFollowed: Profile, follower: Profile): ProfileFollower
 
-    fun removeFollower(target: Profile, follower: Profile)
+    fun removeFollower(profileToBeUnfollowed: Profile, follower: Profile): ProfileFollower
 
-    fun getFollowers(target: Profile): ProfileFollower
+    fun getFollowers(profile: Profile): ProfileFollower
 }

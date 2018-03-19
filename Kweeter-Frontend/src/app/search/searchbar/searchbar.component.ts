@@ -11,11 +11,22 @@ import {IKweet} from '../../kweet';
 export class SearchbarComponent implements OnInit {
 
   public searchQuery: string;
+  public currentTimeout:number = null;
 
   constructor(public searchService: SearchService) {
   }
 
   ngOnInit() {
+  }
+
+  refreshSearchCountdown() {
+    if (this.currentTimeout != null) {
+      clearTimeout(this.currentTimeout);
+    }
+    this.currentTimeout = setTimeout(() => {
+      this.commitSearch()
+    }, 500);
+
   }
 
   public commitSearch() {

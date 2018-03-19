@@ -12,20 +12,20 @@ class FollowerServiceImpl : FollowerService {
     @PersistenceContext
     private lateinit var entityManager: EntityManager
 
-    override fun addFollower(target: Profile, follower: Profile) {
+    override fun addFollower(profileToBeFollowed: Profile, follower: Profile): ProfileFollower {
         val profileFollowers = this
                 .entityManager
                 .createNamedQuery("profilefollower.byprofile")
-                .setParameter("profileId", target.id)
+                .setParameter("profileId", follower.id)
                 .resultList
                 .filterIsInstance<ProfileFollower>()
 
         val profileFollower: ProfileFollower
         if (profileFollowers.isEmpty()) {
             profileFollower = ProfileFollower()
-            profileFollower.profile = target
+            profileFollower.profile = profileToBeFollowed
         } else {
-            profileFollower = profileFollowers[0]
+            profileFollower = profileFollowers.first()
         }
 
         if (profileFollower.followingProfiles.contains(follower)) {
@@ -33,18 +33,19 @@ class FollowerServiceImpl : FollowerService {
         }
         profileFollower.followingProfiles.add(follower)
 
-        if (profileFollower.id >= 1) {
+        if (profileFollower.id > 0) {
             entityManager.merge(profileFollower)
         } else {
             entityManager.persist(profileFollower)
         }
+        return profileFollower
     }
 
-    override fun removeFollower(target: Profile, follower: Profile) {
+    override fun removeFollower(profileToBeUnfollowed: Profile, follower: Profile): ProfileFollower {
         val profileFollowers = this
                 .entityManager
                 .createNamedQuery("profilefollower.byprofile")
-                .setParameter("profileId", target.id)
+                .setParameter("profileId", follower.id)
                 .resultList
                 .filterIsInstance<ProfileFollower>()
         if (profileFollowers.size != 1) {
@@ -55,18 +56,19 @@ class FollowerServiceImpl : FollowerService {
         if (!profileFollower.followingProfiles.contains(follower)) {
             throw Exception("This profile doesnt have @${follower.username} as follower")
         }
-        profileFollower.followingProfiles.remove(follower)
-        entityManager.persist(profileFollower)
+        profileFollower.followingProfiles.remove(profileToBeUnfollowed)
+        entityManager.merge(profileFollower)
+        return profileFollower
     }
 
-    override fun getFollowers(target: Profile): ProfileFollower {
+    override fun getFollowers(profile: Profile): ProfileFollower {
         val followers = this.entityManager
                 .createNamedQuery("profilefollower.byprofile")
-                .setParameter("profileId", target.id)
+                .setParameter("profileId", profile.id)
                 .resultList
                 .filterIsInstance<ProfileFollower>()
-        if (followers.size != 1) {
-            throw Exception("found multiple followers for profile id ${target.id}")
+        if (followers.isEmpty()) {
+            return ProfileFollower(profile = profile)
         }
         return followers.first()
     }

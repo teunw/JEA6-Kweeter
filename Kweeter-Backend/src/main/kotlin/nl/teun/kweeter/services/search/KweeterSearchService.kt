@@ -22,10 +22,8 @@ import javax.inject.Inject
 @Stateless
 class KweeterSearchService {
 
-    private val xContentType = XContentType.fromMediaType("application/json")
     private val ElasticServer = "elasticsearch.teunwillems.nl"
     private val elasticClient = RestHighLevelClient(RestClient.builder(HttpHost(this.ElasticServer, 443, "https")))
-    private val gson = Gson()
 
     @Inject
     private lateinit var kweetService: KweetService

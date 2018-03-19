@@ -14,7 +14,7 @@
             </p>
             <span *ngIf="profile.location">Location: {{ profile.location }}<br/></span>
             <div class="card-action" *ngIf="!isProfileSelf">
-              <a href="javascript:void(0)" class="card-action-link">Follow {{ profile.displayName }}</a>
+              <a href="javascript:void(0)" (click)="toggleFollow()" class="card-action-link">{{ isProfileBeingFollowed ? "Unfollow" : "Follow" }} {{ profile.displayName }}</a>
             </div>
           </div>
         </div>
