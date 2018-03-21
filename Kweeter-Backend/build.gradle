@@ -46,6 +46,7 @@ repositories {
     maven { url "https://repository.jboss.org/nexus/content/groups/public-jboss" }
     maven { url "https://repository.jboss.org/nexus/content/repositories" }
     maven { url "https://repository.jboss.org/nexus/content/repositories/thirdparty-releases" }
+    maven { url "http://repository.primefaces.org" }
 }
 
 dependencies {
@@ -70,6 +71,8 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-io', version: '1.3.2'
     compile group: 'org.apache.commons', name: 'commons-text', version: '1.2'
     compile 'io.jsonwebtoken:jjwt:0.9.0'
+    compile 'org.primefaces:primefaces:6.2.0'
+    compile 'org.primefaces.themes:all-themes:6.2.0'
 
     // https://mvnrepository.com/artifact/org.mockito/mockito-all
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'

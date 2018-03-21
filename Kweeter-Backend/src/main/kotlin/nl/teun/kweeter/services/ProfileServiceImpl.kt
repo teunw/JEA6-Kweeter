@@ -22,7 +22,7 @@ class ProfileServiceImpl : ProfileService {
     private lateinit var searchService: KweeterSearchService
 
     override fun recreateFromFacade(profileFacade: ProfileFacade): Profile {
-        val profile = this.findById(profileFacade.id)
+        val profile = this.findById(profileFacade.id!!)
         profile.username = profileFacade.username
         profile.displayName = profileFacade.displayName
         profile.email = profileFacade.emailAddress

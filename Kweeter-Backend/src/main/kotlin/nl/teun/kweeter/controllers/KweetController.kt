@@ -2,6 +2,8 @@ package nl.teun.kweeter.controllers
 
 import nl.teun.kweeter.authentication.annotations.AuthenticatedUser
 import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
+import nl.teun.kweeter.controllers.types.request.KweetPost
+import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.facades.KweetFacade
 import nl.teun.kweeter.httpResponseBadRequest
@@ -9,13 +11,15 @@ import nl.teun.kweeter.httpResponseNotFound
 import nl.teun.kweeter.services.KweetService
 import nl.teun.kweeter.services.ProfileService
 import nl.teun.kweeter.toKweetFacade
+import nl.teun.kweeter.toProfileFacade
+import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.ws.rs.*
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.Response
 import javax.ws.rs.core.SecurityContext
 
-@Path("/kweets")
+@Path("/profiles")
 class KweetController {
 
     @Inject
@@ -62,7 +66,7 @@ class KweetController {
         if (parameters.author != null) {
             return httpResponseBadRequest().entity("profileId is empty").build()
         }
-        if (parameters.textContent.isEmpty()) {
+        if (parameters.textContent!!.isEmpty()) {
             return httpResponseBadRequest().entity("textContent is empty").build()
         }
 
@@ -89,14 +93,17 @@ class KweetController {
     @POST
     @Path("/")
     fun createKweet(
-            requestPost: KweetFacade,
+            requestPost: KweetPost,
             @Context securityContext: SecurityContext
     ): Response {
-        if (requestPost.textContent.isEmpty()) {
+        if (requestPost.textContent!!.isEmpty()) {
             return httpResponseBadRequest().entity("textContent is empty (\"${requestPost.textContent}\"").build()
         }
-
-        val kweet = this.kweetService.recreateFromFacade(requestPost)
+        val kweet = Kweet()
+                .setAuthor(this.profileService.findByPrincipal(securityContext.userPrincipal))
+                .setTextContent(requestPost.textContent)
+                .setDate(LocalDateTime.now())
+                .setLikedBy(emptyList())
         this.kweetService.createKweet(kweet)
         return Response.ok(kweet.toKweetFacade()).build()
     }

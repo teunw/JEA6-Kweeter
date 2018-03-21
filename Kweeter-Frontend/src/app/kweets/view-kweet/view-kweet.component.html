@@ -6,7 +6,7 @@
         </span>
     <p>
       {{ ikweet.textContent }}<br/>
-      <span style="font-size: small">{{ ikweet.date | amTimeAgo: 'minutes' }}</span>
+      <span style="font-size: small">{{ ikweet.date | amTimeAgo: 'minutes' }} ago</span>
     </p>
   </div>
   <div class="card-action" *ngIf="loginService.isLoggedIn()">

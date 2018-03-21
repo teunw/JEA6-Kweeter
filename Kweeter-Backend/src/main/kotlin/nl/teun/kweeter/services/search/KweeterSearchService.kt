@@ -36,7 +36,7 @@ class KweeterSearchService {
         val profiles = this.profileService.findAll(Int.MAX_VALUE, 0).map { it.toProfileFacade() }
 
         val indexRequests = ArrayList<IndexRequest>(kweets.size + profiles.size)
-        indexRequests.addAll(kweets.map { IndexRequest("kweets", "kweet", it.publicId.toString()).source(it.toJson(), XContentType.JSON) })
+        indexRequests.addAll(kweets.map { IndexRequest("profiles", "kweet", it.publicId.toString()).source(it.toJson(), XContentType.JSON) })
         indexRequests.addAll(profiles.map { IndexRequest("profiles", "profile", it.id.toString()).source(it.toJson(), XContentType.JSON) })
         indexRequests.forEach { this.elasticClient.index(it) }
         println("Done")
@@ -53,12 +53,12 @@ class KweeterSearchService {
     }
 
     fun addKweetToIndex(kweetFacade: KweetFacade): IndexResponse {
-        val insertRequest = IndexRequest("kweets", "kweet", kweetFacade.publicId.toString()).source(kweetFacade.toJson(), XContentType.JSON)
+        val insertRequest = IndexRequest("profiles", "kweet", kweetFacade.publicId.toString()).source(kweetFacade.toJson(), XContentType.JSON)
         return this.elasticClient.index(insertRequest)
     }
 
     fun updateKweetIndex(kweetFacade: KweetFacade): UpdateResponse {
-        val updateRequest = UpdateRequest("kweets", "kweet", kweetFacade.publicId.toString()).doc(kweetFacade.toJson(), XContentType.JSON)
+        val updateRequest = UpdateRequest("profiles", "kweet", kweetFacade.publicId.toString()).doc(kweetFacade.toJson(), XContentType.JSON)
         return this.elasticClient.update(updateRequest)
     }
 }

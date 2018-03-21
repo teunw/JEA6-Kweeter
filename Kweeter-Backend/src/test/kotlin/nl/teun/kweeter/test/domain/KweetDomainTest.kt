@@ -26,12 +26,12 @@ class KweetDomainTest {
         this.kweet1 = Kweet()
                 .setTextContent("This is kweet1")
                 .setAuthor(profile1)
-                .setDateWithLocalDateTime(LocalDateTime.now())
+                .setDate(LocalDateTime.now())
                 .setPublicId(UUID.randomUUID())
         this.kweet2 = Kweet()
                 .setTextContent("This is kweet2")
                 .setAuthor(profile2)
-                .setDateWithLocalDateTime(LocalDateTime.now())
+                .setDate(LocalDateTime.now())
                 .setPublicId(UUID.randomUUID())
         this.kweet1.internalId = 1
         this.kweet2.internalId = 2
@@ -80,16 +80,9 @@ class KweetDomainTest {
     }
 
     @Test
-    fun setDate() {
-        val time = java.util.Date(java.util.Date().time + 2000L)
-        this.kweet1.date = time
-        Assert.assertEquals(this.kweet1.date, time)
-    }
-
-    @Test
     fun setDateWithLocalDateTime() {
         val localDateLater = LocalDateTime.now().plusDays(1)
-        this.kweet1.setDateWithLocalDateTime(localDateLater)
+        this.kweet1.date = localDateLater
         Assert.assertEquals(this.kweet1.date, localDateLater.toJavaUtilDate())
     }
 

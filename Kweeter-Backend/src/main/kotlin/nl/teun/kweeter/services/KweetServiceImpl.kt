@@ -4,6 +4,7 @@ import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.facades.KweetFacade
 import nl.teun.kweeter.services.search.KweeterSearchService
+import nl.teun.kweeter.toJavaUtilDate
 import nl.teun.kweeter.toKweetFacade
 import java.util.*
 import javax.ejb.Stateless
@@ -28,7 +29,9 @@ class KweetServiceImpl : KweetService {
                 .setParameter("k_publicId", id)
                 .resultList
                 .filterIsInstance<Kweet>()
-        if (kweets.size != 1) {
+        if (kweets.isEmpty()) {
+            throw NotFoundException("No instances found")
+        } else if (kweets.size > 1) {
             throw Exception("Invalid number of instances found")
         }
         return kweets.first()
@@ -41,7 +44,7 @@ class KweetServiceImpl : KweetService {
                     .setFirstResult(offsetResults)
                     .resultList
                     .filterIsInstance<Kweet>()
-                    .sortedByDescending { it.date.time }
+                    .sortedByDescending { it.date.toJavaUtilDate().time }
 
     override fun findById(id: Long) = this.entityManager.find(Kweet::class.java, id)
             ?: throw NotFoundException("Kweet not found")
@@ -66,5 +69,5 @@ class KweetServiceImpl : KweetService {
         this.searchService.addKweetToIndex(kweet.toKweetFacade())
     }
 
-    override fun recreateFromFacade(kweetFacade: KweetFacade) = this.findByPublicId(kweetFacade.publicId)
+    override fun recreateFromFacade(kweetFacade: KweetFacade) = this.findByPublicId(kweetFacade.publicId!!)
 }

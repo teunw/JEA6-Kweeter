@@ -62,7 +62,7 @@ class MockService {
             val kweet = Kweet()
                     .setTextContent(getRandomElement(sentences))
                     .setAuthor(getRandomElement(profiles))
-                    .setDateWithLocalDateTime(newDate)
+                    .setDate(newDate)
             kweetService.createKweet(kweet)
         }
     }

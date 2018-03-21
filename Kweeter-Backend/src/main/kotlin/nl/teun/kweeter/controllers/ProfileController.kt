@@ -73,15 +73,15 @@ class ProfileController {
             dbProfile.username = reqProfile.username
             updatedAnything = true
         }
-        if (!reqProfile.displayName.isBlank()) {
+        if (reqProfile.displayName == null || !reqProfile.displayName.isBlank()) {
             dbProfile.displayName = reqProfile.displayName
             updatedAnything = true
         }
-        if (!reqProfile.bio.isBlank()) {
+        if (reqProfile.bio == null || !reqProfile.bio.isBlank()) {
             dbProfile.bio = reqProfile.bio
             updatedAnything = true
         }
-        if (!reqProfile.location.isBlank()) {
+        if (reqProfile.location == null || !reqProfile.location.isBlank()) {
             dbProfile.location = reqProfile.location
             updatedAnything = true
         }
@@ -103,7 +103,7 @@ class ProfileController {
     fun createProfile(
             profileFacade: ProfileFacade
     ): Response? {
-        if (profileFacade.emailAddress.isBlank() || profileFacade.username.isBlank() || profileFacade.displayName.isBlank()) {
+        if (profileFacade.emailAddress!!.isBlank() || profileFacade.username!!.isBlank() || profileFacade.displayName!!.isBlank()) {
             return httpResponseBadRequest()
                     .entity("One of the parameters is empty")
                     .entity(profileFacade.emailAddress)

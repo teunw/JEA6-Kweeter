@@ -32,13 +32,13 @@ public class Kweet implements Serializable {
     private Profile author;
 
     @Column(nullable = false)
-    private Date date;
+    private LocalDateTime date;
 
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Profile> likedBy;
 
     public Kweet() {
-        this.date = new Date();
+        this.date = LocalDateTime.now();
         this.likedBy = new ArrayList<>();
     }
 
@@ -78,17 +78,12 @@ public class Kweet implements Serializable {
         return this;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public Kweet setDate(Date date) {
+    public Kweet setDate(LocalDateTime date) {
         this.date = date;
-        return this;
-    }
-
-    public Kweet setDateWithLocalDateTime(LocalDateTime ldate) {
-        this.date = Utilities.Companion.localDateTimeToJavaDate(ldate);
         return this;
     }
 

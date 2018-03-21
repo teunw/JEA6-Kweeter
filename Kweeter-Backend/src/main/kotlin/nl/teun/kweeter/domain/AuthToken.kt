@@ -1,6 +1,6 @@
 package nl.teun.kweeter.domain
 
-import org.joda.time.DateTime
+import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
 
@@ -15,7 +15,7 @@ data class AuthToken(
         @OneToOne
         val profile: Profile? = null,
         @Column
-        val issueDate: DateTime = DateTime.now(),
+        val issueDate: LocalDateTime = LocalDateTime.now(),
         @Column
-        val experationDate: DateTime = DateTime.now().plusYears(1)
+        val experationDate: LocalDateTime = LocalDateTime.now().plusYears(1)
 )

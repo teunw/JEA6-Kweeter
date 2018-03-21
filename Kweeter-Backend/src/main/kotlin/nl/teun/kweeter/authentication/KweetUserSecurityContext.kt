@@ -1,6 +1,7 @@
 package nl.teun.kweeter.authentication
 
 import nl.teun.kweeter.domain.AuthToken
+import java.time.LocalDateTime
 import javax.ws.rs.core.SecurityContext
 
 class KweetUserSecurityContext(
@@ -12,5 +13,5 @@ class KweetUserSecurityContext(
 
     override fun getUserPrincipal() = ProfileSecurityPrincipal(this.authToken.profile!!)
 
-    override fun isSecure() = this.authToken.experationDate.isBeforeNow
+    override fun isSecure() = this.authToken.experationDate.isBefore(LocalDateTime.now())
 }
