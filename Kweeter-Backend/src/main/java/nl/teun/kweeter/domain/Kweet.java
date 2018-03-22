@@ -1,12 +1,14 @@
 package nl.teun.kweeter.domain;
 
-import nl.teun.kweeter.Utilities;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Table
@@ -16,7 +18,7 @@ import java.util.*;
         @NamedQuery(name = "Kweet.findbyprofile", query = "SELECT k FROM Kweet k WHERE k.author.id = :p_id order by k.date DESC"),
         @NamedQuery(name = "Kweet.findbypublicId", query = "SELECT k FROM Kweet k WHERE k.publicId = :k_publicId order by k.date DESC")
 })
-public class Kweet implements Serializable {
+public class Kweet implements Serializable, Comparable<Kweet> {
 
     @Column(unique = true, nullable = false, updatable = false)
     private String publicId;
@@ -112,5 +114,10 @@ public class Kweet implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(getPublicId(), id, getTextContent(), getAuthor(), getDate(), getLikedBy());
+    }
+
+    @Override
+    public int compareTo(@NotNull Kweet o) {
+        return this.date.compareTo(o.date);
     }
 }

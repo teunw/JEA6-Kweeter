@@ -10,7 +10,6 @@ import javax.inject.Named
 @Named
 @SessionScoped
 class ProfileAdminBean : Serializable {
-
     @Inject
     private lateinit var profileService: ProfileService
 

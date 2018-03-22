@@ -1,12 +1,11 @@
 package nl.teun.kweeter.domain;
 
 import nl.teun.kweeter.authentication.ProfileRole;
+import org.jetbrains.annotations.NotNull;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,7 +16,7 @@ import java.util.Objects;
         @NamedQuery(name = "Profile.findbyemail", query = "SELECT p FROM Profile p WHERE p.email = :p_email ORDER BY p.id"),
         @NamedQuery(name = "Profile.findbyusername", query = "SELECT p FROM Profile p WHERE p.username = :p_username ORDER BY p.id")
 })
-public class Profile implements Serializable, Cloneable {
+public class Profile implements Serializable, Cloneable, Comparable<Profile> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -163,5 +162,10 @@ public class Profile implements Serializable, Cloneable {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getUsername(), getDisplayName(), getEmail(), getLocation(), getContactLink(), bCryptHash, getBio());
+    }
+
+    @Override
+    public int compareTo(@NotNull Profile o) {
+        return this.id.compareTo(o.id);
     }
 }

@@ -13,5 +13,5 @@ data class ProfileFollower(
         @OneToOne
         var profile: Profile? = null,
         @ManyToMany
-        val followingProfiles: MutableList<Profile> = mutableListOf()
+        val followingProfiles: MutableSet<Profile> = mutableSetOf()
 )
