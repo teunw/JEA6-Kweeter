@@ -75,18 +75,6 @@ class KweetDomainTest {
     }
 
     @Test
-    fun getDate() {
-        Assert.assertEquals(this.kweet1.date.toString(), java.util.Date().toString())
-    }
-
-    @Test
-    fun setDateWithLocalDateTime() {
-        val localDateLater = LocalDateTime.now().plusDays(1)
-        this.kweet1.date = localDateLater
-        Assert.assertEquals(this.kweet1.date, localDateLater.toJavaUtilDate())
-    }
-
-    @Test
     fun getLikedBy() {
         Assert.assertEquals(this.kweet1.likedBy.size, 0)
     }

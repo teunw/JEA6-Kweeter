@@ -1,0 +1,18 @@
+kweeter-backend:
+    build: ./Kweeter-Backend
+    container_name: "KweeterBackend"
+    ports:
+        - "80:8080"
+        - "9990:9990"
+kweeter-frontend:
+    build: ./Kweeter-Frontend
+    container_name: "Kweeter-Frontend"
+    ports:
+        - "80:4200"
+postgres:
+    image: postgres:9.5
+    container_name: "kweeter-postgres"
+    ports: 
+        - "5432:5432"
+    volumes:
+        - "/opt/postgres_data:/var/lib/postgresql/data"
