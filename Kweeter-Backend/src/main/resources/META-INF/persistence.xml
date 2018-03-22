@@ -4,7 +4,7 @@
              version="2.0">
 
     <persistence-unit name="pu-kweeter" transaction-type="JTA">
-        <jta-data-source>PostgresDS</jta-data-source>
+        <jta-data-source>ExampleDS</jta-data-source>
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hbm2ddl.auto" value="update"/>
