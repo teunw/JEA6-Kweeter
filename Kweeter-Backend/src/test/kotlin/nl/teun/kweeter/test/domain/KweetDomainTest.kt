@@ -2,7 +2,6 @@ package nl.teun.kweeter.test.domain
 
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
-import nl.teun.kweeter.toJavaUtilDate
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.shrinkwrap.api.ShrinkWrap
 import org.jboss.shrinkwrap.api.asset.EmptyAsset
@@ -72,18 +71,6 @@ class KweetDomainTest {
     fun setAuthor() {
         this.kweet1.author = profile2
         Assert.assertEquals(this.kweet1.author, profile2)
-    }
-
-    @Test
-    fun getDate() {
-        Assert.assertEquals(this.kweet1.date.toString(), java.util.Date().toString())
-    }
-
-    @Test
-    fun setDateWithLocalDateTime() {
-        val localDateLater = LocalDateTime.now().plusDays(1)
-        this.kweet1.date = localDateLater
-        Assert.assertEquals(this.kweet1.date, localDateLater.toJavaUtilDate())
     }
 
     @Test
