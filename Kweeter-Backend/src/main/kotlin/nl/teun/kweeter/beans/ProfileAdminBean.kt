@@ -3,12 +3,14 @@ package nl.teun.kweeter.beans
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.services.ProfileService
 import java.io.Serializable
+import javax.annotation.security.RolesAllowed
 import javax.enterprise.context.SessionScoped
 import javax.inject.Inject
 import javax.inject.Named
 
 @Named
 @SessionScoped
+@RolesAllowed(value = ["ADMIN", "MODERATOR"])
 class ProfileAdminBean : Serializable {
     @Inject
     private lateinit var profileService: ProfileService

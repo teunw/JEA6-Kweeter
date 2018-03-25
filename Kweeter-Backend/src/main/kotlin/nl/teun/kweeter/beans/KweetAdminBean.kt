@@ -4,13 +4,16 @@ import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.services.KweetService
 import java.io.Serializable
 import java.time.format.DateTimeFormatter
+import javax.annotation.security.RolesAllowed
 import javax.enterprise.context.SessionScoped
 import javax.inject.Inject
 import javax.inject.Named
 
 @Named
 @SessionScoped
+@RolesAllowed(value = ["MODERATOR", "ADMIN"])
 class KweetAdminBean : Serializable {
+
     @Inject
     private lateinit var kweetService: KweetService
 
