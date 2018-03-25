@@ -1,6 +1,5 @@
 package nl.teun.kweeter.services.search
 
-import com.google.gson.Gson
 import nl.teun.kweeter.facades.KweetFacade
 import nl.teun.kweeter.facades.ProfileFacade
 import nl.teun.kweeter.services.KweetService
@@ -20,7 +19,7 @@ import javax.ejb.Stateless
 import javax.inject.Inject
 
 @Stateless
-class KweeterSearchService {
+class ElasticKweeterSearchService {
 
     private val ElasticServer = "elasticsearch.teunwillems.nl"
     private val elasticClient = RestHighLevelClient(RestClient.builder(HttpHost(this.ElasticServer, 443, "https")))

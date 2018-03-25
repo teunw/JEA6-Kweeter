@@ -1,6 +1,6 @@
 package nl.teun.kweeter.controllers
 
-import nl.teun.kweeter.services.search.KweeterSearchService
+import nl.teun.kweeter.services.search.ElasticKweeterSearchService
 import javax.inject.Inject
 import javax.ws.rs.GET
 import javax.ws.rs.Path
@@ -9,7 +9,7 @@ import javax.ws.rs.Path
 class TestController {
 
     @Inject
-    private lateinit var searchService: KweeterSearchService
+    private lateinit var searchService: ElasticKweeterSearchService
 
     @GET
     @Path("/")

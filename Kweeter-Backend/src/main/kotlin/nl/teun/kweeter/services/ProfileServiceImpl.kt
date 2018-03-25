@@ -3,7 +3,7 @@ package nl.teun.kweeter.services
 import nl.teun.kweeter.authentication.ProfileRole
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.facades.ProfileFacade
-import nl.teun.kweeter.services.search.KweeterSearchService
+import nl.teun.kweeter.services.search.ElasticKweeterSearchService
 import nl.teun.kweeter.toProfileFacade
 import java.security.Principal
 import javax.ejb.Stateless
@@ -19,10 +19,10 @@ class ProfileServiceImpl : ProfileService {
     private lateinit var entityManager: EntityManager
 
     @Inject
-    private lateinit var searchService: KweeterSearchService
+    private lateinit var searchService: ElasticKweeterSearchService
 
     override fun recreateFromFacade(profileFacade: ProfileFacade): Profile {
-        val profile = this.findById(profileFacade.id!!)
+        val profile = this.findById(profileFacade.id)
         profile.username = profileFacade.username
         profile.displayName = profileFacade.displayName
         profile.email = profileFacade.emailAddress

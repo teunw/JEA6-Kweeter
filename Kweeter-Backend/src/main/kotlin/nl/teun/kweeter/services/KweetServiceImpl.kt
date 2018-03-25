@@ -3,7 +3,7 @@ package nl.teun.kweeter.services
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.facades.KweetFacade
-import nl.teun.kweeter.services.search.KweeterSearchService
+import nl.teun.kweeter.services.search.ElasticKweeterSearchService
 import nl.teun.kweeter.toJavaUtilDate
 import nl.teun.kweeter.toKweetFacade
 import java.util.*
@@ -20,7 +20,7 @@ class KweetServiceImpl : KweetService {
     private lateinit var entityManager: EntityManager
 
     @Inject
-    private lateinit var searchService: KweeterSearchService
+    private lateinit var searchService: ElasticKweeterSearchService
 
     override fun findByPublicId(id: String): Kweet {
         val kweets = this

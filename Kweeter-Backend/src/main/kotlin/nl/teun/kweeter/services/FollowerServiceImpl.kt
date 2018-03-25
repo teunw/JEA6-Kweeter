@@ -67,9 +67,10 @@ class FollowerServiceImpl : FollowerService {
                 .setParameter("profileId", profile.id)
                 .resultList
                 .filterIsInstance<ProfileFollower>()
-        if (followers.isEmpty()) {
-            return ProfileFollower(profile = profile)
+        return if (followers.isEmpty()) {
+            ProfileFollower(profile = profile)
+        } else {
+            return followers.first()
         }
-        return followers.first()
     }
 }

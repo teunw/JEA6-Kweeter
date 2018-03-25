@@ -112,6 +112,18 @@ public class Kweet implements Serializable, Comparable<Kweet> {
     }
 
     @Override
+    public String toString() {
+        return "Kweet{" +
+                "publicId='" + publicId + '\'' +
+                ", id=" + id +
+                ", textContent='" + textContent + '\'' +
+                ", author=" + author +
+                ", date=" + date +
+                ", likedBy=" + likedBy +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(getPublicId(), id, getTextContent(), getAuthor(), getDate(), getLikedBy());
     }
