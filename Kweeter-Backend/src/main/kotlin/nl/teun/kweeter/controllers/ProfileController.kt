@@ -103,7 +103,7 @@ class ProfileController {
     fun createProfile(
             profileFacade: ProfileFacade
     ): Response? {
-        if (profileFacade.emailAddress!!.isBlank() || profileFacade.username!!.isBlank() || profileFacade.displayName!!.isBlank()) {
+        if (profileFacade.emailAddress.isBlank() || profileFacade.username.isBlank() || profileFacade.displayName!!.isBlank()) {
             return httpResponseBadRequest()
                     .entity("One of the parameters is empty")
                     .entity(profileFacade.emailAddress)

@@ -131,6 +131,10 @@ public class Profile implements Serializable, Cloneable, Comparable<Profile> {
         return BCrypt.checkpw(pass, this.bCryptHash);
     }
 
+    public String getbCryptHash() {
+        return bCryptHash;
+    }
+
     public ProfileRole getRole() {
         return role;
     }

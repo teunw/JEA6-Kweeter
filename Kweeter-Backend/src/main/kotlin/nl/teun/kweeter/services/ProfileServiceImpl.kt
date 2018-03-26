@@ -3,10 +3,8 @@ package nl.teun.kweeter.services
 import nl.teun.kweeter.authentication.ProfileRole
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.facades.ProfileFacade
-import nl.teun.kweeter.toProfileFacade
 import java.security.Principal
 import javax.ejb.Stateless
-import javax.inject.Inject
 import javax.persistence.EntityManager
 import javax.persistence.EntityNotFoundException
 import javax.persistence.PersistenceContext
@@ -15,7 +13,7 @@ import javax.persistence.PersistenceContext
 class ProfileServiceImpl : ProfileService {
 
     @PersistenceContext
-    private lateinit var entityManager: EntityManager
+    lateinit var entityManager: EntityManager
 
     override fun recreateFromFacade(profileFacade: ProfileFacade): Profile {
         val profile = this.findById(profileFacade.id)

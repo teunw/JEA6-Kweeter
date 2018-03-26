@@ -3,11 +3,11 @@ package nl.teun.kweeter.test.service
 import com.google.gson.Gson
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.services.cache.RedisService
-import org.jboss.arquillian.container.test.api.BeforeDeployment
-import org.junit.*
+import org.junit.After
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Test
 import redis.embedded.RedisServer
-import javax.enterprise.context.BeforeDestroyed
-
 
 class RedisServiceTest {
 
