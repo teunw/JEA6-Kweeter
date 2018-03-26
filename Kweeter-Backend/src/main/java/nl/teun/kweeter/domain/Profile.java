@@ -1,6 +1,8 @@
 package nl.teun.kweeter.domain;
 
 import nl.teun.kweeter.authentication.ProfileRole;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.jetbrains.annotations.NotNull;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -16,6 +18,7 @@ import java.util.Objects;
         @NamedQuery(name = "Profile.findbyemail", query = "SELECT p FROM Profile p WHERE p.email = :p_email ORDER BY p.id"),
         @NamedQuery(name = "Profile.findbyusername", query = "SELECT p FROM Profile p WHERE p.username = :p_username ORDER BY p.id")
 })
+@Indexed
 public class Profile implements Serializable, Cloneable, Comparable<Profile> {
 
     @Id
@@ -23,28 +26,34 @@ public class Profile implements Serializable, Cloneable, Comparable<Profile> {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @Field
     private String username;
 
     @Column(nullable = false)
+    @Field
     private String displayName;
 
     @Column(nullable = false)
+    @Field
     public String email;
 
     @Column
+    @Field
     private String location;
 
     @Column
+    @Field
     private String contactLink;
 
     @Column
     private String bCryptHash;
 
     @Column
+    @Field
     private String bio;
 
     @Column
-    private ProfileRole role;
+    private ProfileRole role = ProfileRole.Operator;
 
     public Profile() {
     }
@@ -132,7 +141,7 @@ public class Profile implements Serializable, Cloneable, Comparable<Profile> {
     }
 
     public boolean hasRole(String role) {
-        return this.role.name().equals(role);
+        return ProfileRole.valueOf(role).ordinal() <= this.role.ordinal();
     }
 
     @Override

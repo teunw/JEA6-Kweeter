@@ -11,7 +11,7 @@ import javax.inject.Named
 
 @Named
 @SessionScoped
-@RolesAllowed(value = ["MODERATOR", "ADMIN"])
+@RolesAllowed(value = ["Moderator", "Admin"])
 class KweetAdminBean : Serializable {
 
     @Inject
@@ -26,7 +26,15 @@ class KweetAdminBean : Serializable {
         return this.allKweets
     }
 
-    fun getSearchedKweets(search: String = ".*") = this.allKweets.filter { it.textContent.toLowerCase().contains(search.toRegex()) }
+    fun getSearchedKweets(search: String = ".*"): List<Kweet> {
+        if (this.allKweets.isEmpty()) {
+            getKweets()
+        }
+        if (search == "" || search == ".*") {
+            return this.allKweets
+        }
+        return this.allKweets.filter { it.textContent.toLowerCase().contains(search.toRegex()) }
+    }
 
     fun getKweetDate(kweet: Kweet) = kweet.date.format(DateTimeFormatter.ISO_DATE_TIME)
 }

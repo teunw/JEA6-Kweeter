@@ -3,7 +3,6 @@ package nl.teun.kweeter.services
 import nl.teun.kweeter.authentication.ProfileRole
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.facades.ProfileFacade
-import nl.teun.kweeter.services.search.ElasticKweeterSearchService
 import nl.teun.kweeter.toProfileFacade
 import java.security.Principal
 import javax.ejb.Stateless
@@ -17,9 +16,6 @@ class ProfileServiceImpl : ProfileService {
 
     @PersistenceContext
     private lateinit var entityManager: EntityManager
-
-    @Inject
-    private lateinit var searchService: ElasticKweeterSearchService
 
     override fun recreateFromFacade(profileFacade: ProfileFacade): Profile {
         val profile = this.findById(profileFacade.id)
@@ -72,13 +68,11 @@ class ProfileServiceImpl : ProfileService {
     override fun updateProfile(profile: Profile) {
         this.entityManager.merge(profile)
         this.entityManager.flush()
-        this.searchService.updateProfileIndex(profile.toProfileFacade())
     }
 
     override fun createProfile(profile: Profile) {
         this.entityManager.persist(profile)
         this.entityManager.flush()
-        this.searchService.addProfileToIndex(profile.toProfileFacade())
     }
 
     override fun findByPrincipal(userPrincipal: Principal): Profile {

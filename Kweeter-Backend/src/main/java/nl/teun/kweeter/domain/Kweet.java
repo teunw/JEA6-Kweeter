@@ -1,5 +1,7 @@
 package nl.teun.kweeter.domain;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
@@ -18,6 +20,7 @@ import java.util.UUID;
         @NamedQuery(name = "Kweet.findbyprofile", query = "SELECT k FROM Kweet k WHERE k.author.id = :p_id order by k.date DESC"),
         @NamedQuery(name = "Kweet.findbypublicId", query = "SELECT k FROM Kweet k WHERE k.publicId = :k_publicId order by k.date DESC")
 })
+@Indexed
 public class Kweet implements Serializable, Comparable<Kweet> {
 
     @Column(unique = true, nullable = false, updatable = false)
@@ -28,6 +31,7 @@ public class Kweet implements Serializable, Comparable<Kweet> {
     private Long id = 0L;
 
     @Column(nullable = false, length = 160)
+    @Field
     private String textContent = "";
 
     @OneToOne(cascade = CascadeType.REFRESH)

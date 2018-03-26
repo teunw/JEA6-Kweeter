@@ -14,7 +14,7 @@
 <body>
 <ui:include src="/navbar.xhtml"/>
 <div class="container">
-    <h:dataTable value="#{kweetAdminBean.getSearchedKweets()}" var="kweet"
+    <h:dataTable value='#{kweetAdminBean.getSearchedKweets("")}' var="kweet"
                  styleClass="profileTable highlight"
                  headerClass="profileTableHeader"
                  rowClasses="profileTableOddRow,profileTableEvenRow">

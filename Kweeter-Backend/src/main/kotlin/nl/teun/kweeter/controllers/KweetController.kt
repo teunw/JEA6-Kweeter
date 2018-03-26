@@ -28,10 +28,6 @@ class KweetController {
     @Inject
     private lateinit var profileService: ProfileService
 
-    @Inject
-    @AuthenticatedUser
-    private lateinit var authenticatedUser: Profile
-
     @GET
     @Path("/")
     @Produces

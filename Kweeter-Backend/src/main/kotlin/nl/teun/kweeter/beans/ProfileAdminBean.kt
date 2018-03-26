@@ -10,7 +10,7 @@ import javax.inject.Named
 
 @Named
 @SessionScoped
-@RolesAllowed(value = ["ADMIN", "MODERATOR"])
+@RolesAllowed(value = ["Admin", "Moderator"])
 class ProfileAdminBean : Serializable {
     @Inject
     private lateinit var profileService: ProfileService

@@ -33,6 +33,6 @@ class LoginBean : Serializable {
         return loginResult
     }
 
-    fun getRole(): ProfileRole = this.loggedInProfile?.role ?: ProfileRole.USER
+    fun getRole(): ProfileRole = this.loggedInProfile?.role ?: ProfileRole.Operator
 
 }
