@@ -9,35 +9,44 @@
 
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+
     <title>Kweeter Admin</title>
 </h:head>
 <body>
 <ui:include src="/navbar.xhtml"/>
 <div class="container">
-    <h:dataTable value='#{kweetAdminBean.getSearchedKweets("")}' var="kweet"
-                 styleClass="profileTable highlight"
-                 headerClass="profileTableHeader"
-                 rowClasses="profileTableOddRow,profileTableEvenRow">
-        <h:column>
-            <f:facet name="header">Id</f:facet>
-            <h:outputText value="#{kweet.internalId}"/>
-        </h:column>
+    <h:form>
+        <h:dataTable value='#{kweetAdminBean.getKweets()}' var="kweet"
+                     styleClass="profileTable highlight"
+                     headerClass="profileTableHeader"
+                     rowClasses="profileTableOddRow,profileTableEvenRow">
+            <h:column>
+                <f:facet name="header">Id</f:facet>
+                <h:outputText value="#{kweet.internalId}"/>
+            </h:column>
 
-        <h:column>
-            <f:facet name="header">Text</f:facet>
-            <h:outputText value="#{kweet.textContent}"/>
-        </h:column>
+            <h:column>
+                <f:facet name="header">Text</f:facet>
+                <h:outputText value="#{kweet.textContent}"/>
+            </h:column>
 
-        <h:column>
-            <f:facet name="header">By</f:facet>
-            <h:outputText value="@#{kweet.author.username}"/>
-        </h:column>
+            <h:column>
+                <f:facet name="header">By</f:facet>
+                <h:outputText value="@#{kweet.author.username}"/>
+            </h:column>
 
-        <h:column>
-            <f:facet name="header">When</f:facet>
-            <h:outputText value="#{kweetAdminBean.getKweetDate(kweet)}"/>
-        </h:column>
-    </h:dataTable>
+            <h:column>
+                <f:facet name="header">When</f:facet>
+                <h:outputText value="#{kweetAdminBean.getKweetDate(kweet)}"/>
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Delete</f:facet>
+                <h:commandButton action="#{kweetAdminBean.deleteKweet(kweet)}"><i class="material-icons">delete</i></h:commandButton>
+            </h:column>
+        </h:dataTable>
+    </h:form>
 </div>
 </body>
 <!-- Compiled and minified JavaScript -->

@@ -64,5 +64,9 @@ class KweetServiceImpl : KweetService {
         this.entityManager.persist(kweet)
     }
 
+    override fun deleteKweet(kweet: Kweet) {
+        this.entityManager.remove(kweet)
+    }
+
     override fun recreateFromFacade(kweetFacade: KweetFacade) = this.findByPublicId(kweetFacade.publicId!!)
 }

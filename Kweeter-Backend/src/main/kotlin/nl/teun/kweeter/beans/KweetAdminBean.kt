@@ -26,15 +26,7 @@ class KweetAdminBean : Serializable {
         return this.allKweets
     }
 
-    fun getSearchedKweets(search: String = ".*"): List<Kweet> {
-        if (this.allKweets.isEmpty()) {
-            getKweets()
-        }
-        if (search == "" || search == ".*") {
-            return this.allKweets
-        }
-        return this.allKweets.filter { it.textContent.toLowerCase().contains(search.toRegex()) }
-    }
+    fun deleteKweet(kweet:Kweet) = this.kweetService.deleteKweet(kweet)
 
     fun getKweetDate(kweet: Kweet) = kweet.date.format(DateTimeFormatter.ISO_DATE_TIME)
 }

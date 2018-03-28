@@ -23,4 +23,6 @@ interface KweetService {
 
     fun recreateFromFacade(kweetFacade: KweetFacade): Kweet
 
+    fun deleteKweet(kweet:Kweet)
+
 }
