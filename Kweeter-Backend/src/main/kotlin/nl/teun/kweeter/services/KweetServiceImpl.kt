@@ -4,10 +4,8 @@ import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.facades.KweetFacade
 import nl.teun.kweeter.toJavaUtilDate
-import nl.teun.kweeter.toKweetFacade
 import java.util.*
 import javax.ejb.Stateless
-import javax.inject.Inject
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.ws.rs.NotFoundException
@@ -65,7 +63,8 @@ class KweetServiceImpl : KweetService {
     }
 
     override fun deleteKweet(kweet: Kweet) {
-        this.entityManager.remove(kweet)
+        val kweetToRemove = if (this.entityManager.contains(kweet)) kweet else this.entityManager.merge(kweet)
+        this.entityManager.remove(kweetToRemove)
     }
 
     override fun recreateFromFacade(kweetFacade: KweetFacade) = this.findByPublicId(kweetFacade.publicId!!)

@@ -23,7 +23,7 @@
                      rowClasses="profileTableOddRow,profileTableEvenRow">
             <h:column>
                 <f:facet name="header">Id</f:facet>
-                <h:outputText value="#{kweet.internalId}"/>
+                <h:outputText value="#{kweet.publicId}"/>
             </h:column>
 
             <h:column>
@@ -43,7 +43,8 @@
 
             <h:column>
                 <f:facet name="header">Delete</f:facet>
-                <h:commandButton action="#{kweetAdminBean.deleteKweet(kweet)}"><i class="material-icons">delete</i></h:commandButton>
+                <h:link class="btn btn-danger" value="Delete"/>
+                <h:commandButton action="#{kweetAdminBean.deleteKweet(kweet)}" class="btn btn-primary" value="Delete"/>
             </h:column>
         </h:dataTable>
     </h:form>
