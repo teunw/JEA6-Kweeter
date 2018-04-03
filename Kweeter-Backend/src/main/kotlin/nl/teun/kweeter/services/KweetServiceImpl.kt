@@ -16,6 +16,13 @@ class KweetServiceImpl : KweetService {
     @PersistenceContext
     private lateinit var entityManager: EntityManager
 
+    constructor()
+
+    constructor(entityManager: EntityManager? = null) {
+        if (entityManager != null) {
+            this.entityManager = entityManager
+        }
+    }
 
     override fun findByPublicId(id: String): Kweet {
         val kweets = this
