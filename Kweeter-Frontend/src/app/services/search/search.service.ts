@@ -1,37 +1,31 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ConfigService} from '../config.service';
-import {Explanation, SearchResponse} from 'elasticsearch';
 import {IProfile} from '../../profile';
 import {IKweet} from '../../kweet';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 
-export interface SearchResult {
-  _index: string;
-  _type: string;
-  _id: string;
-  _score: IProfile | IKweet;
-  _source: IProfile | IKweet;
-  _version?: number;
-  _explanation?: Explanation;
-  fields?: any;
-  highlight?: any;
-  inner_hits?: any;
-  sort?: string[];
-}
+export class SearchResult {
 
-export interface SearchResults extends Array<SearchResult> {
+  public linkTo: string;
+  public asString: string;
+
+  constructor(linkTo: string, asString: string) {
+    this.linkTo = linkTo;
+    this.asString = asString;
+  }
 }
 
 @Injectable()
 export class SearchService {
 
   private _lastSearchResult = new BehaviorSubject([]);
-  public lastSearchResult: Observable<SearchResults> = this._lastSearchResult.asObservable();
+  public lastSearchResult: Observable<SearchResult[]> = this._lastSearchResult.asObservable();
   public hasSearchResult = false;
 
-  constructor(private httpClient: HttpClient, private configService: ConfigService) {}
+  constructor(private httpClient: HttpClient, private configService: ConfigService) {
+  }
 
   public clearResults() {
     this._lastSearchResult.next([]);
@@ -39,20 +33,28 @@ export class SearchService {
   }
 
   public getSearchResultsForQuery(query: string) {
-    const search = {
-      'query': {
-        'query_string': {
-          'query': query
-        }
-      }
-    };
     this.httpClient
-      .post(`${this.configService.getSearchEndpoint()}_search`, search)
+      .get(`${this.configService.getKweeterEndpoint()}/search/all/${query}`)
       .subscribe(data => {
-        const res = data as SearchResponse<IKweet[] | IProfile[]>;
-        this.hasSearchResult = res.hits.total > 0;
+        const res = (data as (IKweet | IProfile)[])
+          .map(value => {
+            if (value.hasOwnProperty('textContent')) {
+              const ikweet = value as IKweet;
+              console.log(ikweet);
+              return new SearchResult(`kweets/${ikweet.publicId}`, `Kweet by @${ikweet.author.username}: ${ikweet.textContent}`)
+            }
 
-        this._lastSearchResult.next(res.hits.hits);
+            if (value.hasOwnProperty('username')) {
+              const iprofile = value as IProfile;
+              console.log(iprofile);
+              return new SearchResult(`profiles/${iprofile.id}`, `@${iprofile.username}'s profile: ${iprofile.bio}`)
+            }
+
+            throw new Error("Could not parse searchresult, needs to be either profile or kweet")
+          });
+
+        this._lastSearchResult.next(res);
+        this.hasSearchResult = true;
       });
   }
 

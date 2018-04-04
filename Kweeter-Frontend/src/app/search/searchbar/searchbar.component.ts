@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SearchResult, SearchService} from '../../services/search/search.service';
-import {IProfile} from '../../profile';
-import {IKweet} from '../../kweet';
+import {SearchService} from '../../services/search/search.service';
 
 @Component({
   selector: 'app-searchbar',
@@ -24,7 +22,7 @@ export class SearchbarComponent implements OnInit {
       clearTimeout(this.currentTimeout);
     }
     this.currentTimeout = setTimeout(() => {
-      this.commitSearch()
+      this.commitSearch();
     }, 500);
 
   }
@@ -33,13 +31,4 @@ export class SearchbarComponent implements OnInit {
     console.log(`Searching ${this.searchQuery}`);
     this.searchService.getSearchResultsForQuery(this.searchQuery);
   }
-
-  public getSearchResultLink(searchResults: SearchResult) {
-    if (searchResults._type === 'kweet') {
-      return `kweets/${(searchResults._source as IKweet).publicId}`;
-    } else if (searchResults._type === 'profile') {
-      return `profiles/${(searchResults._source as IProfile).id}`;
-    }
-  }
-
 }

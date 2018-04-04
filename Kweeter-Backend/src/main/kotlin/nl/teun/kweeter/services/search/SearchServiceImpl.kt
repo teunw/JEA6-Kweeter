@@ -1,8 +1,11 @@
 package nl.teun.kweeter.services.search
 
-import com.google.gson.Gson
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
+import nl.teun.kweeter.facades.KweetFacade
+import nl.teun.kweeter.facades.ProfileFacade
+import nl.teun.kweeter.toKweetFacade
+import nl.teun.kweeter.toProfileFacade
 import org.hibernate.search.jpa.FullTextEntityManager
 import org.hibernate.search.jpa.Search
 import javax.ejb.Stateless
@@ -18,7 +21,7 @@ class SearchServiceImpl : SearchService() {
 
     private var fullTextEntityManager: FullTextEntityManager? = null
 
-    fun getFullTextEntityManager(): FullTextEntityManager {
+    private fun getFullTextEntityManager(): FullTextEntityManager {
         if (this.fullTextEntityManager != null) {
             return this.fullTextEntityManager!!
         }
@@ -28,18 +31,15 @@ class SearchServiceImpl : SearchService() {
         return this.fullTextEntityManager!!
     }
 
-    override fun searchProfiles(query: String): List<Profile> {
-        getFullTextEntityManager()
-
-        val profiles = emptyList<Profile>()
-        println(Gson().toJson(profiles))
-        return emptyList()
+    override fun searchProfiles(query: String): List<ProfileFacade> {
+        val profileQueryBuilder = this.getFullTextEntityManager().searchFactory.buildQueryBuilder().forEntity(Profile::class.java).get()
+        val profileQuery = profileQueryBuilder.keyword().onFields("username", "email", "location", "bio", "contactLink").matching(query).createQuery()
+        return this.getFullTextEntityManager().createFullTextQuery(profileQuery).resultList.filterIsInstance<Profile>().map { it.toProfileFacade() }
     }
 
-    override fun searchKweets(query: String): List<Kweet> {
+    override fun searchKweets(query: String): List<KweetFacade> {
         val tweetQb = this.getFullTextEntityManager().searchFactory.buildQueryBuilder().forEntity(Kweet::class.java).get()
-        val fullTextQuery = tweetQb.keyword().onFields().matching(query).createQuery()
-        val results = this.getFullTextEntityManager().createFullTextQuery(fullTextQuery).resultList.filterIsInstance<Kweet>()
-        return results
+        val fullTextQuery = tweetQb.keyword().onFields("textContent").matching(query).createQuery()
+        return this.getFullTextEntityManager().createFullTextQuery(fullTextQuery).resultList.filterIsInstance<Kweet>().map { it.toKweetFacade() }
     }
 }

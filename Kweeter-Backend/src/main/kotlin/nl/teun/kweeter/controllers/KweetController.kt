@@ -1,17 +1,14 @@
 package nl.teun.kweeter.controllers
 
-import nl.teun.kweeter.authentication.annotations.AuthenticatedUser
 import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
 import nl.teun.kweeter.controllers.types.request.KweetPost
 import nl.teun.kweeter.domain.Kweet
-import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.facades.KweetFacade
 import nl.teun.kweeter.httpResponseBadRequest
 import nl.teun.kweeter.httpResponseNotFound
 import nl.teun.kweeter.services.KweetService
 import nl.teun.kweeter.services.ProfileService
 import nl.teun.kweeter.toKweetFacade
-import nl.teun.kweeter.toProfileFacade
 import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.ws.rs.*
@@ -19,7 +16,7 @@ import javax.ws.rs.core.Context
 import javax.ws.rs.core.Response
 import javax.ws.rs.core.SecurityContext
 
-@Path("/profiles")
+@Path("/kweets")
 class KweetController {
 
     @Inject

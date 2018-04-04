@@ -1,13 +1,13 @@
 package nl.teun.kweeter.services.search
 
-import nl.teun.kweeter.domain.Kweet
-import nl.teun.kweeter.domain.Profile
+import nl.teun.kweeter.facades.KweetFacade
+import nl.teun.kweeter.facades.ProfileFacade
 
 abstract class SearchService {
 
-    fun search(query: String): List<Any> = this.searchProfiles(query).plus(this.searchKweets(query))
+    open fun search(query: String): List<Any> = this.searchProfiles(query).plus(this.searchKweets(query))
 
-    abstract fun searchProfiles(query: String): List<Profile>
+    abstract fun searchProfiles(query: String): List<ProfileFacade>
 
-    abstract fun searchKweets(query: String): List<Kweet>
+    abstract fun searchKweets(query: String): List<KweetFacade>
 }

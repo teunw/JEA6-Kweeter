@@ -25,7 +25,7 @@ fun AuthToken.toAuthFacade() = AuthTokenFacade(this)
 fun ProfileFollower.toFollowerFacade() = ProfileFollowerFacade(this)
 
 fun httpResponseNotFound(): Response.ResponseBuilder {
-    return Response.status(Response.Status.NOT_FOUND)
+    return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 }
 
 fun httpResponseBadRequest(): Response.ResponseBuilder {

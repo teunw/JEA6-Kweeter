@@ -1,7 +1,8 @@
 <div (blur)="searchService.clearResults()">
   <form (submit)="commitSearch()">
     <div class="input-field">
-      <input id="search" class="validate search" type="search" name="search" (keyup)="refreshSearchCountdown()" [(ngModel)]="searchQuery" required>
+      <input id="search" class="validate search" type="search" name="search" (keyup)="refreshSearchCountdown()"
+             [(ngModel)]="searchQuery" required>
       <label class="label-icon" for="search"><i class="material-icons">search</i></label>
       <i class="material-icons" (click)="searchService.clearResults()">close</i>
     </div>
@@ -9,14 +10,9 @@
   <div class="row" *ngIf="searchService.hasSearchResult">
     <div class="collection">
       <a *ngFor="let searchResult of searchService.lastSearchResult | async"
-         [routerLink]="this.getSearchResultLink(searchResult)" (click)="searchService.clearResults()"
+         [routerLink]="searchResult.linkTo" (click)="searchService.clearResults()"
          class="collection-item">
-        <p *ngIf="searchResult._type == 'profile'">
-          Profile: {{ searchResult._source.displayName }} (@{{ searchResult._source.username}})
-        </p>
-        <p *ngIf="searchResult._type == 'kweet'" (click)="searchService.clearResults()">
-          Kweet by @{{ searchResult._source.author?.username }}: {{ searchResult._source.textContent?.substr(0, 60) }}
-        </p>
+        <p>{{ searchResult.asString }}</p>
       </a>
     </div>
   </div>

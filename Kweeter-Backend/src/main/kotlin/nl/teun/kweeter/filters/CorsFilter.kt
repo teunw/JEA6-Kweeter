@@ -1,7 +1,6 @@
 package nl.teun.kweeter.filters
 
 import java.io.IOException
-import java.util.*
 import javax.ws.rs.ForbiddenException
 import javax.ws.rs.container.*
 import javax.ws.rs.core.Response
@@ -57,7 +56,7 @@ class CorsFilter : ContainerRequestFilter, ContainerResponseFilter {
     private fun checkOrigin(requestContext: ContainerRequestContext, origin: String) {
         if (!allowedOrigins.contains("*") && !allowedOrigins.contains(origin)) {
             requestContext.setProperty("cors.failure", true)
-            throw ForbiddenException("Origin not allowed: " + origin)
+            throw ForbiddenException("Origin not allowed: $origin")
         }
     }
 
