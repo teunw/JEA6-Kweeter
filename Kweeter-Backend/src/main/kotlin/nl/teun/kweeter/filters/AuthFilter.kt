@@ -1,11 +1,16 @@
 package nl.teun.kweeter.filters
 
 import nl.teun.kweeter.authentication.KweetUserSecurityContext
+import nl.teun.kweeter.authentication.ProfileSecurityPrincipal
 import nl.teun.kweeter.authentication.annotations.AuthenticatedUser
 import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
 import nl.teun.kweeter.domain.AuthToken
+import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.httpResponseBadRequest
 import nl.teun.kweeter.services.AuthService
+import nl.teun.kweeter.services.KeyService
+import nl.teun.kweeter.services.ProfileService
+import java.security.SignatureException
 import javax.annotation.Priority
 import javax.enterprise.event.Event
 import javax.inject.Inject
@@ -31,7 +36,10 @@ open class AuthFilter : ContainerRequestFilter {
     private lateinit var userAuthenticatedEvent: Event<String>
 
     @Inject
-    private lateinit var authService: AuthService
+    private lateinit var profileService: ProfileService
+
+    @Inject
+    private lateinit var keyService: KeyService
 
     override fun filter(requestContext: ContainerRequestContext) {
         val authHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION)
@@ -45,10 +53,25 @@ open class AuthFilter : ContainerRequestFilter {
             return
         }
 
-        val token = authHeader.substring(AUTHENTICATION_SCHEME.length).trim()
-        val authToken: AuthToken
+        val compactJws = authHeader.substring(AUTHENTICATION_SCHEME.length).trim()
+
+        val keySubject: String
         try {
-            authToken = authService.findAuthToken(token)
+            keySubject = this.keyService.getKeyAsString(compactJws)
+        } catch (signatureException: SignatureException) {
+            signatureException.printStackTrace()
+            requestContext.abortWith(
+                    Response
+                            .status(Response.Status.UNAUTHORIZED)
+                            .entity("Auth token is invalid")
+                            .build()
+            )
+            return
+        }
+
+        val profile: Profile
+        try {
+            profile = profileService.findById(keySubject.toLong())
         } catch (e: EntityNotFoundException) {
             requestContext.abortWith(
                     Response
@@ -58,7 +81,7 @@ open class AuthFilter : ContainerRequestFilter {
             )
             return
         }
-        requestContext.securityContext = KweetUserSecurityContext(authToken)
-        this.userAuthenticatedEvent.fire(authToken.token)
+        requestContext.securityContext = KweetUserSecurityContext(profile)
+        this.userAuthenticatedEvent.fire(compactJws)
     }
 }

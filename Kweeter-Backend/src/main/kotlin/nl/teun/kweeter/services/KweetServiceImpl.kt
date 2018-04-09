@@ -4,9 +4,11 @@ import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.facades.KweetFacade
 import nl.teun.kweeter.toJavaUtilDate
+import java.time.LocalDateTime
 import java.util.*
 import javax.ejb.Stateless
 import javax.persistence.EntityManager
+import javax.persistence.EntityNotFoundException
 import javax.persistence.PersistenceContext
 import javax.ws.rs.NotFoundException
 
@@ -75,4 +77,11 @@ class KweetServiceImpl : KweetService {
     }
 
     override fun recreateFromFacade(kweetFacade: KweetFacade) = this.findByPublicId(kweetFacade.publicId!!)
+
+    override fun getKweetsAfter(dateTime: LocalDateTime) =
+            this.entityManager
+                    .createNamedQuery("kweet.findafter")
+                    .setParameter("k_date", dateTime)
+                    .resultList
+                    .filterIsInstance<Kweet>()
 }

@@ -3,6 +3,7 @@ package nl.teun.kweeter.services
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.facades.KweetFacade
+import java.time.LocalDateTime
 import javax.persistence.EntityNotFoundException
 
 interface KweetService {
@@ -24,5 +25,7 @@ interface KweetService {
     fun recreateFromFacade(kweetFacade: KweetFacade): Kweet
 
     fun deleteKweet(kweet:Kweet)
+
+    fun getKweetsAfter(dateTime: LocalDateTime): List<Kweet>
 
 }

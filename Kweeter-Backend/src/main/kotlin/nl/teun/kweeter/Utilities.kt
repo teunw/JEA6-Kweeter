@@ -1,5 +1,6 @@
 package nl.teun.kweeter
 
+import nl.teun.kweeter.domain.Kweet
 import java.time.LocalDateTime
 import java.util.*
 import javax.enterprise.inject.spi.AnnotatedType
@@ -9,7 +10,7 @@ import javax.naming.InitialContext
 
 class Utilities {
     companion object {
-        fun localDateTimeToJavaDate(ldate:LocalDateTime):Date {
+        fun localDateTimeToJavaDate(ldate: LocalDateTime): Date {
             return ldate.toJavaUtilDate()
         }
 

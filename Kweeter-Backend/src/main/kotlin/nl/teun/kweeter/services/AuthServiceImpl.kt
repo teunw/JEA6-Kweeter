@@ -1,7 +1,10 @@
 package nl.teun.kweeter.services
 
+import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.impl.crypto.MacProvider
 import nl.teun.kweeter.domain.AuthToken
 import nl.teun.kweeter.domain.Profile
+import org.omg.CosNaming.NamingContextPackage.NotFound
 import javax.ejb.Stateless
 import javax.persistence.EntityManager
 import javax.persistence.EntityNotFoundException

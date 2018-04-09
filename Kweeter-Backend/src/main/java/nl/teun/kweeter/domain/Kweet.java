@@ -1,5 +1,7 @@
 package nl.teun.kweeter.domain;
 
+import kotlin.text.Regex;
+import nl.teun.kweeter.Utilities;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @Entity
 @Table
@@ -18,10 +21,12 @@ import java.util.UUID;
         @NamedQuery(name = "Kweet.all", query = "SELECT k FROM Kweet k order by k.date DESC"),
         @NamedQuery(name = "Kweet.findbyid", query = "SELECT k FROM Kweet k WHERE k.id = :k_id order by k.date DESC"),
         @NamedQuery(name = "Kweet.findbyprofile", query = "SELECT k FROM Kweet k WHERE k.author.id = :p_id order by k.date DESC"),
-        @NamedQuery(name = "Kweet.findbypublicId", query = "SELECT k FROM Kweet k WHERE k.publicId = :k_publicId order by k.date DESC")
+        @NamedQuery(name = "Kweet.findbypublicId", query = "SELECT k FROM Kweet k WHERE k.publicId = :k_publicId order by k.date DESC"),
+        @NamedQuery(name = "Kweet.findafter", query = "SELECT k FROM Kweet k WHERE k.date > :k_date order by k.date DESC")
 })
 @Indexed
 public class Kweet implements Serializable, Comparable<Kweet> {
+
 
     @Column(unique = true, nullable = false, updatable = false)
     private String publicId;
@@ -102,7 +107,6 @@ public class Kweet implements Serializable, Comparable<Kweet> {
         return this;
     }
 
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

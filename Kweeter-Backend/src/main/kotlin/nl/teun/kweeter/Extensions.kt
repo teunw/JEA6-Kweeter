@@ -32,4 +32,6 @@ fun httpResponseBadRequest(): Response.ResponseBuilder {
     return Response.status(Response.Status.BAD_REQUEST)
 }
 
+fun Kweet.getTopics() = "#[a-zA-Z0-9]+".toRegex().findAll(this.textContent.subSequence(0, Int.MAX_VALUE)).map { it.value }
+
 fun Any.toJson() = Gson().toJson(this)

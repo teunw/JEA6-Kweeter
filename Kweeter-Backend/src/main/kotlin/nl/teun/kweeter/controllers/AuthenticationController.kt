@@ -1,10 +1,12 @@
 package nl.teun.kweeter.controllers
 
+import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
 import nl.teun.kweeter.controllers.types.request.AuthenticationRequest
 import nl.teun.kweeter.domain.AuthToken
 import nl.teun.kweeter.filters.AuthFilter
 import nl.teun.kweeter.httpResponseBadRequest
 import nl.teun.kweeter.services.AuthService
+import nl.teun.kweeter.services.KeyService
 import nl.teun.kweeter.services.ProfileService
 import nl.teun.kweeter.toAuthFacade
 import javax.inject.Inject
@@ -23,6 +25,9 @@ class AuthenticationController {
     private lateinit var profileService: ProfileService
 
     @Inject
+    private lateinit var keyService: KeyService
+
+    @Inject
     private lateinit var authenticationService: AuthService
 
     @POST
@@ -38,12 +43,13 @@ class AuthenticationController {
             return Response.status(Response.Status.FORBIDDEN).entity("Incorrect password ${authRequest.password}").build()
         }
 
-        val authToken = AuthToken(profile = profile)
+        val authToken = AuthToken(token = keyService.getNewKey(profile), profile = profile)
         this.authenticationService.insertAuthToken(authToken)
 
         return Response.ok(authToken.toAuthFacade()).header(HttpHeaders.AUTHORIZATION, "Bearer ${authToken.token}").build()
     }
 
+    @KweeterAuthRequired
     @GET
     @Path("/validate")
     fun validateKey(@HeaderParam(HttpHeaders.AUTHORIZATION) authorization: String): Response {
