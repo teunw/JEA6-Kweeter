@@ -1,7 +1,6 @@
 package nl.teun.kweeter.domain
 
 import java.time.LocalDateTime
-import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -11,7 +10,10 @@ import javax.persistence.*
 )
 data class AuthToken(
         @Id
-        val token: String = UUID.randomUUID().toString(),
+        @GeneratedValue
+        val id: Long = -1,
+        @Column(unique = false)
+        val token: String? = null,
         @OneToOne
         val profile: Profile? = null,
         @Column

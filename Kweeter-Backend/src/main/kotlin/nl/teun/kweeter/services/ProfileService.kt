@@ -2,6 +2,7 @@ package nl.teun.kweeter.services
 
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.facades.ProfileFacade
+import nl.teun.kweeter.facades.UnsafeProfileFacade
 import java.security.Principal
 import javax.persistence.EntityNotFoundException
 
@@ -24,5 +25,7 @@ interface ProfileService {
     fun findByPrincipal(userPrincipal: Principal): Profile
 
     fun recreateFromFacade(profileFacade: ProfileFacade): Profile
+
+    fun recreateFromFacade(profileFacade: UnsafeProfileFacade, fromDb: Boolean = false): Profile
 
 }

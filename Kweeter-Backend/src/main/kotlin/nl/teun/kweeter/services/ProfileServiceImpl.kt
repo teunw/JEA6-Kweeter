@@ -3,6 +3,7 @@ package nl.teun.kweeter.services
 import nl.teun.kweeter.authentication.ProfileRole
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.facades.ProfileFacade
+import nl.teun.kweeter.facades.UnsafeProfileFacade
 import java.security.Principal
 import javax.ejb.Stateless
 import javax.persistence.EntityManager
@@ -23,6 +24,19 @@ class ProfileServiceImpl : ProfileService {
         profile.location = profileFacade.location
         profile.bio = profileFacade.bio
         profile.contactLink = profileFacade.contactLink
+        if (profileFacade.role != null) profile.role = ProfileRole.valueOf(profileFacade.role)
+        return profile
+    }
+
+    override fun recreateFromFacade(profileFacade: UnsafeProfileFacade, fromDb: Boolean): Profile {
+        val profile = if (fromDb) this.findById(profileFacade.id!!) else Profile()
+        profile.username = profileFacade.username
+        profile.displayName = profileFacade.displayName
+        profile.email = profileFacade.emailAddress
+        profile.location = profileFacade.location
+        profile.bio = profileFacade.bio
+        profile.contactLink = profileFacade.contactLink
+        if (profileFacade.password != null) profile.setPassword(profileFacade.password)
         if (profileFacade.role != null) profile.role = ProfileRole.valueOf(profileFacade.role)
         return profile
     }

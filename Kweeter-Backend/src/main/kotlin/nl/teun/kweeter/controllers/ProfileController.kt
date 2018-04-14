@@ -1,8 +1,9 @@
 package nl.teun.kweeter.controllers
 
 import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
-import nl.teun.kweeter.facades.ProfileFacade
+import nl.teun.kweeter.facades.UnsafeProfileFacade
 import nl.teun.kweeter.httpResponseBadRequest
+import nl.teun.kweeter.services.EmailService
 import nl.teun.kweeter.services.ProfileService
 import nl.teun.kweeter.services.ValidatorService
 import nl.teun.kweeter.toProfileFacade
@@ -20,6 +21,9 @@ class ProfileController {
 
     @Inject
     private lateinit var validatorService: ValidatorService
+
+    @Inject
+    private lateinit var emailService: EmailService
 
     @GET
     @Path("/by-email/{email}")
@@ -59,17 +63,17 @@ class ProfileController {
     @KweeterAuthRequired
     @Path("/")
     fun updateProfile(
-            reqProfile: ProfileFacade,
+            reqProfile: UnsafeProfileFacade,
             @Context securityContext: SecurityContext
     ): Response {
         val dbProfile = profileService.findByPrincipal(securityContext.userPrincipal)
         var updatedAnything = false
 
-        if (!reqProfile.emailAddress.isBlank()) {
+        if (reqProfile.emailAddress != null && !reqProfile.emailAddress.isBlank()) {
             dbProfile.email = reqProfile.emailAddress
             updatedAnything = true
         }
-        if (!reqProfile.username.isBlank()) {
+        if (reqProfile.username != null && !reqProfile.username.isBlank()) {
             dbProfile.username = reqProfile.username
             updatedAnything = true
         }
@@ -101,9 +105,9 @@ class ProfileController {
     @POST
     @Path("/")
     fun createProfile(
-            profileFacade: ProfileFacade
+            profileFacade: UnsafeProfileFacade
     ): Response? {
-        if (profileFacade.emailAddress.isBlank() || profileFacade.username.isBlank() || profileFacade.displayName!!.isBlank()) {
+        if (profileFacade.emailAddress == null || profileFacade.emailAddress.isBlank() || profileFacade.username == null || profileFacade.username.isBlank() || profileFacade.displayName!!.isBlank()) {
             return httpResponseBadRequest()
                     .entity("One of the parameters is empty")
                     .entity(profileFacade.emailAddress)
@@ -111,12 +115,14 @@ class ProfileController {
                     .entity(profileFacade.displayName)
                     .build()
         }
-        if (!this.validatorService.isUsernameValid(profileFacade.username)) {
+        if (profileFacade.username == null || !this.validatorService.isUsernameValid(profileFacade.username)) {
             return Response.serverError().entity("Username is invalid").build()
         }
 
-        val profile = this.profileService.recreateFromFacade(profileFacade)
+
+        val profile = this.profileService.recreateFromFacade(profileFacade, fromDb = false)
         this.profileService.createProfile(profile)
+        this.emailService.sendMail(to = profileFacade.emailAddress, subject = "Account created!", text = "Take a look: http://localhost:4200")
         return Response.ok(profile.toProfileFacade()).build()
     }
 }

@@ -2,7 +2,6 @@ package nl.teun.kweeter.services.cache
 
 import com.google.gson.Gson
 import redis.clients.jedis.Jedis
-import java.util.*
 import javax.ejb.Stateless
 
 @Stateless

@@ -13,7 +13,7 @@ class KeyService {
 
     fun getNewKey(profile: Profile) =
         Jwts.builder()
-                .setSubject(profile.id.toString())
+                .setSubject(profile.email.toString())
                 .signWith(SignatureAlgorithm.HS512, ByteArray(64))
                 .compact()
 

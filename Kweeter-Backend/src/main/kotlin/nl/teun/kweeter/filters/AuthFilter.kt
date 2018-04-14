@@ -1,13 +1,10 @@
 package nl.teun.kweeter.filters
 
 import nl.teun.kweeter.authentication.KweetUserSecurityContext
-import nl.teun.kweeter.authentication.ProfileSecurityPrincipal
 import nl.teun.kweeter.authentication.annotations.AuthenticatedUser
 import nl.teun.kweeter.authentication.annotations.KweeterAuthRequired
-import nl.teun.kweeter.domain.AuthToken
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.httpResponseBadRequest
-import nl.teun.kweeter.services.AuthService
 import nl.teun.kweeter.services.KeyService
 import nl.teun.kweeter.services.ProfileService
 import java.security.SignatureException
@@ -71,7 +68,7 @@ open class AuthFilter : ContainerRequestFilter {
 
         val profile: Profile
         try {
-            profile = profileService.findById(keySubject.toLong())
+            profile = profileService.findByEmail(keySubject)
         } catch (e: EntityNotFoundException) {
             requestContext.abortWith(
                     Response
