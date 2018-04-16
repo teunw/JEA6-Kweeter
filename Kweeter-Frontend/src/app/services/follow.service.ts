@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ConfigService} from './config.service';
-import {IProfile} from '../profile';
+import {IProfile} from '../classes/profile';
 import {IProfileFollower} from '../IProfileFollower';
 import {Observable} from 'rxjs/Observable';
 

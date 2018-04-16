@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ConfigService} from '../config.service';
-import {IProfile} from '../../profile';
-import {IKweet} from '../../kweet';
+import {IProfile, Profile} from '../../classes/profile';
+import {IKweet, Kweet} from '../../classes/kweet';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
+import {ProfileService} from "../profile.service";
 
 export class SearchResult {
 
@@ -24,7 +25,7 @@ export class SearchService {
   public lastSearchResult: Observable<SearchResult[]> = this._lastSearchResult.asObservable();
   public hasSearchResult = false;
 
-  constructor(private httpClient: HttpClient, private configService: ConfigService) {
+  constructor(private httpClient: HttpClient, private configService: ConfigService, private profileService: ProfileService) {
   }
 
   public clearResults() {
@@ -32,30 +33,24 @@ export class SearchService {
     this.hasSearchResult = false;
   }
 
-  public getSearchResultsForQuery(query: string) {
-    this.httpClient
+  public async getSearchResultsForQuery(query: string) {
+    const result = (await this.httpClient
       .get(`${this.configService.getKweeterEndpoint()}/search/all/${query}`)
-      .subscribe(data => {
-        const res = (data as (IKweet | IProfile)[])
-          .map(value => {
-            if (value.hasOwnProperty('textContent')) {
-              const ikweet = value as IKweet;
-              console.log(ikweet);
-              return new SearchResult(`kweets/${ikweet.publicId}`, `Kweet by @${ikweet.author.username}: ${ikweet.textContent}`)
-            }
-
-            if (value.hasOwnProperty('username')) {
-              const iprofile = value as IProfile;
-              console.log(iprofile);
-              return new SearchResult(`profiles/${iprofile.id}`, `@${iprofile.username}'s profile: ${iprofile.bio}`)
-            }
-
-            throw new Error("Could not parse searchresult, needs to be either profile or kweet")
-          });
-
-        this._lastSearchResult.next(res);
-        this.hasSearchResult = true;
-      });
+      .toPromise()) as (IKweet | IProfile)[];
+    const searchResults = result.map((value) => {
+      const isKweet = value.hasOwnProperty('textContent');
+      if (isKweet) {
+        const kweet = new Kweet(value as IKweet, this.profileService);
+        return new SearchResult(
+          `kweets/${kweet.serverData.publicId}`,
+          `Kweet by @${kweet.getAuthor().username}: ${kweet.serverData.textContent}`
+        );
+      } else {
+        const profile = new Profile(value as IProfile);
+        return new SearchResult(`profiles/${profile.serverData.id}`, `@${profile.serverData.id}'s profile: ${profile.serverData.bio}`);
+      }
+    });
+    this._lastSearchResult.next(searchResults);
+    this.hasSearchResult = true;
   }
-
 }

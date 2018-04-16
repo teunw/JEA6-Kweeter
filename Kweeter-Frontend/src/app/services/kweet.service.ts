@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaderResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ConfigService} from './config.service';
 import {Observable} from 'rxjs/Observable';
-import {IKweet, IKweetPost} from '../kweet';
-import {IProfile} from '../profile';
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {IKweet, IKweetPost} from '../classes/kweet';
+import {IProfile} from '../classes/profile';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class KweetService {
@@ -40,13 +40,13 @@ export class KweetService {
 
   createKweet(kweet: IKweetPost) {
     const headers = new HttpHeaders();
-    headers.append("Accepts", "application/json");
+    headers.append('Accepts', 'application/json');
 
     return this.httpClient.post<IKweet>(
       `${this.configService.getKweeterEndpoint()}/kweets`,
       kweet
     ).subscribe(res => {
-      console.log("Got");
+      console.log('Got');
       console.log(res);
       this.getKweets();
     });

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {IProfile} from '../profile';
+import {IProfile} from '../classes/profile';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ConfigService} from './config.service';

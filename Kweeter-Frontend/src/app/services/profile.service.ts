@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
 import {HttpClient} from '@angular/common/http';
-import {IProfile} from '../profile';
+import {IProfile} from '../classes/profile';
 
 @Injectable()
 export class ProfileService {
@@ -9,23 +9,27 @@ export class ProfileService {
   constructor(private httpClient: HttpClient, private configService: ConfigService) {
   }
 
-  getProfiles() {
-    return this.httpClient.get<IProfile[]>(`${this.configService.getKweeterEndpoint()}/profiles`);
+  async getProfiles() {
+    return await this.httpClient.get<IProfile[]>(`${this.configService.getKweeterEndpoint()}/profiles`).toPromise();
   }
 
-  getProfileByEmail(email: string) {
-    return this.httpClient.get<IProfile>(`${this.configService.getKweeterEndpoint()}/profiles/by-email/${email}`)
+  async getProfileByEmail(email: string) {
+    return await this.httpClient.get<IProfile>(`${this.configService.getKweeterEndpoint()}/profiles/by-email/${email}`).toPromise();
   }
 
-  getProfile(id: number) {
-    return this.httpClient.get<IProfile>(`${this.configService.getKweeterEndpoint()}/profiles/${id}`);
+  async getProfile(id: number) {
+    return await this.httpClient.get<IProfile>(`${this.configService.getKweeterEndpoint()}/profiles/${id}`).toPromise();
   }
 
-  createProfile(profile: IProfile) {
-    return this.httpClient.post<IProfile>(`${this.configService.getKweeterEndpoint()}/profiles`, profile);
+  async getProfileByUrl(url: string) {
+    return await this.httpClient.get<IProfile>(url).toPromise();
   }
 
-  updateProfile(profile: IProfile) {
-    return this.httpClient.put<IProfile>(`${this.configService.getKweeterEndpoint()}/profiles`, profile);
+  async createProfile(profile: IProfile) {
+    return await this.httpClient.post<IProfile>(`${this.configService.getKweeterEndpoint()}/profiles`, profile).toPromise();
+  }
+
+  async updateProfile(profile: IProfile) {
+    return await this.httpClient.put<IProfile>(`${this.configService.getKweeterEndpoint()}/profiles`, profile).toPromise();
   }
 }

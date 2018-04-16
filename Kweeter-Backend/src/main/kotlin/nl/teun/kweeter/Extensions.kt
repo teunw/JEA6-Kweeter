@@ -19,8 +19,12 @@ fun LocalDateTime.toJavaUtilDate(): Date {
     return java.util.Date.from(instant)
 }
 
+val ApplicationRoot = "http://localhost:8080/Kweeter-Backend/api"
+
 fun Profile.toProfileFacade() = ProfileFacade(this)
+fun Profile.toProfileUrl() = "$ApplicationRoot/profiles/${this.id}"
 fun Kweet.toKweetFacade() = nl.teun.kweeter.facades.KweetFacade(this)
+fun Kweet.toKweetUrl() = "$ApplicationRoot/kweets/${this.publicId}"
 fun AuthToken.toAuthFacade() = AuthTokenFacade(this)
 fun ProfileFollower.toFollowerFacade() = ProfileFollowerFacade(this)
 

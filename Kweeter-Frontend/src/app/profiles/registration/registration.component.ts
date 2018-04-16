@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ProfileService} from '../../services/profile.service';
 import {LoginService} from '../../services/login.service';
-import {IProfile} from '../../profile';
+import {IProfile} from '../../classes/profile';
 
 @Component({
   selector: 'app-registration',
@@ -26,16 +26,9 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
-  attemptRegistration() {
-    this.profileService.createProfile(this.profile)
-      .subscribe(data => {
-        this.loginService
-          .attemptLogin(this.profile.emailAddress, this.profile.password)
-          .then((res) => {
-            this.loginService.validateLogin(this.loginService.getAuthToken());
-          });
-      });
-
+  async attemptRegistration() {
+    await this.profileService.createProfile(this.profile);
+    await this.loginService.attemptLogin(this.profile.emailAddress, this.profile.password);
   }
 
 }

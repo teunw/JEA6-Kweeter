@@ -3,7 +3,7 @@ import {ProfileService} from '../../services/profile.service';
 import {ActivatedRoute} from '@angular/router';
 import {KweetService} from '../../services/kweet.service';
 import {LoginService} from '../../services/login.service';
-import {IKweet} from '../../kweet';
+import {IKweet} from '../../classes/kweet';
 
 @Component({
   selector: 'app-specifickweet',

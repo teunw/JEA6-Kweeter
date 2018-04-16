@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ProfileService} from '../../services/profile.service';
 import {ActivatedRoute} from '@angular/router';
-import {IProfile, Profile} from '../../profile';
+import {IProfile, Profile} from '../../classes/profile';
 import {KweetService} from '../../services/kweet.service';
-import {IKweet} from '../../kweet';
+import {IKweet} from '../../classes/kweet';
 import {LoginService} from '../../services/login.service';
 import {FollowService} from '../../services/follow.service';
 
@@ -32,25 +32,23 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.route.params['id']);
-    this.route.params.subscribe(param => {
+    this.route.params.subscribe(async param => {
       if (param.id !== undefined && param.id !== null) {
-        this.profileService.getProfile(param.id)
-          .subscribe(profileData => {
-            this.profile = profileData;
-            this.isProfileSelf = this.loginService.getLoginInfo().username === this.profile.username;
+        const profileData = await this.profileService.getProfile(param.id);
+        this.profile = profileData;
+        this.isProfileSelf = this.loginService.getLoginInfo().username === this.profile.username;
 
-            this.kweetService.getKweetsForProfile(this.profile)
-              .subscribe(kweetData => {
-                this.kweets = kweetData;
-              });
-            this.followService.getFollowers(this.profile.id)
-              .subscribe(profileFollower => {
-                console.log(profileFollower.followingProfiles);
-                console.log(this.loginService.getLoginInfo().username);
-                this.isProfileBeingFollowed = profileFollower.followingProfiles
-                  .filter(followingUser => followingUser.username.toString() === this.loginService.getLoginInfo().username.toString())
-                  .length > 0;
-              });
+        this.kweetService.getKweetsForProfile(this.profile)
+          .subscribe(kweetData => {
+            this.kweets = kweetData;
+          });
+        this.followService.getFollowers(this.profile.id)
+          .subscribe(profileFollower => {
+            console.log(profileFollower.followingProfiles);
+            console.log(this.loginService.getLoginInfo().username);
+            this.isProfileBeingFollowed = profileFollower.followingProfiles
+              .filter(followingUser => followingUser.username.toString() === this.loginService.getLoginInfo().username.toString())
+              .length > 0;
           });
       }
     });

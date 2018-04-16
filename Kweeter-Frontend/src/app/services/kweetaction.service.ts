@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from "./config.service";
-import {IKweet} from "../kweet";
+import {IKweet} from "../classes/kweet";
 import {HttpClient} from "@angular/common/http";
-import {IProfile} from "../profile";
 import {KweetService} from "./kweet.service";
 
 interface KweetLikeResponse {

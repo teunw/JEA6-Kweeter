@@ -1,4 +1,4 @@
-import {IProfile} from './profile';
+import {IProfile} from './classes/profile';
 
 export interface IProfileFollower {
   id: number;

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {LoginService} from '../../services/login.service';
-import {IProfile} from '../../profile';
+import {IProfile} from '../../classes/profile';
 
 declare var $: any;
 

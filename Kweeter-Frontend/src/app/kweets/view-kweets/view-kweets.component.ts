@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IKweet} from '../../kweet';
+import {IKweet} from '../../classes/kweet';
 import {KweetService} from '../../services/kweet.service';
 
 @Component({

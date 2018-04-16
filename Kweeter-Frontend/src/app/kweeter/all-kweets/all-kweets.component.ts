@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {KweetService} from '../../services/kweet.service';
-import {IKweet} from '../../kweet';
+import {IKweet} from '../../classes/kweet';
 import {LoginService} from "../../services/login.service";
 
 @Component({
