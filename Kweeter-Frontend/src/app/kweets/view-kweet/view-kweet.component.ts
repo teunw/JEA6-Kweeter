@@ -14,9 +14,12 @@ export class ViewKweetComponent implements OnInit {
 
   @Input()
   private ikweet: IKweet;
-  public profile : IProfile;
+
+  public kweet: Kweet;
+  public profile: IProfile;
 
   constructor(public loginService: LoginService, private kweetActionService: KweetActionService, private profileService: ProfileService) {
+
   }
 
   public getKweet() {
@@ -30,6 +33,7 @@ export class ViewKweetComponent implements OnInit {
       .subscribe(data => {
         this.profile = data;
       });
+    this.kweet = this.getKweet();
   }
 
   public toggleLike() {

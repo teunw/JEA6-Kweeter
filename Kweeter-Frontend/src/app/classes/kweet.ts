@@ -18,19 +18,21 @@ export class Kweet {
   constructor(public serverData: IKweet, private profileService: ProfileService) {
   }
 
-  public async getAuthor(): IProfile {
-    return await this.profileService.getProfileByUrl(this.serverData.author);
+  public async getAuthor(): Promise<IProfile> {
+    return this.profileService.getProfileByUrl(this.serverData.author);
   }
 
-  public async getLikedBy() {
+  public async getLikedBy(): Promise<IProfile[]> {
     if (this.likedBy.length > 0) {
       return await this.likedBy;
     }
-    const likedBy = await this.serverData.likedBy.map(async (url: string) => {
-      return await this.profileService.getProfileByUrl(url);
-    });
-    this.likedBy = likedBy;
-    return likedBy;
+    const serverLikedBy = this.serverData.likedBy;
+    const mappedLikes = serverLikedBy
+      .map(async (url: string) => {
+        return await this.profileService.getProfileByUrl(url);
+      });
+    this.likedBy = await Promise.all(mappedLikes) as IProfile[];
+    return this.likedBy;
   }
 
   public async hasLiked(profile: IProfile) {

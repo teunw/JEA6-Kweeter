@@ -37,13 +37,14 @@ export class SearchService {
     const result = (await this.httpClient
       .get(`${this.configService.getKweeterEndpoint()}/search/all/${query}`)
       .toPromise()) as (IKweet | IProfile)[];
-    const searchResults = result.map((value) => {
+    const searchResults = result.map(async (value) => {
       const isKweet = value.hasOwnProperty('textContent');
       if (isKweet) {
         const kweet = new Kweet(value as IKweet, this.profileService);
+        const author = await kweet.getAuthor();
         return new SearchResult(
           `kweets/${kweet.serverData.publicId}`,
-          `Kweet by @${kweet.getAuthor().username}: ${kweet.serverData.textContent}`
+          `Kweet by @${author.username}: ${kweet.serverData.textContent}`
         );
       } else {
         const profile = new Profile(value as IProfile);

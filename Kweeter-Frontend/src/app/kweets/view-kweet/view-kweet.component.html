@@ -2,7 +2,7 @@
   <div class="card-content white black-text">
         <span class="card-title">
           <a routerLink="/profiles/{{ ikweet.author.id }}">
-            @{{ ikweet.author.username }}</a><br/>
+            @{{ kweet.getAuthor().username }}</a><br/>
         </span>
     <p>
       {{ ikweet.textContent }}<br/>
