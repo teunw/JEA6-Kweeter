@@ -6,7 +6,7 @@ import nl.teun.kweeter.httpResponseBadRequest
 import nl.teun.kweeter.services.EmailService
 import nl.teun.kweeter.services.ProfileService
 import nl.teun.kweeter.services.ValidatorService
-import nl.teun.kweeter.toProfileFacade
+import nl.teun.kweeter.toProfileRestFacade
 import javax.inject.Inject
 import javax.ws.rs.*
 import javax.ws.rs.core.Context
@@ -32,7 +32,7 @@ class ProfileController {
             return httpResponseBadRequest().entity("Email cannot be blank").build()
         }
         val profile = this.profileService.findByEmail(email)
-        return Response.ok(profile.toProfileFacade()).build()
+        return Response.ok(profile.toProfileRestFacade()).build()
     }
 
     @GET
@@ -45,7 +45,7 @@ class ProfileController {
                 ?: return Response.serverError().entity("userId is not parsable to long").build()
         val profile = profileService.findById(intToNumber)
 
-        return Response.ok(profile.toProfileFacade()).build()
+        return Response.ok(profile.toProfileRestFacade()).build()
     }
 
     @GET
@@ -55,7 +55,7 @@ class ProfileController {
             return Response.status(Response.Status.PARTIAL_CONTENT).entity(profileService.findAll(100 )).build()
         }
         val amountOfResults = if (results == 0) results else 50
-        val profileFacades = this.profileService.findAll(amountOfResults, page).map { it.toProfileFacade() }
+        val profileFacades = this.profileService.findAll(amountOfResults, page).map { it.toProfileRestFacade() }
         return Response.ok(profileFacades).build()
     }
 
@@ -99,7 +99,7 @@ class ProfileController {
                     .build()
         }
         this.profileService.updateProfile(dbProfile)
-        return Response.ok(dbProfile.toProfileFacade()).build()
+        return Response.ok(dbProfile.toProfileRestFacade()).build()
     }
 
     @POST
@@ -123,6 +123,6 @@ class ProfileController {
         val profile = this.profileService.recreateFromFacade(profileFacade, fromDb = false)
         this.profileService.createProfile(profile)
         this.emailService.sendMail(to = profileFacade.emailAddress, subject = "Account created!", text = "Take a look: http://localhost:4200")
-        return Response.ok(profile.toProfileFacade()).build()
+        return Response.ok(profile.toProfileRestFacade()).build()
     }
 }

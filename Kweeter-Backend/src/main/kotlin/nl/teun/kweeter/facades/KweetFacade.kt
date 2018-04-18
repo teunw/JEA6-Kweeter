@@ -4,7 +4,7 @@ import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.toProfileFacade
 import java.time.format.DateTimeFormatter
 
-data class KweetFacade(private val kweet: Kweet = Kweet()) {
+open class KweetFacade(private val kweet: Kweet = Kweet()) {
     val publicId: String? = kweet.publicId
     val textContent: String? = kweet.textContent
     var author = kweet.author?.toProfileFacade()

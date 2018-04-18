@@ -2,7 +2,7 @@ package nl.teun.kweeter.facades
 
 import nl.teun.kweeter.domain.Profile
 
-data class ProfileFacade(private val profile: Profile = Profile()) : UnsafeProfileFacade(profile) {
+open class ProfileFacade(private val profile: Profile = Profile()) : UnsafeProfileFacade(profile) {
     override val id: Long = profile.id
 }
 

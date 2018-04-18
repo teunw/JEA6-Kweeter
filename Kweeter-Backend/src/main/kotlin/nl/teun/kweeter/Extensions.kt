@@ -8,6 +8,8 @@ import nl.teun.kweeter.domain.ProfileFollower
 import nl.teun.kweeter.facades.AuthTokenFacade
 import nl.teun.kweeter.facades.ProfileFacade
 import nl.teun.kweeter.facades.ProfileFollowerFacade
+import nl.teun.kweeter.facades.rest.KweetRestFacade
+import nl.teun.kweeter.facades.rest.ProfileRestFacade
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -19,8 +21,16 @@ fun LocalDateTime.toJavaUtilDate(): Date {
     return java.util.Date.from(instant)
 }
 
+val ApiBaseUrl = "http://localhost:8080/Kweeter-Backend/api"
+
 fun Profile.toProfileFacade() = ProfileFacade(this)
-fun Kweet.toKweetFacade() = nl.teun.kweeter.facades.KweetFacade(this)
+fun Profile.toProfileRestFacade() = ProfileRestFacade(this)
+fun Profile.toHateoas() = "$ApiBaseUrl/profiles/${this.id}"
+
+fun Kweet.toFacade() = nl.teun.kweeter.facades.KweetFacade(this)
+fun Kweet.toRestFacade() = KweetRestFacade(this)
+
+
 fun AuthToken.toAuthFacade() = AuthTokenFacade(this)
 fun ProfileFollower.toFollowerFacade() = ProfileFollowerFacade(this)
 

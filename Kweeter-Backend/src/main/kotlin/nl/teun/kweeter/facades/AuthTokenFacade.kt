@@ -4,7 +4,7 @@ import nl.teun.kweeter.domain.AuthToken
 import nl.teun.kweeter.toProfileFacade
 import java.time.format.DateTimeFormatter
 
-data class AuthTokenFacade(private val authToken: AuthToken = AuthToken()) {
+open class AuthTokenFacade(private val authToken: AuthToken = AuthToken()) {
     val id = authToken.id
     val token = authToken.token
     val profile = authToken.profile?.toProfileFacade()

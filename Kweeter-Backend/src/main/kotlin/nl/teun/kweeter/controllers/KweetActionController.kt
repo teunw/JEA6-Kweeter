@@ -5,7 +5,7 @@ import nl.teun.kweeter.controllers.types.response.KweetLikeResponse
 import nl.teun.kweeter.httpResponseBadRequest
 import nl.teun.kweeter.services.KweetService
 import nl.teun.kweeter.services.ProfileService
-import nl.teun.kweeter.toKweetFacade
+import nl.teun.kweeter.toFacade
 import javax.inject.Inject
 import javax.ws.rs.DELETE
 import javax.ws.rs.PUT
@@ -39,7 +39,7 @@ class KweetActionController {
         kweet.likedBy.add(profile)
         this.kweetService.updateKweet(kweet)
 
-        val res = KweetLikeResponse(true, kweet.toKweetFacade())
+        val res = KweetLikeResponse(true, kweet.toFacade())
         return Response.ok(res).build()
     }
 
@@ -58,7 +58,7 @@ class KweetActionController {
         kweet.likedBy.remove(profile)
         this.kweetService.updateKweet(kweet)
 
-        val res = KweetLikeResponse(false, kweet.toKweetFacade())
+        val res = KweetLikeResponse(false, kweet.toFacade())
         return Response.ok(res).build()
     }
 }

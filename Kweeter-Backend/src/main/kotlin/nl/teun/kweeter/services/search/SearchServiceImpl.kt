@@ -4,7 +4,7 @@ import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
 import nl.teun.kweeter.facades.KweetFacade
 import nl.teun.kweeter.facades.ProfileFacade
-import nl.teun.kweeter.toKweetFacade
+import nl.teun.kweeter.toFacade
 import nl.teun.kweeter.toProfileFacade
 import org.hibernate.search.jpa.FullTextEntityManager
 import org.hibernate.search.jpa.Search
@@ -40,6 +40,6 @@ class SearchServiceImpl : SearchService() {
     override fun searchKweets(query: String): List<KweetFacade> {
         val tweetQb = this.getFullTextEntityManager().searchFactory.buildQueryBuilder().forEntity(Kweet::class.java).get()
         val fullTextQuery = tweetQb.keyword().onFields("textContent").matching(query).createQuery()
-        return this.getFullTextEntityManager().createFullTextQuery(fullTextQuery).resultList.filterIsInstance<Kweet>().map { it.toKweetFacade() }
+        return this.getFullTextEntityManager().createFullTextQuery(fullTextQuery).resultList.filterIsInstance<Kweet>().map { it.toFacade() }
     }
 }

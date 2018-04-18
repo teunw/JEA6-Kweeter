@@ -8,7 +8,7 @@ import nl.teun.kweeter.httpResponseBadRequest
 import nl.teun.kweeter.httpResponseNotFound
 import nl.teun.kweeter.services.KweetService
 import nl.teun.kweeter.services.ProfileService
-import nl.teun.kweeter.toKweetFacade
+import nl.teun.kweeter.toRestFacade
 import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.ws.rs.*
@@ -33,7 +33,7 @@ class KweetController {
             return httpResponseNotFound().entity("For performance reasons > 100 results is not allowed").build()
         }
         val amountOfResults = if (results != 0) results else 50
-        val kweets = kweetService.findAll(amountOfResults, page * results).map { it.toKweetFacade() }
+        val kweets = kweetService.findAll(amountOfResults, page * results).map { it.toRestFacade() }
         return Response.ok(kweets).build()
     }
 
@@ -44,8 +44,9 @@ class KweetController {
         if (kweetId.isEmpty()) {
             return httpResponseBadRequest().entity("kweetId is empty").build()
         }
-        val kweetIdAsLong = kweetId.toLongOrNull() ?: return Response.ok(kweetService.findByPublicId(kweetId).toKweetFacade()).build()
-        return Response.ok(kweetService.findById(kweetIdAsLong).toKweetFacade()).build()
+        val kweetIdAsLong = kweetId.toLongOrNull()
+                ?: return Response.ok(kweetService.findByPublicId(kweetId).toRestFacade()).build()
+        return Response.ok(kweetService.findById(kweetIdAsLong).toRestFacade()).build()
     }
 
     @KweeterAuthRequired
@@ -66,7 +67,7 @@ class KweetController {
         val kweet = this.kweetService.findByPublicId(kweetId)
         kweet.author = this.profileService.findByPrincipal(securityContext.userPrincipal)
         kweet.textContent = parameters.textContent
-        return Response.ok(kweet.toKweetFacade()).build()
+        return Response.ok(kweet.toRestFacade()).build()
     }
 
     @GET
@@ -78,7 +79,7 @@ class KweetController {
         val longProfileId = profileId.toLongOrNull()
                 ?: return httpResponseBadRequest().entity("Profile ID not a long").build()
         val profile = this.profileService.findById(longProfileId)
-        val kweets = this.kweetService.findByProfile(profile).map { it.toKweetFacade() }
+        val kweets = this.kweetService.findByProfile(profile).map { it.toRestFacade() }
         return Response.ok(kweets).build()
     }
 
@@ -98,7 +99,7 @@ class KweetController {
                 .setDate(LocalDateTime.now())
                 .setLikedBy(emptyList())
         this.kweetService.createKweet(kweet)
-        return Response.ok(kweet.toKweetFacade()).build()
+        return Response.ok(kweet.toRestFacade()).build()
     }
 
 }
