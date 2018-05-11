@@ -30,6 +30,7 @@ import {SearchService} from './services/search/search.service';
 import {JWTInterceptor} from './interceptor/JWT.interceptor';
 import { SpecifickweetComponent } from './kweets/specifickweet/specifickweet.component';
 import {FollowService} from './services/follow.service';
+import {LiveupdateService} from "./services/liveupdate.service";
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -77,6 +78,7 @@ const appRoutes: Routes = [
     KweetActionService,
     FollowService,
     SearchService,
+    LiveupdateService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JWTInterceptor,

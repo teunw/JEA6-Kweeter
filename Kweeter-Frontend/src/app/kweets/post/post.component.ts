@@ -20,6 +20,7 @@ export class PostComponent implements OnInit {
 
   postKweet() {
     this.kweetService.createKweet(this.kweet);
+    this.kweetService.liveUpdateService.postKweetUpdates(this.kweet);
   }
 
   postKweetEnter(e: KeyboardEvent) {

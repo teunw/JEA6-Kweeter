@@ -5,11 +5,6 @@ import java.time.LocalDateTime
 import javax.ejb.Stateless
 import javax.inject.Inject
 
-data class Trend(
-        val trendName: String,
-        val timesMentioned: Int
-)
-
 @Stateless
 class TrendService {
 

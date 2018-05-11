@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {IKweet, IKweetPost} from '../kweet';
 import {IProfile} from '../profile';
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {LiveupdateService} from "./liveupdate.service";
 
 @Injectable()
 export class KweetService {
@@ -13,7 +14,8 @@ export class KweetService {
 
   public readonly kweets = this._kweets.asObservable();
 
-  constructor(private httpClient: HttpClient, private configService: ConfigService) {
+  constructor(private httpClient: HttpClient, private configService: ConfigService, public liveUpdateService:LiveupdateService) {
+    this.liveUpdateService.getLiveKweetUpdates();
   }
 
   refreshKweets() {

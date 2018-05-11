@@ -2,7 +2,6 @@ package nl.teun.kweeter.services
 
 import io.github.cdimascio.dotenv.dotenv
 import java.util.*
-import javax.annotation.Resource
 import javax.ejb.Stateless
 import javax.mail.Message
 import javax.mail.Session
@@ -10,11 +9,12 @@ import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
+
 @Stateless
 class EmailService {
 
-    @Resource(name = "java:jboss/mail/Default")
-    private lateinit var session: Session
+//    @Resource(name = "java:jboss/mail/Default")
+//    private lateinit var session: Session
 
     fun getMailProperties(): Properties {
         val props = Properties()
@@ -23,8 +23,10 @@ class EmailService {
         return props
     }
 
+    fun getPropsSession() = Session.getInstance(this.getMailProperties())
+
     fun sendMail(from: String = "info@kweeter.com", to: String, subject: String, text: String) {
-        val message = MimeMessage(this.session)
+        val message = MimeMessage(this.getPropsSession())
         message.setFrom(InternetAddress(from))
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to))
         message.subject = subject

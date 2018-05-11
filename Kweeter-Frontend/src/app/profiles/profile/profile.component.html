@@ -8,6 +8,7 @@
             <span class="card-title">{{ profile.displayName }}</span>
             <p>
               <a href="javascript:void(0)">@{{ profile.username }}</a><br/>
+              <img src="{{ profileImageLink }}" class="circle responsive-img"/><br/>
               "{{ profile.bio }}"<br/>
               Website: <a target="_blank" href="{{ profile.contactLink }}">{{ profile.contactLink }}</a><br/>
               Email: <a href="mailto:{{ profile.emailAddress }}">{{ profile.emailAddress }}</a><br/>

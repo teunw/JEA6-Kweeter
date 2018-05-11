@@ -33,9 +33,6 @@ class AuthServiceImpl : AuthService {
                 .setParameter("token", token)
                 .resultList
                 .filterIsInstance<AuthToken>()
-        if (tokens.size > 1) {
-            throw Exception("Found more than 1 token")
-        }
         if (tokens.isEmpty()) {
             throw NotFoundException("Token not found")
         }
