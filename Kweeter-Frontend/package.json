@@ -27,6 +27,7 @@
     "@types/materialize-css": "^1.0.1",
     "angular2-moment": "^1.8.0",
     "axios": "^0.18.0",
+    "blueimp-md5": "^2.10.0",
     "core-js": "^2.5.5",
     "jquery": "^3.3.1",
     "materialize-css": "^1.0.0-beta",

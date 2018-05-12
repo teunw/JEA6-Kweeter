@@ -11,7 +11,7 @@
               <img src="{{ profileImageLink }}" class="circle responsive-img"/><br/>
               "{{ profile.bio }}"<br/>
               Website: <a target="_blank" href="{{ profile.contactLink }}">{{ profile.contactLink }}</a><br/>
-              Email: <a href="mailto:{{ profile.emailAddress }}">{{ profile.emailAddress }}</a><br/>
+              Email: <a href="mailto:{{ profile.email }}">{{ profile.email }}</a><br/>
             </p>
             <span *ngIf="profile.location">Location: {{ profile.location }}<br/></span>
             <div class="card-action" *ngIf="!isProfileSelf && isProfileBeingFollowed != null">
