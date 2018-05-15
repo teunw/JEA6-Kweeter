@@ -1,3 +1,5 @@
+package nl.teun.kweeter.features
+
 import nl.teun.kweeter.filters.CorsFilter
 import javax.ws.rs.core.Feature
 import javax.ws.rs.core.FeatureContext
