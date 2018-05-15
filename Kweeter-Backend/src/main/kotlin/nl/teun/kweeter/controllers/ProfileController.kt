@@ -69,8 +69,8 @@ class ProfileController {
         val dbProfile = profileService.findByPrincipal(securityContext.userPrincipal)
         var updatedAnything = false
 
-        if (reqProfile.emailAddress != null && !reqProfile.emailAddress.isBlank()) {
-            dbProfile.email = reqProfile.emailAddress
+        if (reqProfile.email != null && !reqProfile.email.isBlank()) {
+            dbProfile.email = reqProfile.email
             updatedAnything = true
         }
         if (reqProfile.username != null && !reqProfile.username.isBlank()) {
@@ -93,7 +93,7 @@ class ProfileController {
         if (!updatedAnything) {
             return httpResponseBadRequest()
                     .entity("One of the parameters is empty")
-                    .entity(reqProfile.emailAddress)
+                    .entity(reqProfile.email)
                     .entity(reqProfile.username)
                     .entity(reqProfile.displayName)
                     .build()
@@ -107,10 +107,10 @@ class ProfileController {
     fun createProfile(
             profileFacade: UnsafeProfileFacade
     ): Response? {
-        if (profileFacade.emailAddress == null || profileFacade.emailAddress.isBlank() || profileFacade.username == null || profileFacade.username.isBlank() || profileFacade.displayName!!.isBlank()) {
+        if (profileFacade.email == null || profileFacade.email.isBlank() || profileFacade.username == null || profileFacade.username.isBlank() || profileFacade.displayName!!.isBlank()) {
             return httpResponseBadRequest()
                     .entity("One of the parameters is empty")
-                    .entity(profileFacade.emailAddress)
+                    .entity(profileFacade.email)
                     .entity(profileFacade.username)
                     .entity(profileFacade.displayName)
                     .build()
@@ -122,7 +122,7 @@ class ProfileController {
 
         val profile = this.profileService.recreateFromFacade(profileFacade, fromDb = false)
         this.profileService.createProfile(profile)
-        this.emailService.sendMail(to = profileFacade.emailAddress, subject = "Account created!", text = "Take a look: http://localhost:4200")
+        this.emailService.sendMail(to = profileFacade.email, subject = "Account created!", text = "Take a look: http://localhost:4200")
         return Response.ok(profile.toProfileRestFacade()).build()
     }
 }

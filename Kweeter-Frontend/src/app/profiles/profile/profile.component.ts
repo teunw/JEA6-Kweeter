@@ -1,4 +1,5 @@
 declare function require(s:string);
+
 import {Component, OnInit} from '@angular/core';
 import {ProfileService} from '../../services/profile.service';
 import {ActivatedRoute} from '@angular/router';
@@ -7,6 +8,7 @@ import {KweetService} from '../../services/kweet.service';
 import {IKweet} from '../../kweet';
 import {LoginService} from '../../services/login.service';
 import {FollowService} from '../../services/follow.service';
+
 const md5 = require("blueimp-md5");
 
 @Component({
@@ -74,7 +76,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public getGravatarLink() {
-    return this.gravatar(this.profile.emailAddress, {});
+    return this.gravatar(this.profile.email, {});
   }
 
   public gravatar(email, options) {
@@ -99,10 +101,15 @@ export class ProfileComponent implements OnInit {
     base = options.secure ? 'https://secure.gravatar.com/avatar/' : 'http://www.gravatar.com/avatar/';
 
     //add the params
-    if (options.rating) {params.push("r=" + options.rating)};
-    if (options.backup) {params.push("d=" + encodeURIComponent(options.backup))};
-    if (options.size) {params.push("s=" + options.size)};
-
+    if (options.rating) {
+      params.push("r=" + options.rating)
+    }
+    if (options.backup) {
+      params.push("d=" + encodeURIComponent(options.backup))
+    }
+    if (options.size) {
+      params.push("s=" + options.size)
+    }
     //now throw it all together
     return base + md5(email) + "?" + params.join("&");
   }

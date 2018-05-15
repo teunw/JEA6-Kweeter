@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaderResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ConfigService} from './config.service';
 import {Observable} from 'rxjs/Observable';
 import {IKweet, IKweetPost} from '../kweet';
@@ -50,7 +50,6 @@ export class KweetService {
     ).subscribe(res => {
       console.log("Got");
       console.log(res);
-      this.getKweets();
     });
   }
 }

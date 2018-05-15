@@ -20,7 +20,7 @@ class ProfileServiceImpl : ProfileService {
         val profile = this.findById(profileFacade.id)
         profile.username = profileFacade.username
         profile.displayName = profileFacade.displayName
-        profile.email = profileFacade.emailAddress
+        profile.email = profileFacade.email
         profile.location = profileFacade.location
         profile.bio = profileFacade.bio
         profile.contactLink = profileFacade.contactLink
@@ -32,7 +32,7 @@ class ProfileServiceImpl : ProfileService {
         val profile = if (fromDb) this.findById(profileFacade.id!!) else Profile()
         profile.username = profileFacade.username
         profile.displayName = profileFacade.displayName
-        profile.email = profileFacade.emailAddress
+        profile.email = profileFacade.email
         profile.location = profileFacade.location
         profile.bio = profileFacade.bio
         profile.contactLink = profileFacade.contactLink

@@ -2,7 +2,7 @@ export interface IProfile {
   id: number;
   username: string;
   displayName: string;
-  emailAddress: string;
+  email: string;
   location: string;
   contactLink: string;
   bio: string;
@@ -13,11 +13,12 @@ export class Profile implements IProfile {
   id: number = this.profile.id;
   username: string = this.profile.username;
   displayName: string = this.profile.displayName;
-  emailAddress: string = this.profile.emailAddress;
+  email: string = this.profile.email;
   location: string = this.profile.location;
   contactLink: string = this.profile.contactLink;
   bio: string = this.profile.bio;
   password: string = this.profile.password;
 
-  constructor(public profile:IProfile) {}
+  constructor(public profile: IProfile) {
+  }
 }

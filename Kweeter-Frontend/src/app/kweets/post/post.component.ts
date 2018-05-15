@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {KweetService} from '../../services/kweet.service';
-import {IKweetPost} from '../../kweet';
+import {IKweet, IKweetPost} from '../../kweet';
 import {LoginService} from "../../services/login.service";
 
 @Component({
@@ -10,12 +10,13 @@ import {LoginService} from "../../services/login.service";
 })
 export class PostComponent implements OnInit {
 
-  public kweet: IKweetPost | any = {};
+  public kweet: IKweetPost | IKweet | any = {};
 
   constructor(public loginService: LoginService, private kweetService: KweetService) {
   }
 
   ngOnInit() {
+    this.kweet.author = this.loginService.getLoginInfo();
   }
 
   postKweet() {

@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlinVersion = "1.2.40" +
+        kotlinVersion = "1.2.41" +
                 ""
         wildflyVersion = "11.0.0.Final"
         wildflyHome = "${rootDir}/build/unpacked/dist/wildfly-${wildflyVersion}"
