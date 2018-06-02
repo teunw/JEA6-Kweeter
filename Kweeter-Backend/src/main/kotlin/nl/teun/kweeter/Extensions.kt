@@ -1,6 +1,7 @@
 package nl.teun.kweeter
 
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import nl.teun.kweeter.domain.AuthToken
 import nl.teun.kweeter.domain.Kweet
 import nl.teun.kweeter.domain.Profile
@@ -45,3 +46,11 @@ fun httpResponseBadRequest(): Response.ResponseBuilder {
 fun Kweet.getTopics() = "#[a-zA-Z0-9]+".toRegex().findAll(this.textContent.subSequence(0, Int.MAX_VALUE)).map { it.value }
 
 fun Any.toJson() = Gson().toJson(this)
+
+inline fun <reified T> Gson.fromJsonArray(s: String): List<T> {
+    val listType = object : TypeToken<List<T>>() {
+
+    }.type
+    return this.fromJson(s, listType)
+}
+

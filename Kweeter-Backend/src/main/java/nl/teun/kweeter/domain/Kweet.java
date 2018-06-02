@@ -1,7 +1,7 @@
 package nl.teun.kweeter.domain;
 
-import kotlin.text.Regex;
-import nl.teun.kweeter.Utilities;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.regex.Pattern;
+
+import static java.util.Collections.emptyList;
 
 @Entity
 @Table
@@ -29,7 +30,7 @@ public class Kweet implements Serializable, Comparable<Kweet> {
 
 
     @Column(unique = true, nullable = false, updatable = false)
-    private String publicId;
+    private String publicId = UUID.randomUUID().toString();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,14 +44,12 @@ public class Kweet implements Serializable, Comparable<Kweet> {
     private Profile author;
 
     @Column(nullable = false)
-    private LocalDateTime date;
+    private LocalDateTime date = LocalDateTime.now();
 
     @ManyToMany(fetch = FetchType.LAZY)
-    private List<Profile> likedBy;
+    private List<Profile> likedBy = emptyList();
 
     public Kweet() {
-        this.date = LocalDateTime.now();
-        this.likedBy = new ArrayList<>();
     }
 
     public String getPublicId() {
@@ -87,6 +86,19 @@ public class Kweet implements Serializable, Comparable<Kweet> {
     public Kweet setAuthor(Profile author) {
         this.author = author;
         return this;
+    }
+
+    public static List<Kweet> deserializeKweetListJson(String json) {
+        return new Gson().fromJson(json, new TypeToken<ArrayList<Kweet>>() {
+        }.getType());
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public LocalDateTime getDate() {
@@ -139,5 +151,9 @@ public class Kweet implements Serializable, Comparable<Kweet> {
     @Override
     public int compareTo(@NotNull Kweet o) {
         return this.date.compareTo(o.date);
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

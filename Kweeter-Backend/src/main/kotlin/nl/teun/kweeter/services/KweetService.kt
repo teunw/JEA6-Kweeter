@@ -6,26 +6,26 @@ import nl.teun.kweeter.facades.KweetFacade
 import java.time.LocalDateTime
 import javax.persistence.EntityNotFoundException
 
-interface KweetService {
+abstract class KweetService {
 
-    fun findAll(maxResults: Int, offsetResults: Int): List<Kweet>
-
-    @Throws(EntityNotFoundException::class)
-    fun findById(id: Long): Kweet
-
-    fun findByPublicId(id: String): Kweet
+    abstract fun findAll(maxResults: Int, offsetResults: Int): List<Kweet>
 
     @Throws(EntityNotFoundException::class)
-    fun findByProfile(profile: Profile): List<Kweet>
+    abstract fun findById(id: Long): Kweet
 
-    fun updateKweet(kweet: Kweet)
+    abstract fun findByPublicId(id: String): Kweet
 
-    fun createKweet(kweet: Kweet)
+    @Throws(EntityNotFoundException::class)
+    abstract fun findByProfile(profile: Profile): List<Kweet>
 
-    fun recreateFromFacade(kweetFacade: KweetFacade): Kweet
+    abstract fun updateKweet(kweet: Kweet)
 
-    fun deleteKweet(kweet:Kweet)
+    abstract fun createKweet(kweet: Kweet)
 
-    fun getKweetsAfter(dateTime: LocalDateTime): List<Kweet>
+    open fun recreateFromFacade(kweetFacade: KweetFacade) = this.findByPublicId(kweetFacade.publicId!!)
+
+    abstract fun deleteKweet(kweet: Kweet)
+
+    abstract fun getKweetsAfter(dateTime: LocalDateTime): List<Kweet>
 
 }
