@@ -5,5 +5,5 @@ import nl.teun.kweeter.facades.KweetFacade
 import nl.teun.kweeter.toHateoas
 
 class KweetRestFacade(kweet: Kweet) : KweetFacade(kweet) {
-    val profileLink = kweet.author.toHateoas()
+    val profileLink = kweet.author?.toHateoas()
 }

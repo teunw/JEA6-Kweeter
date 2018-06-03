@@ -1,11 +1,11 @@
-
-from django.conf.urls import url, include
+from django.conf.urls import url
+from django.urls import include
 from rest_framework import routers
 
-from api import views
+from profileservice import views
 
 router = routers.DefaultRouter()
-router.register(r'', views.KweetViewSet)
+router.register(r'', views.ProfileViewset)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

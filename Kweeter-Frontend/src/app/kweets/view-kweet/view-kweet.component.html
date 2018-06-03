@@ -9,16 +9,16 @@
       <span style="font-size: small">{{ ikweet.date | amTimeAgo: 'minutes' }} ago</span>
     </p>
   </div>
-  <div class="card-action" *ngIf="loginService.isLoggedIn()">
-    <a (click)="toggleLike()" href="javascript:void(0)" class="card-action-link">
-      <i *ngIf="ikweet.likedBy !== undefined && getKweet().hasLiked(loginService.getLoginInfo())"
-         class="material-icons">favorite</i>
-      <i *ngIf="ikweet.responses !== undefined && !getKweet().hasLiked(loginService.getLoginInfo())"
-         class="material-icons">favorite_border</i>
-    </a>
-    <a href="javascript:void(0)" class="card-action-link">
-      <i class="material-icons">repeat</i>
-    </a>
-  </div>
+  <!--<div class="card-action" *ngIf="loginService.isLoggedIn()">-->
+  <!--<a (click)="toggleLike()" href="javascript:void(0)" class="card-action-link">-->
+  <!--<i *ngIf="ikweet.likedBy !== undefined && getKweet().hasLiked(loginService.getLoginInfo())"-->
+  <!--class="material-icons">favorite</i>-->
+  <!--<i *ngIf="ikweet.responses !== undefined && !getKweet().hasLiked(loginService.getLoginInfo())"-->
+  <!--class="material-icons">favorite_border</i>-->
+  <!--</a>-->
+  <!--<a href="javascript:void(0)" class="card-action-link">-->
+  <!--<i class="material-icons">repeat</i>-->
+  <!--</a>-->
+  <!--</div>-->
 </div>
 
